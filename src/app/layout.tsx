@@ -1,4 +1,4 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import React, { Suspense } from 'react';
 import '@/styles/globals.css';
 import Script from 'next/script';
@@ -10,6 +10,15 @@ import { siteConfig } from '@/config/site';
 import { getWebApiSchema } from '@/lib/json-ld';
 import { GoogleAnalytics } from '@/components/analytics/GoogleAnalytics';
 import config from '@/config/env';
+
+export const viewport: Viewport = {
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: '#ffffff' },
+    { media: '(prefers-color-scheme: dark)', color: '#0f172a' },
+  ],
+  width: 'device-width',
+  initialScale: 1,
+};
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
@@ -54,7 +63,7 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: 'Nilesh Kumar', url: 'https://nileslabs.com' }],
   creator: 'Niles Kumar',
-  publisher: 'Playground API by Niles Labs',
+  publisher: 'Playground API by Nilesh Kumar',
   openGraph: {
     type: 'website',
     locale: 'en_US',
@@ -63,12 +72,21 @@ export const metadata: Metadata = {
     description:
       'Free, zero-configuration, stateful mock REST & GraphQL API sandbox. Real persistent CRUD mutations, JWT authentication, and network simulation.',
     siteName: 'Playground API',
+    images: [
+      {
+        url: '/og-image.png',
+        width: 1200,
+        height: 630,
+        alt: 'Playground API — Free Stateful Mock REST & GraphQL Sandbox',
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Playground API — Free Stateful Mock REST & GraphQL Service',
     description:
       'Free, zero-configuration, stateful mock REST & GraphQL API sandbox for prototyping and automated tests.',
+    images: ['/og-image.png'],
   },
   robots: {
     index: true,

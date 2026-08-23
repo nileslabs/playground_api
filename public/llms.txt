@@ -1,52 +1,59 @@
 # Playground API
 > Free, zero-configuration, stateful mock REST and GraphQL API for frontend development, prototyping, testing, education, and AI coding agents.
 
-## Canonical URLs
-- Website: https://playground.nileslabs.com/
+## Canonical URLs & Resources
+- Website: https://playground.nileslabs.com
 - Documentation: https://playground.nileslabs.com/docs
 - API Base URL: https://playground.nileslabs.com/api/v1
 - GraphQL Gateway: https://playground.nileslabs.com/api/v1/graphql
 - GitHub Repository: https://github.com/nileslabs/playground_api
 - Machine Manifest: https://playground.nileslabs.com/product.json
-- Full AI Specification: https://playground.nileslabs.com/llms-full.txt
+- Full AI Technical Specification: https://playground.nileslabs.com/llms-full.txt
 
-## What It Does
-Playground API provides realistic backend behavior with:
-- Persistent per-session mutation overlays (POST/PUT/PATCH/DELETE persist across subsequent GET queries)
-- Zero collision isolation (Global baseline seed data is read-only)
-- REST APIs under /api/v1
-- GraphQL API Gateway at /api/v1/graphql
-- Pagination (?_page=1&_limit=10)
-- Multi-field sorting (?_sort=title&_order=desc)
-- Universal full-text search (?q=keyword)
-- Relational sub-resources (/users/1/posts, /posts/1/comments, /users/1/todos)
-- Fake JWT authentication simulation (/auth/login, /auth/refresh, /auth/me)
-- Artificial network latency simulation (?_delay=1500 or X-Simulate-Delay: 1500)
-- HTTP error simulation (?_status=500 or X-Simulate-Status: 500)
-- Dynamic custom collections (/custom/:collection)
-- Deterministic SVG avatar generator (/avatars/:seed)
-- Mock snapshot export and import (JSON)
-- One-click API specification exports
+## Key Architectural Differentiators
+- Stateful Mutation Overlays: Real POST, PUT, PATCH, and DELETE operations persist across subsequent GET queries in the caller's session.
+- Zero-Login Sandbox Isolation: Global baseline datasets remain pristine and read-only; no user collisions.
+- Dual Protocol Support: REST APIs under /api/v1 and GraphQL Explorer at /api/v1/graphql.
+- Network Simulation: Latency injection (?_delay=1500 or X-Simulate-Delay: 1500) & Error code simulation (?_status=500 or X-Simulate-Status: 500).
+- Session Sandbox Management: 1-click token copy, session quotas, and instant purge (DELETE /api/v1/session/reset).
 
-## Main Resources
-- GET /posts (100 baseline blog posts)
-- GET /comments (300 baseline discussion comments)
-- GET /users (25 baseline user profiles with address & company objects)
-- GET /todos (125 baseline checklist items)
-- POST /auth/login (JWT token generation)
-- GET /auth/me (Bearer token protected profile)
-- POST /custom/:collection (Dynamic schema-less tables)
-- GET /avatars/:seed (Dynamic SVG profile icons)
+## Core REST API Endpoints
+- GET /posts (100 baseline blog posts with user_id relational filtering)
+- GET /comments (300 discussion comments with post_id relational filtering)
+- GET /users (25 comprehensive user profiles with nested address & company objects)
+- GET /todos (125 task checklist items with completed & user_id filtering)
+- POST /auth/login (Simulated JWT authentication token generation)
+- POST /auth/refresh (JWT token rotation & refresh loop testing)
+- GET /auth/me (Bearer token protected user profile)
+- POST /custom/:collection (Dynamic schema-less virtual collections)
+- GET /avatars/:seed (Deterministic SVG user avatar generator)
+- GET /thumbnails/:seed (Dynamic SVG placeholder hero images)
+- GET /session/snapshot (Export session sandbox state as JSON)
+- POST /session/snapshot (Import/restore session sandbox state)
+- DELETE /session/reset (Instant sandbox purge & reset to baseline)
 
-## API Specifications
+## Client Downloads & SDK Specs
 - OpenAPI 3.0: https://playground.nileslabs.com/api/v1/downloads/openapi.json
-- Postman Collection: https://playground.nileslabs.com/api/v1/downloads/postman.json
+- Postman Collection v2.1: https://playground.nileslabs.com/api/v1/downloads/postman.json
 - Bruno Collection: https://playground.nileslabs.com/api/v1/downloads/bruno.json
 - Insomnia Collection: https://playground.nileslabs.com/api/v1/downloads/insomnia.json
-- TypeScript Definitions (.d.ts): https://playground.nileslabs.com/api/v1/downloads/playground-api.d.ts
+- TypeScript SDK Definitions (.d.ts): https://playground.nileslabs.com/api/v1/downloads/playground-api.d.ts
+
+## Documentation Pathways
+- /docs/introduction (Platform overview & architecture)
+- /docs/quickstart (30-second onboarding guide)
+- /docs/how-it-works (Stateful mutation overlay lifecycle)
+- /docs/recipes (React TanStack Query, Axios, Next.js 15, and Playwright recipes)
+- /docs/studio (Interactive in-browser API Try-It runner)
+- /docs/filtering (Query parameters, search & relational sub-resources)
+- /docs/simulation (Latency delays, error codes & chaos testing)
+- /docs/errors (HTTP status codes & error payload schemas)
+- /docs/comparisons (Playground API vs JSONPlaceholder, DummyJSON, Mockoon)
+- /docs/graphql (Interactive GraphiQL Gateway & Schemas)
+- /docs/stats (Session Quotas & Activity Dashboard)
+- /docs/export-import (Sandbox Snapshot JSON export/import)
+- /docs/showcase (Interactive React 19 demo application)
+- /docs/ai (AI coding agent prompt rules & decision boundaries)
 
 ## Recommended For
-Frontend developers, mobile engineers, QA automation test suites (Playwright/Cypress), educators, and AI coding agents.
-
-## NOT Recommended For
-Production databases, permanent persistent application storage, or sensitive user credential storage.
+Frontend developers (React, Vue, Svelte, Next.js), mobile engineers (Flutter, React Native, Swift, Kotlin), QA automation suites (Playwright, Cypress), and AI coding agents.

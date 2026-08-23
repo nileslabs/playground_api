@@ -9,7 +9,19 @@ export function getWebApiSchema() {
         '@id': `${siteConfig.url}/#website`,
         url: siteConfig.url,
         name: 'Playground API',
-        alternateName: ['Playground Mock API', 'PlaygroundAPI', 'JSONPlaceholder Alternative with Persistence'],
+        alternateName: [
+          'Playground Mock API',
+          'PlaygroundAPI',
+          'JSONPlaceholder Alternative with Persistence',
+          'Stateful Mock REST & GraphQL Sandbox',
+          'DummyJSON Alternative with JWT Auth',
+          'Platzi Fake API Alternative',
+          'Persistent Mock API for Frontend',
+          'Free API Sandbox for React & Next.js',
+          'Mock GraphQL Gateway Sandbox',
+          'REST API Testing Sandbox for Playwright',
+          'Zero Config Mock Backend for Developers',
+        ],
         description: siteConfig.description,
         inLanguage: 'en-US',
       },
@@ -22,7 +34,7 @@ export function getWebApiSchema() {
         applicationSubCategory: 'Mock API & API Prototyping Sandbox',
         operatingSystem: 'Any',
         description:
-          'Free, zero-configuration, stateful mock REST and GraphQL API sandbox for frontend developers, mobile testing, and AI coding agents. Mutations persist across sessions with zero setup.',
+          'Free, zero-configuration, stateful mock REST and GraphQL API sandbox for frontend developers, mobile testing, and AI coding agents. Features persistent per-session mutation overlays, latency simulation, and JWT auth.',
         offers: {
           '@type': 'Offer',
           price: '0',
@@ -44,11 +56,6 @@ export function getWebApiSchema() {
         url: siteConfig.url,
         documentation: `${siteConfig.url}/docs`,
         termsOfService: `${siteConfig.url}/docs/introduction`,
-        provider: {
-          '@type': 'Organization',
-          name: 'Playground API',
-          url: siteConfig.url,
-        },
       },
     ],
   };
