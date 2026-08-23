@@ -1,7 +1,7 @@
 const backendUrl =
   process.env.BACKEND_URL ||
   process.env.NEXT_PUBLIC_BACKEND_URL ||
-  'http://localhost:3001';
+  "http://localhost:3001";
 
 const nextConfig = {
   reactStrictMode: true,
@@ -10,60 +10,65 @@ const nextConfig = {
   async headers() {
     return [
       {
-        source: '/api/:path*',
+        source: "/api/:path*",
         headers: [
           {
-            key: 'Cache-Control',
-            value: 'no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0',
+            key: "Cache-Control",
+            value:
+              "no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0",
           },
           {
-            key: 'Pragma',
-            value: 'no-cache',
+            key: "Pragma",
+            value: "no-cache",
           },
           {
-            key: 'Expires',
-            value: '0',
+            key: "Expires",
+            value: "0",
           },
           {
-            key: 'Access-Control-Allow-Credentials',
-            value: 'true',
+            key: "Access-Control-Allow-Credentials",
+            value: "true",
           },
           {
-            key: 'Access-Control-Allow-Methods',
-            value: 'GET,POST,PUT,PATCH,DELETE,HEAD,OPTIONS',
+            key: "Access-Control-Allow-Methods",
+            value: "GET,POST,PUT,PATCH,DELETE,HEAD,OPTIONS",
           },
           {
-            key: 'Access-Control-Allow-Headers',
-            value: 'Content-Type, Authorization, X-Playground-Identity, X-Simulate-Delay, X-Simulate-Status, X-Simulate-Chaos, X-Simulate-RateLimit, X-Simulate-JWT-Expiry, X-Requested-With, Accept, Origin, Cache-Control, Pragma',
+            key: "Access-Control-Allow-Headers",
+            value:
+              "Content-Type, Authorization, X-Playground-Identity, X-Simulate-Delay, X-Simulate-Status, X-Simulate-Chaos, X-Simulate-RateLimit, X-Simulate-JWT-Expiry, X-Requested-With, Accept, Origin, Cache-Control, Pragma",
           },
           {
-            key: 'Access-Control-Expose-Headers',
-            value: 'X-Playground-Identity, X-Total-Count, X-Page, X-Limit, X-Total-Pages, Content-Range, Location',
+            key: "Access-Control-Expose-Headers",
+            value:
+              "X-Playground-Identity, X-Total-Count, X-Page, X-Limit, X-Total-Pages, Content-Range, Location",
           },
         ],
       },
       {
-        source: '/(.*)',
+        source: "/(.*)",
         headers: [
           {
-            key: 'Content-Security-Policy',
-            value: "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://unpkg.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https:; connect-src 'self' https: http:; frame-ancestors 'none';",
+            key: "Content-Security-Policy",
+            value:
+              "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://unpkg.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https:; connect-src 'self' https: http:; frame-ancestors 'none';",
           },
           {
-            key: 'X-Frame-Options',
-            value: 'DENY',
+            key: "X-Frame-Options",
+            value: "DENY",
           },
           {
-            key: 'X-Content-Type-Options',
-            value: 'nosniff',
+            key: "X-Content-Type-Options",
+            value: "nosniff",
           },
           {
-            key: 'Referrer-Policy',
-            value: 'strict-origin-when-cross-origin',
+            key: "Referrer-Policy",
+            value: "strict-origin-when-cross-origin",
           },
           {
-            key: 'Permissions-Policy',
-            value: 'camera=(), microphone=(), geolocation=(), browsing-topics=()',
+            key: "Permissions-Policy",
+            value:
+              "camera=(), microphone=(), geolocation=(), browsing-topics=()",
           },
         ],
       },
@@ -72,7 +77,7 @@ const nextConfig = {
   async rewrites() {
     return [
       {
-        source: '/api/:path*',
+        source: "/api/:path*",
         destination: `${backendUrl}/api/:path*`,
       },
     ];
