@@ -10,7 +10,7 @@ export const metadata = {
 };
 
 export default function RecipesPage() {
-  const publicApiUrl = config.publicApiUrl || 'https://playground-api-xi.vercel.app/api/v1';
+  const publicApiUrl = config.publicApiUrl || 'https://playground.nileslabs.com/api/v1';
 
   const reactQuerySnippet = `import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 

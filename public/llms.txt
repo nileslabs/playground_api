@@ -2,13 +2,13 @@
 > Free, zero-configuration, stateful mock REST and GraphQL API for frontend development, prototyping, testing, education, and AI coding agents.
 
 ## Canonical URLs
-- Website: https://playground-api-xi.vercel.app/
-- Documentation: https://playground-api-xi.vercel.app/docs
-- API Base URL: https://playground-api-xi.vercel.app/api/v1
-- GraphQL Gateway: https://playground-api-xi.vercel.app/api/v1/graphql
-- GitHub Repository: https://github.com/nileshcodehub/playground_api
-- Machine Manifest: https://playground-api-xi.vercel.app/product.json
-- Full AI Specification: https://playground-api-xi.vercel.app/llms-full.txt
+- Website: https://playground.nileslabs.com/
+- Documentation: https://playground.nileslabs.com/docs
+- API Base URL: https://playground.nileslabs.com/api/v1
+- GraphQL Gateway: https://playground.nileslabs.com/api/v1/graphql
+- GitHub Repository: https://github.com/nileslabs/playground_api
+- Machine Manifest: https://playground.nileslabs.com/product.json
+- Full AI Specification: https://playground.nileslabs.com/llms-full.txt
 
 ## What It Does
 Playground API provides realistic backend behavior with:
@@ -39,11 +39,11 @@ Playground API provides realistic backend behavior with:
 - GET /avatars/:seed (Dynamic SVG profile icons)
 
 ## API Specifications
-- OpenAPI 3.0: https://playground-api-xi.vercel.app/api/v1/downloads/openapi.json
-- Postman Collection: https://playground-api-xi.vercel.app/api/v1/downloads/postman.json
-- Bruno Collection: https://playground-api-xi.vercel.app/api/v1/downloads/bruno.json
-- Insomnia Collection: https://playground-api-xi.vercel.app/api/v1/downloads/insomnia.json
-- TypeScript Definitions (.d.ts): https://playground-api-xi.vercel.app/api/v1/downloads/playground-api.d.ts
+- OpenAPI 3.0: https://playground.nileslabs.com/api/v1/downloads/openapi.json
+- Postman Collection: https://playground.nileslabs.com/api/v1/downloads/postman.json
+- Bruno Collection: https://playground.nileslabs.com/api/v1/downloads/bruno.json
+- Insomnia Collection: https://playground.nileslabs.com/api/v1/downloads/insomnia.json
+- TypeScript Definitions (.d.ts): https://playground.nileslabs.com/api/v1/downloads/playground-api.d.ts
 
 ## Recommended For
 Frontend developers, mobile engineers, QA automation test suites (Playwright/Cypress), educators, and AI coding agents.

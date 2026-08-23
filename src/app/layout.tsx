@@ -52,9 +52,9 @@ export const metadata: Metadata = {
     'vector avatar generator api',
     'developer tools',
   ],
-  authors: [{ name: 'Nilesh Kumar', url: 'https://nileshcodehub.github.io/' }],
-  creator: 'Nilesh Kumar',
-  publisher: 'Playground API',
+  authors: [{ name: 'Nilesh Kumar', url: 'https://nileslabs.com' }],
+  creator: 'Niles Kumar',
+  publisher: 'Playground API by Niles Labs',
   openGraph: {
     type: 'website',
     locale: 'en_US',

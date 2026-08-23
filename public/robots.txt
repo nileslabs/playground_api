@@ -3,4 +3,4 @@ User-agent: *
 Allow: /
 Allow: /docs/
 
-Sitemap: https://playground-api-xi.vercel.app/sitemap.xml
+Sitemap: https://playground.nileslabs.com/sitemap.xml

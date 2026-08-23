@@ -2,8 +2,8 @@ import { NextResponse } from 'next/server';
 import config from '@/config/env';
 
 export async function GET() {
-  const base = config.publicApiUrl || 'https://playground-api-xi.vercel.app/api/v1';
-  const site = config.siteUrl || 'https://playground-api-xi.vercel.app';
+  const base = config.publicApiUrl || 'https://playground.nileslabs.com/api/v1';
+  const site = config.siteUrl || 'https://playground.nileslabs.com';
 
   const manifest = {
     $schema: 'https://json-schema.org/draft/2020-12/schema',
@@ -21,7 +21,7 @@ export async function GET() {
       'Free, zero-configuration, stateful mock REST and GraphQL API sandbox for frontend development, prototyping, and testing.',
     website: site,
     documentation: `${site}/docs`,
-    repository: 'https://github.com/nileshcodehub/playground_api',
+    repository: 'https://github.com/nileslabs/playground_api',
     license: 'MIT',
     api: {
       base_url: base,

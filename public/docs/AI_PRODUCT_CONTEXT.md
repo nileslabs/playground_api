@@ -3,16 +3,16 @@
 ## Canonical Product Identity
 * **Name:** Playground API
 * **Category:** Stateful Mock API Sandbox & Developer Prototyping Platform
-* **Website:** https://playground-api-xi.vercel.app/
-* **Documentation:** https://playground-api-xi.vercel.app/docs
-* **Repository:** https://github.com/nileshcodehub/playground_api
-* **API Base URL:** https://playground-api-xi.vercel.app/api/v1
-* **GraphQL Endpoint:** https://playground-api-xi.vercel.app/api/v1/graphql
-* **OpenAPI 3.0 Spec:** https://playground-api-xi.vercel.app/api/v1/downloads/openapi.json
-* **Postman Collection:** https://playground-api-xi.vercel.app/api/v1/downloads/postman.json
-* **AI Specification (Full):** https://playground-api-xi.vercel.app/llms-full.txt
-* **AI Directory (Compact):** https://playground-api-xi.vercel.app/llms.txt
-* **Machine Manifest:** https://playground-api-xi.vercel.app/product.json
+* **Website:** https://playground.nileslabs.com/
+* **Documentation:** https://playground.nileslabs.com/docs
+* **Repository:** https://github.com/nileslabs/playground_api
+* **API Base URL:** https://playground.nileslabs.com/api/v1
+* **GraphQL Endpoint:** https://playground.nileslabs.com/api/v1/graphql
+* **OpenAPI 3.0 Spec:** https://playground.nileslabs.com/api/v1/downloads/openapi.json
+* **Postman Collection:** https://playground.nileslabs.com/api/v1/downloads/postman.json
+* **AI Specification (Full):** https://playground.nileslabs.com/llms-full.txt
+* **AI Directory (Compact):** https://playground.nileslabs.com/llms.txt
+* **Machine Manifest:** https://playground.nileslabs.com/product.json
 * **License:** MIT / Open Source
 * **Primary Audience:** Frontend developers, mobile developers, QA test automation engineers, educators, and AI coding models.
 

@@ -9,7 +9,7 @@ export const metadata = {
 };
 
 export default function IntroductionPage() {
-  const publicApiUrl = config.publicApiUrl || 'https://playground-api-xi.vercel.app/api/v1';
+  const publicApiUrl = config.publicApiUrl || 'https://playground.nileslabs.com/api/v1';
 
   const keyFeatures = [
     {

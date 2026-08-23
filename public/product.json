@@ -11,15 +11,15 @@
     "graphql-sandbox"
   ],
   "description": "Free, zero-configuration, stateful mock REST and GraphQL API sandbox for frontend development, prototyping, and testing.",
-  "website": "https://playground-api-xi.vercel.app/",
-  "documentation": "https://playground-api-xi.vercel.app/docs",
-  "repository": "https://github.com/nileshcodehub/playground_api",
+  "website": "https://playground.nileslabs.com/",
+  "documentation": "https://playground.nileslabs.com/docs",
+  "repository": "https://github.com/nileslabs/playground_api",
   "license": "MIT",
   "api": {
-    "base_url": "https://playground-api-xi.vercel.app/api/v1",
+    "base_url": "https://playground.nileslabs.com/api/v1",
     "rest": true,
     "graphql": true,
-    "graphql_endpoint": "https://playground-api-xi.vercel.app/api/v1/graphql"
+    "graphql_endpoint": "https://playground.nileslabs.com/api/v1/graphql"
   },
   "authentication": {
     "required": false,
@@ -69,12 +69,12 @@
     "ai-coding-agents"
   ],
   "specs": {
-    "openapi": "https://playground-api-xi.vercel.app/api/v1/downloads/openapi.json",
-    "postman": "https://playground-api-xi.vercel.app/api/v1/downloads/postman.json",
-    "bruno": "https://playground-api-xi.vercel.app/api/v1/downloads/bruno.json",
-    "insomnia": "https://playground-api-xi.vercel.app/api/v1/downloads/insomnia.json",
-    "typescript": "https://playground-api-xi.vercel.app/api/v1/downloads/playground-api.d.ts",
-    "llms": "https://playground-api-xi.vercel.app/llms.txt",
-    "llms_full": "https://playground-api-xi.vercel.app/llms-full.txt"
+    "openapi": "https://playground.nileslabs.com/api/v1/downloads/openapi.json",
+    "postman": "https://playground.nileslabs.com/api/v1/downloads/postman.json",
+    "bruno": "https://playground.nileslabs.com/api/v1/downloads/bruno.json",
+    "insomnia": "https://playground.nileslabs.com/api/v1/downloads/insomnia.json",
+    "typescript": "https://playground.nileslabs.com/api/v1/downloads/playground-api.d.ts",
+    "llms": "https://playground.nileslabs.com/llms.txt",
+    "llms_full": "https://playground.nileslabs.com/llms-full.txt"
   }
 }

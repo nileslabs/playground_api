@@ -10,7 +10,7 @@ export const metadata = {
 };
 
 export default function FilteringPage() {
-  const publicApiUrl = config.publicApiUrl || 'https://playground-api-xi.vercel.app/api/v1';
+  const publicApiUrl = config.publicApiUrl || 'https://playground.nileslabs.com/api/v1';
 
   const paginationSnippet = `// 1. Pagination with limit and page
 fetch('${publicApiUrl}/posts?_page=1&_limit=10')

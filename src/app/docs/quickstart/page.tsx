@@ -10,7 +10,7 @@ export const metadata = {
 };
 
 export default function QuickstartPage() {
-  const publicApiUrl = config.publicApiUrl || 'https://playground-api-xi.vercel.app/api/v1';
+  const publicApiUrl = config.publicApiUrl || 'https://playground.nileslabs.com/api/v1';
 
   const getSample = `// 1. Fetch baseline posts
 const res = await fetch('${publicApiUrl}/posts?_limit=5', {

@@ -3,10 +3,10 @@
  * Rule: NEVER access process.env directly outside this file.
  */
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://playground-api-xi.vercel.app';
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://playground.nileslabs.com';
 const API_URL = process.env.NEXT_PUBLIC_API_URL || '/api/v1';
 
-const cleanSite = (SITE_URL || 'https://playground-api-xi.vercel.app').replace(/\/+$/, '');
+const cleanSite = (SITE_URL || 'https://playground.nileslabs.com').replace(/\/+$/, '');
 const cleanApi = API_URL.startsWith('/') ? API_URL : `/${API_URL}`;
 const PUBLIC_API_URL = API_URL.startsWith('http') ? API_URL : `${cleanSite}${cleanApi}`;
 

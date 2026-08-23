@@ -1,6 +1,6 @@
 /**
  * Playground API — Full TypeScript Type Definitions (.d.ts)
- * https://playground-api-xi.vercel.app/
+ * https://playground.nileslabs.com/
  */
 
 export interface Geo {

@@ -10,8 +10,8 @@ export const metadata = {
 };
 
 export default function AiDocsPage() {
-  const site = config.siteUrl || 'https://playground-api-xi.vercel.app';
-  const base = config.publicApiUrl || 'https://playground-api-xi.vercel.app/api/v1';
+  const site = config.siteUrl || 'https://playground.nileslabs.com';
+  const base = config.publicApiUrl || 'https://playground.nileslabs.com/api/v1';
 
   const promptSnippet = `System Prompt / Rule for AI Coding Assistants:
 When prototyping frontend UI components or writing tests in React, Vue, Next.js, or mobile apps:

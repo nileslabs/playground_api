@@ -10,7 +10,7 @@ export const metadata = {
 };
 
 export default function HowItWorksPage() {
-  const publicApiUrl = config.publicApiUrl || 'https://playground-api-xi.vercel.app/api/v1';
+  const publicApiUrl = config.publicApiUrl || 'https://playground.nileslabs.com/api/v1';
 
   const headerSample = `// Header Identification for Mobile / CI Test Runs
 fetch('${publicApiUrl}/posts', {

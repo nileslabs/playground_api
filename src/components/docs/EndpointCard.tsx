@@ -16,7 +16,7 @@ export function EndpointCard({ endpoint }: EndpointCardProps) {
   const [activeTab, setActiveTab] = useState<'example' | 'code' | 'runner'>('example');
   const [copiedUrl, setCopiedUrl] = useState(false);
 
-  const baseApi = config.publicApiUrl || 'https://playground-api-xi.vercel.app/api/v1';
+  const baseApi = config.publicApiUrl || 'https://playground.nileslabs.com/api/v1';
   const cleanBase = baseApi.replace(/\/+$/, '');
   const cleanPath = endpoint.path.startsWith('/') ? endpoint.path : `/${endpoint.path}`;
   const fullUrl = `${cleanBase}${cleanPath}`;

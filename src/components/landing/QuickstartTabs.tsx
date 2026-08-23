@@ -5,7 +5,7 @@ import { CodeBlock } from '@/components/ui/CodeBlock';
 import config from '@/config/env';
 
 export function QuickstartTabs() {
-  const [baseUrl, setBaseUrl] = useState<string>(config.publicApiUrl || 'https://playground-api-xi.vercel.app/api/v1');
+  const [baseUrl, setBaseUrl] = useState<string>(config.publicApiUrl || 'https://playground.nileslabs.com/api/v1');
 
   useEffect(() => {
     if (typeof window !== 'undefined') {

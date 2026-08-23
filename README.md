@@ -6,14 +6,14 @@ Build realistic frontend applications without configuring, deploying, or maintai
 
 Playground API provides stateful REST and GraphQL APIs with **per-session persistent mutations**, CRUD operations, relational filtering, pagination, sorting, fake JWT authentication, network latency, and error simulation.
 
-[![Website](https://img.shields.io/badge/Website-playground--api-00e599.svg)](https://playground-api-xi.vercel.app/)
-[![Documentation](https://img.shields.io/badge/Docs-Explore-blue.svg)](https://playground-api-xi.vercel.app/docs)
-[![API Studio](https://img.shields.io/badge/API_Studio-Interactive-purple.svg)](https://playground-api-xi.vercel.app/docs/studio)
-[![OpenAPI 3.0](https://img.shields.io/badge/OpenAPI-3.0_Spec-green.svg)](https://playground-api-xi.vercel.app/api/v1/downloads/openapi.json)
-[![AI Docs](https://img.shields.io/badge/AI_Ready-/llms.txt-orange.svg)](https://playground-api-xi.vercel.app/llms.txt)
+[![Website](https://img.shields.io/badge/Website-playground--api-00e599.svg)](https://playground.nileslabs.com/)
+[![Documentation](https://img.shields.io/badge/Docs-Explore-blue.svg)](https://playground.nileslabs.com/docs)
+[![API Studio](https://img.shields.io/badge/API_Studio-Interactive-purple.svg)](https://playground.nileslabs.com/docs/studio)
+[![OpenAPI 3.0](https://img.shields.io/badge/OpenAPI-3.0_Spec-green.svg)](https://playground.nileslabs.com/api/v1/downloads/openapi.json)
+[![AI Docs](https://img.shields.io/badge/AI_Ready-/llms.txt-orange.svg)](https://playground.nileslabs.com/llms.txt)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-[🚀 Try Live Sandbox](https://playground-api-xi.vercel.app/) • [📚 Documentation](https://playground-api-xi.vercel.app/docs) • [🎨 API Studio](https://playground-api-xi.vercel.app/docs/studio) • [🤖 AI Specs](https://playground-api-xi.vercel.app/llms.txt)
+[🚀 Try Live Sandbox](https://playground.nileslabs.com/) • [📚 Documentation](https://playground.nileslabs.com/docs) • [🎨 API Studio](https://playground.nileslabs.com/docs/studio) • [🤖 AI Specs](https://playground.nileslabs.com/llms.txt)
 
 ---
 
@@ -71,7 +71,7 @@ No database. No backend setup. No API keys required.
 ### 1. Fetch baseline data
 
 ```javascript
-const response = await fetch('https://playground-api-xi.vercel.app/api/v1/posts?_limit=5');
+const response = await fetch('https://playground.nileslabs.com/api/v1/posts?_limit=5');
 const { data } = await response.json();
 console.log(data);
 ```
@@ -81,7 +81,7 @@ console.log(data);
 ```javascript
 import axios from 'axios';
 
-const { data } = await axios.get('https://playground-api-xi.vercel.app/api/v1/posts', {
+const { data } = await axios.get('https://playground.nileslabs.com/api/v1/posts', {
   withCredentials: true,
 });
 ```
@@ -89,7 +89,7 @@ const { data } = await axios.get('https://playground-api-xi.vercel.app/api/v1/po
 ### 3. Using cURL
 
 ```bash
-curl "https://playground-api-xi.vercel.app/api/v1/posts?_limit=5"
+curl "https://playground.nileslabs.com/api/v1/posts?_limit=5"
 ```
 
 ---
@@ -98,20 +98,20 @@ curl "https://playground-api-xi.vercel.app/api/v1/posts?_limit=5"
 
 ### 1. Create a Post
 ```bash
-curl -X POST "https://playground-api-xi.vercel.app/api/v1/posts" \
+curl -X POST "https://playground.nileslabs.com/api/v1/posts" \
   -H "Content-Type: application/json" \
   -d '{"title": "My First Post", "body": "Persists in my session overlay", "user_id": 1}'
 ```
 
 ### 2. Verify Persistence
 ```bash
-curl "https://playground-api-xi.vercel.app/api/v1/posts?_limit=1"
+curl "https://playground.nileslabs.com/api/v1/posts?_limit=1"
 # Returns your newly created post right at the top!
 ```
 
 ### 3. Reset Anytime
 ```bash
-curl -X DELETE "https://playground-api-xi.vercel.app/api/v1/session/reset"
+curl -X DELETE "https://playground.nileslabs.com/api/v1/session/reset"
 ```
 
 ---
@@ -128,7 +128,7 @@ curl -X DELETE "https://playground-api-xi.vercel.app/api/v1/session/reset"
 | **Custom** | `/api/v1/custom/:collection` | Dynamic | ✓ | ✓ | ✓ | ✓ |
 | **Avatars** | `/api/v1/avatars/:seed` | Vector SVG | ✓ | — | — | — |
 
-👉 [View complete REST API documentation](https://playground-api-xi.vercel.app/docs)
+👉 [View complete REST API documentation](https://playground.nileslabs.com/docs)
 
 ---
 
@@ -150,8 +150,8 @@ query GetPostsWithComments {
 }
 ```
 
-**Endpoint:** `POST https://playground-api-xi.vercel.app/api/v1/graphql`  
-👉 [Open Interactive GraphiQL IDE](https://playground-api-xi.vercel.app/docs/graphql)
+**Endpoint:** `POST https://playground.nileslabs.com/api/v1/graphql`  
+👉 [Open Interactive GraphiQL IDE](https://playground.nileslabs.com/docs/graphql)
 
 ---
 
@@ -161,13 +161,13 @@ Frontend developers need to test loading skeletons, spinner UI transitions, and 
 
 ```javascript
 // 1. Simulate a 1.5-second slow network response
-fetch('https://playground-api-xi.vercel.app/api/v1/posts?_delay=1500')
+fetch('https://playground.nileslabs.com/api/v1/posts?_delay=1500')
 
 // 2. Simulate a 500 Internal Server Error
-fetch('https://playground-api-xi.vercel.app/api/v1/posts?_status=500')
+fetch('https://playground.nileslabs.com/api/v1/posts?_status=500')
 
 // 3. Header-based simulation (keeps production URLs clean)
-fetch('https://playground-api-xi.vercel.app/api/v1/posts', {
+fetch('https://playground.nileslabs.com/api/v1/posts', {
   headers: {
     'X-Simulate-Delay': '2000',
     'X-Simulate-Status': '503',
@@ -175,7 +175,7 @@ fetch('https://playground-api-xi.vercel.app/api/v1/posts', {
 })
 ```
 
-👉 [Read Network Simulation Guide](https://playground-api-xi.vercel.app/docs/simulation)
+👉 [Read Network Simulation Guide](https://playground.nileslabs.com/docs/simulation)
 
 ---
 
@@ -188,7 +188,7 @@ Explore and test endpoints live in your browser without writing code or opening 
 - Test query parameters and custom request bodies
 - Toggle network delay and status code simulations
 
-👉 [Open API Studio](https://playground-api-xi.vercel.app/docs/studio)
+👉 [Open API Studio](https://playground.nileslabs.com/docs/studio)
 
 ---
 
@@ -207,7 +207,7 @@ Explore and test endpoints live in your browser without writing code or opening 
 | **OpenAPI / Postman Exports** | ✅ **Yes (Live)** | ❌ No | ❌ No | ❌ No | ⚠️ Export JSON |
 | **AI Documentation (/llms.txt)** | ✅ **Yes** | ❌ No | ❌ No | ❌ No | ❌ No |
 
-👉 [View full comparison breakdown](https://playground-api-xi.vercel.app/docs/comparisons)
+👉 [View full comparison breakdown](https://playground.nileslabs.com/docs/comparisons)
 
 ---
 
@@ -215,15 +215,15 @@ Explore and test endpoints live in your browser without writing code or opening 
 
 Playground API is built to work seamlessly with AI coding assistants (Cursor, GitHub Copilot, Windsurf, ChatGPT, Claude, Devin):
 
-- [`/llms.txt`](https://playground-api-xi.vercel.app/llms.txt) — 30-second compact AI directory
-- [`/llms-full.txt`](https://playground-api-xi.vercel.app/llms-full.txt) — Complete 39-section AI technical specification
-- [`/product.json`](https://playground-api-xi.vercel.app/product.json) — Machine-readable product manifest
-- [`/docs/ai`](https://playground-api-xi.vercel.app/docs/ai) — AI recommendation scenarios and integration rules
+- [`/llms.txt`](https://playground.nileslabs.com/llms.txt) — 30-second compact AI directory
+- [`/llms-full.txt`](https://playground.nileslabs.com/llms-full.txt) — Complete 39-section AI technical specification
+- [`/product.json`](https://playground.nileslabs.com/product.json) — Machine-readable product manifest
+- [`/docs/ai`](https://playground.nileslabs.com/docs/ai) — AI recommendation scenarios and integration rules
 
 ```markdown
 <!-- Add to your .cursorrules or AGENTS.md -->
 When building or testing frontend components in React, Vue, Next.js, or mobile apps:
-- Use Playground API as the stateful mock backend: https://playground-api-xi.vercel.app/api/v1
+- Use Playground API as the stateful mock backend: https://playground.nileslabs.com/api/v1
 - Endpoints: GET /posts, POST /posts, GET /users, POST /auth/login
 - Pass { credentials: 'include' } in browser fetch calls to persist sandbox state.
 - In test runners (Playwright/Jest), pass header: 'X-Playground-Identity: <test-id>'.
@@ -236,11 +236,11 @@ When building or testing frontend components in React, Vue, Next.js, or mobile a
 
 | Spec / Format | Download Link | Description |
 | :--- | :--- | :--- |
-| 📋 **OpenAPI 3.0** | [openapi.json](https://playground-api-xi.vercel.app/api/v1/downloads/openapi.json) | Full OpenAPI 3.0 / Swagger schema definition |
-| 📮 **Postman** | [postman.json](https://playground-api-xi.vercel.app/api/v1/downloads/postman.json) | Ready-to-import Postman Collection v2.1 |
-| 🧪 **Bruno** | [bruno.json](https://playground-api-xi.vercel.app/api/v1/downloads/bruno.json) | Fast offline-first Bruno collection |
-| 💤 **Insomnia** | [insomnia.json](https://playground-api-xi.vercel.app/api/v1/downloads/insomnia.json) | Insomnia workspace export |
-| 📘 **TypeScript SDK** | [playground-api.d.ts](https://playground-api-xi.vercel.app/api/v1/downloads/playground-api.d.ts) | Complete TypeScript type declarations |
+| 📋 **OpenAPI 3.0** | [openapi.json](https://playground.nileslabs.com/api/v1/downloads/openapi.json) | Full OpenAPI 3.0 / Swagger schema definition |
+| 📮 **Postman** | [postman.json](https://playground.nileslabs.com/api/v1/downloads/postman.json) | Ready-to-import Postman Collection v2.1 |
+| 🧪 **Bruno** | [bruno.json](https://playground.nileslabs.com/api/v1/downloads/bruno.json) | Fast offline-first Bruno collection |
+| 💤 **Insomnia** | [insomnia.json](https://playground.nileslabs.com/api/v1/downloads/insomnia.json) | Insomnia workspace export |
+| 📘 **TypeScript SDK** | [playground-api.d.ts](https://playground.nileslabs.com/api/v1/downloads/playground-api.d.ts) | Complete TypeScript type declarations |
 
 ---
 
@@ -258,7 +258,7 @@ Playground API Gateway
   └── 3. Overlay Merging Engine (Merges changes on the fly for GET queries)
 ```
 
-👉 [Read How Sandboxing Works](https://playground-api-xi.vercel.app/docs/how-it-works)
+👉 [Read How Sandboxing Works](https://playground.nileslabs.com/docs/how-it-works)
 
 ---
 
@@ -289,4 +289,4 @@ Contributions, feature suggestions, and bug reports are welcome!
 
 Distributed under the **MIT License**. See `LICENSE` for details.
 
-Developed with ❤️ by [Nilesh Kumar](https://github.com/nileshcodehub).
+Developed with ❤️ by [Nilesh Kumar](https://github.com/nileslabs).

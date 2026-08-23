@@ -10,7 +10,7 @@ export const metadata = {
 };
 
 export default function SimulationPage() {
-  const publicApiUrl = config.publicApiUrl || 'https://playground-api-xi.vercel.app/api/v1';
+  const publicApiUrl = config.publicApiUrl || 'https://playground.nileslabs.com/api/v1';
 
   const querySample = `// 1. Simulate 1.5-second network latency
 fetch('${publicApiUrl}/posts?_delay=1500')

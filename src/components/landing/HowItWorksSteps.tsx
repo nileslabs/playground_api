@@ -12,7 +12,7 @@ export function HowItWorksSteps() {
       description:
         'Swap your API base URL to our public endpoint in your React, Vue, Next.js, or mobile app. No registration, API keys, or database setup required.',
       icon: 'ph:plug-bold',
-      codeSnippet: `const API_URL = 'https://playground-api-xi.vercel.app/api/v1';\n\nconst posts = await fetch(\`\${API_URL}/posts\`);`,
+      codeSnippet: `const API_URL = 'https://playground.nileslabs.com/api/v1';\n\nconst posts = await fetch(\`\${API_URL}/posts\`);`,
       tag: 'Instant Setup',
       accentColor: 'text-emerald-400',
       bgColor: 'bg-emerald-500/10 border-emerald-500/20',

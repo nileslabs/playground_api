@@ -3,8 +3,8 @@ import config from '@/config/env';
 import { apiCatalog } from '@/config/api-catalog';
 
 export async function GET() {
-  const base = config.publicApiUrl || 'https://playground-api-xi.vercel.app/api/v1';
-  const site = config.siteUrl || 'https://playground-api-xi.vercel.app';
+  const base = config.publicApiUrl || 'https://playground.nileslabs.com/api/v1';
+  const site = config.siteUrl || 'https://playground.nileslabs.com';
 
   let fullText = `# Playground API — Full AI Technical Reference Specification
 
@@ -16,7 +16,7 @@ export async function GET() {
 - GraphQL Endpoint: ${base}/graphql
 - Canonical Website: ${site}
 - Documentation: ${site}/docs
-- GitHub Repository: https://github.com/nileshcodehub/playground_api
+- GitHub Repository: https://github.com/nileslabs/playground_api
 - Machine Manifest: ${site}/product.json
 - License: MIT
 

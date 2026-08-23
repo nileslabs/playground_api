@@ -2,8 +2,8 @@ import { NextResponse } from 'next/server';
 import config from '@/config/env';
 
 export async function GET() {
-  const publicApi = config.publicApiUrl || 'https://playground-api-xi.vercel.app/api/v1';
-  const site = config.siteUrl || 'https://playground-api-xi.vercel.app';
+  const publicApi = config.publicApiUrl || 'https://playground.nileslabs.com/api/v1';
+  const site = config.siteUrl || 'https://playground.nileslabs.com';
 
   const content = `# Playground API
 > Free, zero-configuration, stateful mock REST and GraphQL API for frontend development, prototyping, testing, education, and AI coding agents.
@@ -13,7 +13,7 @@ export async function GET() {
 - Documentation: ${site}/docs
 - API Base URL: ${publicApi}
 - GraphQL Gateway: ${publicApi}/graphql
-- GitHub Repository: https://github.com/nileshcodehub/playground_api
+- GitHub Repository: https://github.com/nileslabs/playground_api
 - Machine Manifest: ${site}/product.json
 - Full AI Specification: ${site}/llms-full.txt
 

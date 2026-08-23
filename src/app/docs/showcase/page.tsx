@@ -92,7 +92,7 @@ export function useProductCatalog() {
               <span>Try in API Studio</span>
             </Link>
             <a
-              href="https://github.com/nileshcodehub/playground_api/tree/main/playground_api_react_demo"
+              href="https://github.com/nileslabs/playground_api/tree/main/playground_api_react_demo"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-bg-tertiary hover:bg-border-theme border border-border-theme text-text-primary text-xs sm:text-sm font-bold transition-all"
@@ -217,7 +217,7 @@ export function useProductCatalog() {
           Have you built a React, Vue, Svelte, or Mobile tutorial or application using Playground API? Open a pull request or issue on GitHub to be featured here!
         </p>
         <a
-          href="https://github.com/nileshcodehub/playground_api/issues"
+          href="https://github.com/nileslabs/playground_api/issues"
           target="_blank"
           rel="noopener noreferrer"
           className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-accent-primary hover:bg-accent-hover text-white text-xs sm:text-sm font-bold transition-all shadow-md"
