@@ -19,7 +19,7 @@ const envConfig = {
   apiUrl: cleanApi,
   publicApiUrl: PUBLIC_API_URL,
   apiVersion: 'v1',
-  googleAnalyticsId: process.env.NEXT_PUBLIC_GA_ID || 'G-EN7KJL82XQ',
+  googleAnalyticsId: process.env.NEXT_PUBLIC_GA_ID || 'G-V71LLWPW9J',
 };
 
 export default envConfig;

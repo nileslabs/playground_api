@@ -21,7 +21,7 @@ const config = {
   apiVersion: 'v1',
   jwtSecret: process.env.JWT_SECRET || 'default_playground_jwt_secret_key_2026',
   isVercel: Boolean(process.env.VERCEL),
-  googleAnalyticsId: process.env.NEXT_PUBLIC_GA_ID || 'G-EN7KJL82XQ',
+  googleAnalyticsId: process.env.NEXT_PUBLIC_GA_ID || 'G-V71LLWPW9J',
 };
 
 export default config;
