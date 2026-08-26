@@ -121,7 +121,7 @@ export function HeroSection() {
   };
 
   return (
-    <section className="relative overflow-hidden py-12 lg:py-20 border-b border-border-theme bg-linear-to-b from-bg-primary via-bg-secondary/40 to-bg-primary">
+    <section className="relative overflow-hidden py-12 lg:py-20 lg:pt-10 border-b border-border-theme bg-linear-to-b from-bg-primary via-bg-secondary/40 to-bg-primary">
       {/* Subtle Background Glows */}
       <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-150 h-87.5 bg-accent-primary/10 rounded-full blur-3xl pointer-events-none -z-10" />
       <div className="absolute top-1/3 right-10 w-75 h-75 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none -z-10" />
@@ -131,17 +131,6 @@ export function HeroSection() {
           
           {/* LEFT COLUMN: Value Proposition & Developer CTAs (Cols 6/12) */}
           <div className="lg:col-span-6 space-y-6 text-left">
-            
-            {/* Release Badge */}
-            <div className="inline-flex items-center gap-2.5 px-3 py-1.5 rounded-full bg-accent-light border border-accent-primary/25 text-xs font-semibold text-accent-primary shadow-xs">
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent-primary opacity-75" />
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-accent-primary" />
-              </span>
-              <span>Playground API {config.apiVersion}</span>
-              <span className="text-text-muted">•</span>
-              <span className="text-text-secondary font-medium">Stateful Mock REST & GraphQL Service</span>
-            </div>
 
             {/* Headline */}
             <div className="space-y-3">
