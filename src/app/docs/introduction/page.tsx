@@ -95,23 +95,6 @@ export default function IntroductionPage() {
           ))}
         </ul>
       </div>
-
-      {/* 4. Bottom Next Card */}
-      <div className="pt-8 border-t border-border-theme flex items-center justify-between">
-        <div />
-        <Link
-          href="/docs/quickstart"
-          className="p-4 rounded-2xl bg-bg-secondary hover:bg-bg-tertiary border border-border-theme transition-all group flex items-center gap-4 text-right"
-        >
-          <div>
-            <span className="text-xs text-text-muted font-medium block">Next</span>
-            <span className="text-base font-bold text-text-primary group-hover:text-accent-primary transition-colors">
-              30-Second Quickstart
-            </span>
-          </div>
-          <Icon icon="ph:arrow-right-bold" className="w-5 h-5 text-accent-primary group-hover:translate-x-1 transition-transform" />
-        </Link>
-      </div>
     </div>
   );
 }
