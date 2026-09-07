@@ -444,6 +444,9 @@
   overflow-x: auto;
   padding: 0.125rem 0;
   scrollbar-width: none;
+  -ms-overflow-style: none;
+  flex: 1;
+  min-width: 0;
 }
 
 .tabList::-webkit-scrollbar {

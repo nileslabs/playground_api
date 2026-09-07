@@ -137,56 +137,71 @@ export function EndpointCard({ endpoint }: EndpointCardProps) {
 
       {/* 5. Segmented Tab Controls: Example, Multi-Language Code Snippets & Live Runner */}
       <div className="space-y-3 pt-2">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-border-theme pb-2">
-          <div className="flex items-center gap-1.5 p-1 rounded-xl bg-bg-secondary border border-border-theme w-fit flex-wrap">
+        <div className="border-b border-border-theme pb-2.5 space-y-2">
+          <div className="flex items-center gap-1.5 p-1 rounded-xl bg-bg-secondary border border-border-theme max-w-full overflow-x-auto no-scrollbar">
             {/* Tab 1: Example Response */}
             <button
               onClick={() => setActiveTab('example')}
-              className={`px-3 py-1.5 rounded-lg text-xs font-semibold font-sans transition-all cursor-pointer flex items-center gap-1.5 ${
+              className={`px-3 py-1.5 rounded-lg text-xs font-semibold font-sans transition-all cursor-pointer flex items-center gap-1.5 whitespace-nowrap shrink-0 ${
                 activeTab === 'example'
                   ? 'bg-bg-primary text-text-primary shadow-xs border border-border-theme font-bold'
                   : 'text-text-muted hover:text-text-primary'
               }`}
             >
-              <Icon icon="ph:file-code-bold" className="w-3.5 h-3.5" />
+              <Icon icon="ph:file-code-bold" className="w-3.5 h-3.5 shrink-0" />
               <span>Example Response</span>
-              <span className="px-1.5 py-0.2 rounded text-[10px] bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-mono">200</span>
+              <span className="px-1.5 py-0.2 rounded text-[10px] bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-mono shrink-0">200</span>
             </button>
 
             {/* Tab 2: Multi-Language Code Generators (cURL, JS, Python, Go, etc.) */}
             <button
               onClick={() => setActiveTab('code')}
-              className={`px-3 py-1.5 rounded-lg text-xs font-semibold font-sans transition-all cursor-pointer flex items-center gap-1.5 ${
+              className={`px-3 py-1.5 rounded-lg text-xs font-semibold font-sans transition-all cursor-pointer flex items-center gap-1.5 whitespace-nowrap shrink-0 ${
                 activeTab === 'code'
                   ? 'bg-bg-primary text-text-primary shadow-xs border border-border-theme font-bold'
                   : 'text-text-muted hover:text-text-primary'
               }`}
             >
-              <Icon icon="ph:terminal-window-bold" className="w-3.5 h-3.5 text-blue-500" />
+              <Icon icon="ph:terminal-window-bold" className="w-3.5 h-3.5 text-blue-500 shrink-0" />
               <span>Code Snippets</span>
-              <span className="px-1.5 py-0.2 rounded text-[10px] bg-blue-500/10 text-blue-600 dark:text-blue-400 font-mono">9 SDKs</span>
+              <span className="px-1.5 py-0.2 rounded text-[10px] bg-blue-500/10 text-blue-600 dark:text-blue-400 font-mono shrink-0">9 SDKs</span>
             </button>
 
             {/* Tab 3: Live Sandbox Runner */}
             <button
               onClick={() => setActiveTab('runner')}
-              className={`px-3 py-1.5 rounded-lg text-xs font-semibold font-sans transition-all cursor-pointer flex items-center gap-1.5 ${
+              className={`px-3 py-1.5 rounded-lg text-xs font-semibold font-sans transition-all cursor-pointer flex items-center gap-1.5 whitespace-nowrap shrink-0 ${
                 activeTab === 'runner'
                   ? 'bg-emerald-600 text-white shadow-xs font-bold'
                   : 'text-emerald-700 dark:text-emerald-400 hover:bg-emerald-500/10'
               }`}
             >
-              <Icon icon="ph:play-circle-bold" className="w-3.5 h-3.5" />
+              <Icon icon="ph:play-circle-bold" className="w-3.5 h-3.5 shrink-0" />
               <span>Live Sandbox Runner</span>
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shrink-0" />
             </button>
           </div>
 
-          <span className="text-xs text-text-muted hidden sm:inline">
-            {activeTab === 'runner' && 'Testing with isolated session persistence'}
-            {activeTab === 'code' && 'cURL, JS, Axios, Python, Go, Swift, Rust'}
-            {activeTab === 'example' && 'Static schema preview'}
-          </span>
+          <div className="text-xs text-text-muted font-medium px-1 flex items-center gap-1.5">
+            {activeTab === 'runner' && (
+              <>
+                <Icon icon="ph:info-bold" className="w-3.5 h-3.5 text-emerald-500 shrink-0" />
+                <span>Testing with isolated session persistence</span>
+              </>
+            )}
+            {activeTab === 'code' && (
+              <>
+                <Icon icon="ph:code-bold" className="w-3.5 h-3.5 text-blue-500 shrink-0" />
+                <span>cURL, JS, Axios, Python, Go, Swift, Rust</span>
+              </>
+            )}
+            {activeTab === 'example' && (
+              <>
+                <Icon icon="ph:file-text-bold" className="w-3.5 h-3.5 text-text-muted shrink-0" />
+                <span>Static schema preview</span>
+              </>
+            )}
+          </div>
         </div>
 
         {/* View 1: Static Example Response */}
