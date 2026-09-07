@@ -69,21 +69,22 @@ export function useProductCatalog() {
 
       {/* 2. Featured Official Project: React E-Commerce Demo */}
       <div id="featured-demo" className="p-6 sm:p-8 rounded-3xl glass-panel border border-accent-primary/40 bg-linear-to-b from-accent-light/10 via-bg-secondary to-bg-secondary space-y-6 scroll-mt-20 shadow-2xl">
-        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b border-border-theme/70 pb-6">
-          <div className="space-y-2">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent-primary text-white text-xs font-bold shadow-xs">
-              <Icon icon="ph:star-fill" className="w-3.5 h-3.5" />
-              <span>Official Featured App</span>
-            </div>
+        <div className="space-y-4 border-b border-border-theme/70 pb-6">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent-primary text-white text-xs font-bold shadow-xs">
+            <Icon icon="ph:star-fill" className="w-3.5 h-3.5" />
+            <span>Official Featured App</span>
+          </div>
+
+          <div className="space-y-2 max-w-3xl">
             <h2 className="text-2xl sm:text-3xl font-black text-text-primary tracking-tight">
               Playground React E-Commerce Store & Studio
             </h2>
-            <p className="text-xs sm:text-sm text-text-secondary max-w-2xl leading-relaxed">
+            <p className="text-xs sm:text-sm text-text-secondary leading-relaxed">
               A production-ready React 18 e-commerce application featuring product catalog management, interactive cart drawer, JWT authentication, and isolated session sandbox mutations.
             </p>
           </div>
 
-          <div className="flex flex-wrap items-center gap-3">
+          <div className="flex flex-wrap items-center gap-3 pt-1">
             <Link
               href="/docs/studio"
               className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-accent-primary hover:bg-accent-hover text-white text-xs sm:text-sm font-bold shadow-md transition-all cursor-pointer"

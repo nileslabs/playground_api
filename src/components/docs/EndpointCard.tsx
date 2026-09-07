@@ -138,7 +138,7 @@ export function EndpointCard({ endpoint }: EndpointCardProps) {
       {/* 5. Segmented Tab Controls: Example, Multi-Language Code Snippets & Live Runner */}
       <div className="space-y-3 pt-2">
         <div className="border-b border-border-theme pb-2.5 space-y-2">
-          <div className="flex items-center gap-1.5 p-1 rounded-xl bg-bg-secondary border border-border-theme max-w-full overflow-x-auto no-scrollbar">
+          <div className="inline-flex items-center gap-1.5 p-1 rounded-xl bg-bg-secondary border border-border-theme max-w-full overflow-x-auto no-scrollbar">
             {/* Tab 1: Example Response */}
             <button
               onClick={() => setActiveTab('example')}
