@@ -1,18 +1,37 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Icon } from '@iconify/react';
 import { useTheme } from '@/components/theme/ThemeProvider';
 import { LogoIcon } from '@/components/ui/LogoIcon';
 import { SandboxPill } from '@/components/dashboard/SandboxPill';
 import { StatsModal } from '@/components/dashboard/StatsModal';
+import { SearchModal } from '@/components/layout/SearchModal';
 import { Sidebar } from '@/components/layout/Sidebar';
 import { siteConfig } from '@/config/site';
 
 export function Header() {
   const [statsOpen, setStatsOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  // Global keyboard shortcut listener for Cmd+K / Ctrl+K and '/'
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      const isMac = typeof navigator !== 'undefined' && /Mac|iPod|iPhone|iPad/.test(navigator.platform);
+      const isCmdK = (isMac ? e.metaKey : e.ctrlKey) && e.key.toLowerCase() === 'k';
+      const isSlash = e.key === '/' && !['INPUT', 'TEXTAREA', 'SELECT'].includes((e.target as HTMLElement)?.tagName);
+
+      if (isCmdK || isSlash) {
+        e.preventDefault();
+        setSearchOpen((prev) => !prev);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
 
   return (
     <>
@@ -45,10 +64,24 @@ export function Header() {
             </Link>
           </div>
 
-          {/* Right: Actions & Tools (Stats, Sandbox Status, Theme, GitHub) */}
-          <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
+          {/* Center / Right: Search Bar & Actions */}
+          <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+            {/* Search Trigger Button (Desktop & Tablet) */}
+            <button
+              onClick={() => setSearchOpen(true)}
+              className="flex items-center gap-2 px-2.5 sm:px-3.5 py-1.5 rounded-xl bg-bg-secondary hover:bg-bg-tertiary border border-border-theme text-xs sm:text-sm text-text-muted hover:text-text-primary transition-all cursor-pointer group shadow-2xs"
+              title="Search documentation and endpoints (⌘K or Ctrl+K)"
+              aria-label="Search documentation and endpoints"
+            >
+              <Icon icon="ph:magnifying-glass-bold" className="w-4 h-4 text-accent-primary group-hover:scale-110 transition-transform" />
+              <span className="hidden sm:inline font-medium text-text-secondary group-hover:text-text-primary">Search documents and endpoints...</span>
+              <kbd className="hidden md:inline-flex items-center gap-0.5 px-1.5 py-0.5 text-[10px] font-mono font-bold text-text-muted bg-bg-tertiary border border-border-theme rounded-md group-hover:border-accent-primary/40 group-hover:text-accent-primary transition-colors">
+                <span className="text-xs">⌘</span>K
+              </kbd>
+            </button>
+
             {/* Docs Navigation Link */}
-            <nav className="hidden md:flex items-center gap-1 ml-2 lg:ml-4">
+            <nav className="hidden lg:flex items-center gap-1">
               <Link
                 href="/docs/introduction"
                 className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs sm:text-sm font-semibold text-text-secondary hover:text-text-primary hover:bg-bg-tertiary transition-colors"
@@ -57,6 +90,7 @@ export function Header() {
                 Docs
               </Link>
             </nav>
+
             {/* Stats Dashboard Modal Trigger */}
             <button
               onClick={() => setStatsOpen(true)}
@@ -115,6 +149,23 @@ export function Header() {
             {/* Mobile Sidebar Navigation Links */}
             <Sidebar onSelect={() => setMobileMenuOpen(false)} className="border-r-0 p-0 shadow-none" />
 
+            {/* Mobile Search Button */}
+            <div className="pt-2">
+              <button
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  setSearchOpen(true);
+                }}
+                className="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl bg-bg-tertiary border border-border-theme text-xs font-semibold text-text-primary hover:border-accent-primary/40 transition-colors cursor-pointer"
+              >
+                <span className="flex items-center gap-2">
+                  <Icon icon="ph:magnifying-glass-bold" className="w-4 h-4 text-accent-primary" />
+                  Search Documentation...
+                </span>
+                <kbd className="px-1.5 py-0.5 rounded bg-bg-secondary border border-border-theme text-[10px] text-text-muted">⌘K</kbd>
+              </button>
+            </div>
+
             {/* Mobile Footer Extra Actions */}
             <div className="pt-4 border-t border-border-theme space-y-3">
               <div className="flex items-center justify-between gap-2">
@@ -132,6 +183,9 @@ export function Header() {
 
       {/* Stats Modal */}
       <StatsModal isOpen={statsOpen} onClose={() => setStatsOpen(false)} />
+
+      {/* Algolia-Style Command+K Search Modal */}
+      <SearchModal isOpen={searchOpen} onClose={() => setSearchOpen(false)} />
     </>
   );
 }
