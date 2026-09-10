@@ -25,6 +25,7 @@ export const siteConfig = {
     { label: 'API Studio', href: '/docs/studio', icon: 'ph:code-bold' },
     { label: 'Collections', href: '/docs/collections/openapi', icon: 'ph:folders-bold' },
     { label: 'GraphQL', href: '/docs/graphql', icon: 'simple-icons:graphql' },
+    { label: 'Blog', href: '/blog', icon: 'ph:newspaper-clipping-bold' },
   ],
 
   nestedSidebarGroups: [

@@ -1,9 +1,11 @@
 import { MetadataRoute } from 'next';
 import { siteConfig } from '@/config/site';
+import { getAllPosts } from '@/lib/blog';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const routes: { path: string; priority: number; changeFrequency: 'always' | 'hourly' | 'daily' | 'weekly' | 'monthly' }[] = [
     { path: '', priority: 1.0, changeFrequency: 'daily' },
+    { path: '/blog', priority: 0.95, changeFrequency: 'weekly' },
     { path: '/docs', priority: 0.9, changeFrequency: 'daily' },
     { path: '/docs/introduction', priority: 0.9, changeFrequency: 'daily' },
     { path: '/docs/quickstart', priority: 0.9, changeFrequency: 'daily' },
@@ -44,6 +46,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: '/llms.txt', priority: 0.95, changeFrequency: 'daily' },
     { path: '/llms-full.txt', priority: 0.95, changeFrequency: 'daily' },
   ];
+
+  // Dynamically append all blog posts
+  const blogPosts = getAllPosts();
+  blogPosts.forEach((post) => {
+    routes.push({
+      path: `/blog/${post.slug}`,
+      priority: 0.85,
+      changeFrequency: 'monthly',
+    });
+  });
 
   return routes.map((r) => ({
     url: `${siteConfig.url}${r.path}`,

@@ -172,7 +172,162 @@ export function buildSearchIndex(): SearchIndexItem[] {
     }
   });
 
+  // 4. Index Blog & Technical Handbook Articles
+  const blogArticles: SearchIndexItem[] = [
+    {
+      id: 'blog-index',
+      title: 'Blog & Technical Articles',
+      description: 'Stop Waiting for the Backend: A 12-part technical handbook on stateful mock APIs.',
+      category: 'Documentation',
+      href: '/blog',
+      icon: 'ph:newspaper-clipping-bold',
+      badge: 'Series',
+      section: 'Blog',
+      keywords: ['blog', 'articles', 'tutorials', 'handbook', 'series', 'posts'],
+    },
+    {
+      id: 'blog-01-react-crud',
+      title: 'How to Build a React CRUD App Without Building a Backend',
+      description: 'Part 1: Build and test a full React CRUD app with persistent mutations.',
+      category: 'Documentation',
+      href: '/blog/react-crud-without-backend',
+      icon: 'ph:article-bold',
+      badge: 'Blog #1',
+      section: 'Blog Series',
+      keywords: ['react crud', 'react tutorial', 'crud without backend', 'react post request', 'stateful prototype'],
+    },
+    {
+      id: 'blog-02-static-mock',
+      title: "Why Static Mock APIs Aren't Enough for Modern Frontend Development",
+      description: 'Part 2: Why read-only mocks fall short and how stateful sandbox overlays solve it.',
+      category: 'Documentation',
+      href: '/blog/why-static-mock-apis-arent-enough',
+      icon: 'ph:article-bold',
+      badge: 'Blog #2',
+      section: 'Blog Series',
+      keywords: ['static mock api', 'mocking limitations', 'stateful mock api', 'jsonplaceholder comparison'],
+    },
+    {
+      id: 'blog-03-mock-post',
+      title: 'What If Your Mock API Actually Remembered Your POST Requests?',
+      description: 'Part 3: Solving the non-persistent POST request problem in frontend development.',
+      category: 'Documentation',
+      href: '/blog/mock-api-remember-post-requests',
+      icon: 'ph:article-bold',
+      badge: 'Blog #3',
+      section: 'Blog Series',
+      keywords: ['mock post request', 'persistent post', 'overlay engine', 'session mutations'],
+    },
+    {
+      id: 'blog-04-error-states',
+      title: 'How to Test API Error States in React Without a Real Backend',
+      description: 'Part 4: Test 400, 401, 404, and 500 error boundaries cleanly with _status headers.',
+      category: 'Documentation',
+      href: '/blog/test-api-error-states-in-react',
+      icon: 'ph:article-bold',
+      badge: 'Blog #4',
+      section: 'Blog Series',
+      keywords: ['test errors in react', 'error boundary test', 'simulate 500', 'simulate 404', 'http status test'],
+    },
+    {
+      id: 'blog-05-slow-apis',
+      title: 'How to Test Slow APIs and Network Latency in Frontend Applications',
+      description: 'Part 5: Stress test loading skeletons and debounced inputs with latency simulation.',
+      category: 'Documentation',
+      href: '/blog/test-slow-apis-network-latency',
+      icon: 'ph:article-bold',
+      badge: 'Blog #5',
+      section: 'Blog Series',
+      keywords: ['test slow api', 'network delay', 'simulate latency', 'skeleton loader testing', 'throttle api'],
+    },
+    {
+      id: 'blog-06-prototyping-guide',
+      title: "Stop Waiting for the Backend: A Frontend Developer's Guide to API Prototyping",
+      description: 'Part 6: Decouple frontend velocity from backend sprints with stateful prototyping.',
+      category: 'Documentation',
+      href: '/blog/frontend-api-prototyping-guide',
+      icon: 'ph:article-bold',
+      badge: 'Blog #6',
+      section: 'Blog Series',
+      keywords: ['frontend prototyping', 'stop waiting backend', 'api contract first', 'frontend velocity'],
+    },
+    {
+      id: 'blog-07-ai-react',
+      title: 'AI Can Build Your React UI in Seconds. What About the Backend?',
+      description: 'Part 7: Power v0, Cursor, and Claude generated React apps with an instant sandbox backend.',
+      category: 'Documentation',
+      href: '/blog/ai-generated-react-app-backend-gap',
+      icon: 'ph:article-bold',
+      badge: 'Blog #7',
+      section: 'Blog Series',
+      keywords: ['ai generated react', 'v0 backend', 'cursor react api', 'ai coding backend', 'claude react app'],
+    },
+    {
+      id: 'blog-08-crud-rest-graphql',
+      title: 'Building a React CRUD Application With a REST API and GraphQL',
+      description: 'Part 8: Dual protocol comparison: fetch, axios vs Apollo Client and urql.',
+      category: 'Documentation',
+      href: '/blog/react-crud-rest-and-graphql',
+      icon: 'ph:article-bold',
+      badge: 'Blog #8',
+      section: 'Blog Series',
+      keywords: ['rest vs graphql', 'react graphql crud', 'apollo client prototype', 'graphql mutations'],
+    },
+    {
+      id: 'blog-09-no-backend-team',
+      title: 'How to Build a Frontend Prototype Without a Backend Team',
+      description: 'Part 9: Indie builder handbook for presenting investor demos with real CRUD data.',
+      category: 'Documentation',
+      href: '/blog/frontend-prototype-without-backend-team',
+      icon: 'ph:article-bold',
+      badge: 'Blog #9',
+      section: 'Blog Series',
+      keywords: ['prototype without backend', 'mvp demo', 'investor demo mock data', 'indie hacker prototyping'],
+    },
+    {
+      id: 'blog-10-teaching-rest',
+      title: 'Teaching REST APIs With a Real Backend Sandbox Instead of Static JSON',
+      description: 'Part 10: Computer science pedagogy guide for student labs and coding bootcamps.',
+      category: 'Documentation',
+      href: '/blog/teaching-rest-apis-sandbox-vs-static-json',
+      icon: 'ph:article-bold',
+      badge: 'Blog #10',
+      section: 'Blog Series',
+      keywords: ['teaching rest api', 'bootcamp mock api', 'coding education', 'rest vs static json'],
+    },
+    {
+      id: 'blog-11-jwt-auth',
+      title: 'How to Test JWT Authentication and Silent Token Refresh in React Without a Backend',
+      description: 'Part 11: End-to-end guide on testing login, refresh tokens, and 401 axios interceptors.',
+      category: 'Documentation',
+      href: '/blog/test-jwt-auth-and-token-refresh-in-react',
+      icon: 'ph:article-bold',
+      badge: 'Blog #11',
+      section: 'Blog Series',
+      keywords: ['test jwt in react', 'axios interceptor refresh', 'silent refresh test', 'mock auth tokens'],
+    },
+    {
+      id: 'blog-12-graphql-nested',
+      title: 'Zero-Config GraphQL Prototyping: Nested Queries, Relations & State Mutations',
+      description: 'Part 12: Prototyping relational schemas with GraphQL queries, mutations, and aliases.',
+      category: 'Documentation',
+      href: '/blog/graphql-prototyping-nested-queries-and-mutations',
+      icon: 'ph:article-bold',
+      badge: 'Blog #12',
+      section: 'Blog Series',
+      keywords: ['graphql prototyping', 'nested queries mock', 'graphql relations', 'stateful graphql'],
+    },
+  ];
+
+  blogArticles.forEach((article) => {
+    if (!seenIds.has(article.id)) {
+      seenIds.add(article.id);
+      index.push(article);
+    }
+  });
+
   return index;
 }
 
 export const staticSearchIndex = buildSearchIndex();
+

@@ -80,14 +80,21 @@ export function Header() {
               </kbd>
             </button>
 
-            {/* Docs Navigation Link */}
+            {/* Docs & Blog Navigation Links */}
             <nav className="hidden lg:flex items-center gap-1">
               <Link
                 href="/docs/introduction"
-                className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs sm:text-sm font-semibold text-text-secondary hover:text-text-primary hover:bg-bg-tertiary transition-colors"
+                className="flex items-center gap-1.5 px-3 py-2 rounded-xl border border-border-theme text-xs sm:text-sm font-semibold text-text-secondary hover:text-text-primary hover:bg-bg-tertiary transition-colors"
               >
                 <Icon icon="ph:book-open-text-bold" className="w-4 h-4 text-accent-primary" />
                 Docs
+              </Link>
+              <Link
+                href="/blog"
+                className="flex items-center gap-1.5 px-3 py-2 rounded-xl border border-border-theme text-xs sm:text-sm font-semibold text-text-secondary hover:text-text-primary hover:bg-bg-tertiary transition-colors"
+              >
+                <Icon icon="ph:newspaper-clipping-bold" className="w-4 h-4 text-accent-primary" />
+                Blog
               </Link>
             </nav>
 
