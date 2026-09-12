@@ -16,9 +16,10 @@ export async function GET() {
       'developer-tool',
       'testing-tool',
       'graphql-sandbox',
+      'e2e-testing-backend',
     ],
     description:
-      'Free, zero-configuration, stateful mock REST and GraphQL API sandbox for frontend development, prototyping, and testing.',
+      'Free, zero-configuration, stateful mock REST and GraphQL API sandbox for frontend development, prototyping, automated testing, and AI coding agents.',
     website: site,
     documentation: `${site}/docs`,
     repository: 'https://github.com/nileslabs/playground_api',
@@ -55,6 +56,7 @@ export async function GET() {
       'multi-field-sorting',
       'network-delay-simulation',
       'http-error-simulation',
+      'rate-limit-simulation',
       'custom-collections',
       'svg-avatar-generation',
       'svg-thumbnail-generation',
@@ -97,6 +99,7 @@ export async function GET() {
 
   return NextResponse.json(manifest, {
     headers: {
+      'Content-Type': 'application/json; charset=utf-8',
       'Cache-Control': 'public, max-age=3600, s-maxage=86400',
     },
   });

@@ -1,12 +1,31 @@
 import React from 'react';
-import Link from 'next/link';
-import { Icon } from '@iconify/react';
+import type { Metadata } from 'next';
 import { CodeBlock } from '@/components/ui/CodeBlock';
 import config from '@/config/env';
+import { siteConfig } from '@/config/site';
+import { getDocArticleSchema, getBreadcrumbSchema } from '@/lib/json-ld';
 
-export const metadata = {
-  title: 'Network & Chaos Simulation',
-  description: 'Simulate slow networks and HTTP error codes with query parameters and headers.',
+export const metadata: Metadata = {
+  title: 'Network & Chaos Simulation — Artificial Latency, 429 Rate Limits, & 500 Errors',
+  description:
+    'Test frontend loading skeletons, spinner UI transitions, and React error boundaries by simulating network latency (?_delay=1500) and HTTP status error codes (?_status=500).',
+  keywords: [
+    'network delay simulation api',
+    'http error simulation mock api',
+    'simulate 429 rate limit react',
+    'simulate 500 internal server error',
+    'test loading spinners skeletons mock',
+  ],
+  alternates: {
+    canonical: `${siteConfig.url}/docs/simulation`,
+  },
+  openGraph: {
+    title: 'Network & Chaos Simulation — Playground API',
+    description:
+      'Simulate slow networks, artificial latency, rate limits, and HTTP error codes with headers and query parameters.',
+    url: `${siteConfig.url}/docs/simulation`,
+    type: 'article',
+  },
 };
 
 export default function SimulationPage() {
@@ -29,8 +48,29 @@ fetch('${publicApiUrl}/posts', {
   },
 })`;
 
+  const jsonLdArticle = getDocArticleSchema({
+    title: 'Network & Chaos Simulation — Playground API',
+    description: 'Simulate artificial network latency and HTTP error boundaries in Playground API.',
+    url: `${siteConfig.url}/docs/simulation`,
+  });
+
+  const jsonLdBreadcrumbs = getBreadcrumbSchema([
+    { name: 'Home', url: siteConfig.url },
+    { name: 'Docs', url: `${siteConfig.url}/docs` },
+    { name: 'Simulation', url: `${siteConfig.url}/docs/simulation` },
+  ]);
+
   return (
     <div className="space-y-10 w-full max-w-none text-text-primary">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdArticle) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdBreadcrumbs) }}
+      />
+
       {/* 1. Header */}
       <div id="overview" className="space-y-2 scroll-mt-20">
         <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-text-primary">
@@ -44,23 +84,23 @@ fetch('${publicApiUrl}/posts', {
       {/* 2. Latency Simulation */}
       <div id="delay-simulation" className="space-y-3 pt-6 border-t border-border-theme scroll-mt-20">
         <h2 className="text-xl font-bold text-text-primary">
-          1. Simulating Network Latency (?_delay=ms)
+          Query Parameter Simulation
         </h2>
         <p className="text-sm text-text-secondary leading-relaxed">
-          Pass <code className="font-mono text-accent-primary">?_delay=&lt;ms&gt;</code> or header <code className="font-mono text-accent-primary">X-Simulate-Delay: &lt;ms&gt;</code> (up to 5000ms max).
+          Append <code className="font-mono text-xs">?_delay=ms</code> (up to 5000ms) or <code className="font-mono text-xs">?_status=code</code> (400-599):
         </p>
-        <CodeBlock code={querySample} language="javascript" title="simulateQuery.js" />
+        <CodeBlock code={querySample} language="javascript" title="Query Param Simulation" />
       </div>
 
-      {/* 3. Header Simulation */}
+      {/* 3. Header-Based Simulation */}
       <div id="header-simulation" className="space-y-3 pt-6 border-t border-border-theme scroll-mt-20">
         <h2 className="text-xl font-bold text-text-primary">
-          2. Header-Based Simulation (Clean URLs)
+          Header-Based Simulation
         </h2>
         <p className="text-sm text-text-secondary leading-relaxed">
-          Pass simulation flags as HTTP request headers to keep URLs clean in production:
+          Pass headers for cleaner production-like code in integration test runners:
         </p>
-        <CodeBlock code={headerSample} language="javascript" title="simulateHeaders.js" />
+        <CodeBlock code={headerSample} language="javascript" title="Header Simulation" />
       </div>
     </div>
   );

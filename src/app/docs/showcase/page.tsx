@@ -4,12 +4,44 @@ import { Icon } from '@iconify/react';
 import { CodeBlock } from '@/components/ui/CodeBlock';
 import config from '@/config/env';
 
-export const metadata = {
-  title: 'Real-World Project Showcase',
-  description: 'Explore live applications, React demo stores, and architectural recipes built with Playground API.',
+import type { Metadata } from 'next';
+import { siteConfig } from '@/config/site';
+import { getDocArticleSchema, getBreadcrumbSchema } from '@/lib/json-ld';
+
+export const metadata: Metadata = {
+  title: 'Real-World Project Showcase & Demo Apps — Playground API',
+  description:
+    'Explore production-grade demo stores, interactive React 19 apps, Next.js setups, and automated E2E test fixtures powered by Playground API stateful sandboxes.',
+  keywords: [
+    'mock api showcase',
+    'react demo app mock api',
+    'e-commerce mock frontend',
+    'stateful rest api demo',
+  ],
+  alternates: {
+    canonical: `${siteConfig.url}/docs/showcase`,
+  },
+  openGraph: {
+    title: 'Real-World Project Showcase — Playground API',
+    description:
+      'Explore live applications, React demo stores, and architectural recipes built with Playground API.',
+    url: `${siteConfig.url}/docs/showcase`,
+    type: 'article',
+  },
 };
 
 export default function ShowcasePage() {
+  const jsonLdArticle = getDocArticleSchema({
+    title: 'Real-World Project Showcase — Playground API',
+    description: 'Explore live applications, React demo stores, and recipes built with Playground API.',
+    url: `${siteConfig.url}/docs/showcase`,
+  });
+
+  const jsonLdBreadcrumbs = getBreadcrumbSchema([
+    { name: 'Home', url: siteConfig.url },
+    { name: 'Docs', url: `${siteConfig.url}/docs` },
+    { name: 'Showcase', url: `${siteConfig.url}/docs/showcase` },
+  ]);
   const sampleReactIntegration = `// Example from playground_api_react_demo
 import { useState, useEffect } from 'react';
 
@@ -53,6 +85,14 @@ export function useProductCatalog() {
 
   return (
     <div className="space-y-10 w-full max-w-none">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdArticle) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdBreadcrumbs) }}
+      />
       {/* 1. Header */}
       <div id="overview" className="space-y-3 border-b border-border-theme pb-6 scroll-mt-20">
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-accent-light text-accent-primary text-xs sm:text-sm font-bold">

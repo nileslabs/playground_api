@@ -1,73 +1,97 @@
-'use client';
-
-import React, { useState, useEffect, use } from 'react';
-import Link from 'next/link';
+import React from 'react';
+import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { Icon } from '@iconify/react';
-import { apiCatalog, EndpointDef } from '@/config/api-catalog';
-import { EndpointCard } from '@/components/docs/EndpointCard';
-import config from '@/config/env';
+import { apiCatalog } from '@/config/api-catalog';
+import { siteConfig } from '@/config/site';
+import { getApiReferenceSchema, getBreadcrumbSchema } from '@/lib/json-ld';
+import { ResourceClient } from '@/components/docs/ResourceClient';
 
 interface ResourcePageProps {
   params: Promise<{ resource: string }>;
 }
 
-export default function ResourcePage({ params }: ResourcePageProps) {
-  const resolvedParams = params && typeof (params as any).then === 'function' ? use(params) : (params as any);
-  const resource = resolvedParams?.resource;
+export function generateStaticParams() {
+  return apiCatalog.map((r) => ({
+    resource: r.id,
+  }));
+}
+
+export async function generateMetadata({ params }: ResourcePageProps): Promise<Metadata> {
+  const { resource } = await params;
   const res = apiCatalog.find((r) => r.id === resource);
 
-  const [endpoints, setEndpoints] = useState<EndpointDef[]>(res?.endpoints || []);
+  if (!res) {
+    return {
+      title: 'Resource Not Found — Playground API',
+    };
+  }
 
-  useEffect(() => {
-    if (!res) return;
-    setEndpoints(res.endpoints);
+  const url = `${siteConfig.url}/docs/${resource}`;
+  const fullTitle = `${res.name} — Mock REST API Endpoints`;
 
-    // Fetch live sample data from backend to update GET response examples
-    if (['users', 'posts', 'comments', 'todos'].includes(resource)) {
-      fetch(`${config.apiUrl}/${resource}?limit=2`, { credentials: 'include' })
-        .then((r) => (r.ok ? r.json() : null))
-        .then((liveData) => {
-          if (liveData) {
-            setEndpoints((prev) =>
-              prev.map((ep) => {
-                if (ep.method === 'GET' && ep.path === `/${resource}`) {
-                  return { ...ep, responseExample: liveData };
-                }
-                if (ep.method === 'GET' && ep.path === `/${resource}/:id` && liveData.data?.[0]) {
-                  return { ...ep, responseExample: liveData.data[0] };
-                }
-                return ep;
-              })
-            );
-          }
-        })
-        .catch(() => {});
-    }
-  }, [resource, res]);
+  return {
+    title: fullTitle,
+    description: `${res.description} Free, stateful REST mock API endpoints with real CRUD persistence in an isolated per-visitor session.`,
+    keywords: [
+      `mock ${res.name.toLowerCase()}`,
+      `fake ${res.name.toLowerCase()} api`,
+      `rest api ${res.id}`,
+      `free mock ${res.id} json`,
+      'stateful mock rest endpoints',
+    ],
+    alternates: {
+      canonical: url,
+    },
+    openGraph: {
+      title: `${fullTitle} — Playground API`,
+      description: `${res.description} Explore persistent mock endpoints with full CRUD simulation.`,
+      url,
+      type: 'article',
+    },
+  };
+}
+
+export default async function ResourcePage({ params }: ResourcePageProps) {
+  const { resource } = await params;
+  const res = apiCatalog.find((r) => r.id === resource);
 
   if (!res) {
     notFound();
   }
 
-  return (
-    <div className="space-y-10 w-full max-w-none text-text-primary">
-      {/* 1. Resource Clean Header */}
-      <div id="overview" className="space-y-2 scroll-mt-20">
-        <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-text-primary">
-          {res.name}
-        </h1>
-        <p className="text-base text-text-secondary leading-relaxed">
-          {res.description} All mutations persist in your isolated session overlay.
-        </p>
-      </div>
+  const jsonLdApi = getApiReferenceSchema({
+    title: `${res.name} — Mock REST API`,
+    description: res.description,
+    url: `${siteConfig.url}/docs/${resource}`,
+    endpoints: res.endpoints.map((ep) => ({
+      method: ep.method,
+      path: ep.path,
+      description: ep.description,
+    })),
+  });
 
-      {/* 2. Endpoints List */}
-      <div className="space-y-10">
-        {endpoints.map((ep) => (
-          <EndpointCard key={ep.id} endpoint={ep} />
-        ))}
-      </div>
-    </div>
+  const jsonLdBreadcrumbs = getBreadcrumbSchema([
+    { name: 'Home', url: siteConfig.url },
+    { name: 'Docs', url: `${siteConfig.url}/docs` },
+    { name: res.name, url: `${siteConfig.url}/docs/${resource}` },
+  ]);
+
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdApi) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdBreadcrumbs) }}
+      />
+      <ResourceClient
+        resource={resource}
+        name={res.name}
+        description={res.description}
+        initialEndpoints={res.endpoints}
+      />
+    </>
   );
 }

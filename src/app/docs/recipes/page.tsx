@@ -1,12 +1,31 @@
 import React from 'react';
-import Link from 'next/link';
-import { Icon } from '@iconify/react';
+import type { Metadata } from 'next';
 import { CodeBlock } from '@/components/ui/CodeBlock';
 import config from '@/config/env';
+import { siteConfig } from '@/config/site';
+import { getDocArticleSchema, getBreadcrumbSchema } from '@/lib/json-ld';
 
-export const metadata = {
-  title: 'Framework Recipes',
-  description: 'Copy-paste integration recipes for React, TanStack Query, Axios, Next.js, and Playwright.',
+export const metadata: Metadata = {
+  title: 'Framework Recipes — React, TanStack Query, Next.js, Axios, Playwright',
+  description:
+    'Production-ready code integration recipes for connecting Playground API to React, TanStack Query v5, Axios withCredentials, Next.js 15 Server Components, and Playwright parallel test runners.',
+  keywords: [
+    'react tanstack query mock api recipe',
+    'axios credentials include mock api',
+    'nextjs server components mock rest api',
+    'playwright e2e test mock sandbox',
+    'cypress parallel test api',
+  ],
+  alternates: {
+    canonical: `${siteConfig.url}/docs/recipes`,
+  },
+  openGraph: {
+    title: 'Framework Integration Recipes — Playground API',
+    description:
+      'Copy-paste integration snippets for TanStack Query, Axios, Next.js, and Playwright with per-session state persistence.',
+    url: `${siteConfig.url}/docs/recipes`,
+    type: 'article',
+  },
 };
 
 export default function RecipesPage() {
@@ -49,81 +68,146 @@ export function useCreatePost() {
 
   const axiosSnippet = `import axios from 'axios';
 
-// Configured Axios instance with auto-cookies and Bearer tokens
+// Create a pre-configured Axios instance with credentials
 export const api = axios.create({
   baseURL: '${publicApiUrl}',
-  withCredentials: true,
+  withCredentials: true, // Automatically sends and saves pg_identity cookies
+  headers: {
+    'Content-Type': 'application/json',
+  },
 });
 
-api.interceptors.request.use((req) => {
-  const token = localStorage.getItem('access_token');
-  if (token) req.headers.Authorization = \`Bearer \${token}\`;
-  return req;
-});`;
+// Example usage
+export const getTodos = (params) => api.get('/todos', { params });
+export const createTodo = (data) => api.post('/todos', data);
+export const deleteTodo = (id) => api.delete(\`/todos/\${id}\`);`;
+
+  const nextjsSnippet = `// app/posts/page.tsx (Next.js 15 Server Component)
+import { cookies } from 'next/headers';
+
+export default async function PostsPage() {
+  const cookieStore = await cookies();
+  const identity = cookieStore.get('pg_identity')?.value;
+
+  const res = await fetch('${publicApiUrl}/posts?_limit=10', {
+    headers: identity ? { 'X-Playground-Identity': identity } : {},
+    cache: 'no-store', // Always fetch fresh overlay data
+  });
+
+  const { data: posts } = await res.json();
+
+  return (
+    <div>
+      <h1>Posts</h1>
+      <ul>
+        {posts.map((post: any) => (
+          <li key={post.id}>{post.title}</li>
+        ))}
+      </ul>
+    </div>
+  );
+}`;
 
   const playwrightSnippet = `import { test, expect } from '@playwright/test';
 
-test('Isolated sandbox CRUD lifecycle in CI', async ({ request }) => {
-  const headers = { 'X-Playground-Identity': 'test-' + Date.now() };
+// Isolated parallel test runner using unique session header
+test('creates, reads, and deletes a post in private session', async ({ request }) => {
+  const testSessionId = \`pw-run-\${Date.now()}-\${Math.random().toString(36).substring(7)}\`;
+  const headers = { 'X-Playground-Identity': testSessionId };
 
-  // 1. Create a post
-  const res = await request.post('${publicApiUrl}/posts', {
+  // 1. Create Post
+  const createRes = await request.post('${publicApiUrl}/posts', {
     headers,
-    data: { title: 'CI Post', body: 'Testing persistence', user_id: 1 },
+    data: { title: 'Playwright E2E Post', body: 'Automated test item', user_id: 1 },
   });
-  expect(res.status()).toBe(201);
+  expect(createRes.status()).toBe(201);
+  const created = await createRes.json();
 
-  // 2. Verify in list
-  const list = await (await request.get('${publicApiUrl}/posts', { headers })).json();
-  expect(list.data[0].title).toBe('CI Post');
+  // 2. Verify it shows up in GET
+  const listRes = await request.get('${publicApiUrl}/posts', { headers });
+  const { data: posts } = await listRes.json();
+  expect(posts[0].id).toBe(created.id);
 
-  // 3. Reset sandbox
-  await request.delete('${publicApiUrl}/session/reset', { headers });
+  // 3. Reset Sandbox at test completion
+  const resetRes = await request.delete('${publicApiUrl}/session/reset', { headers });
+  expect(resetRes.status()).toBe(200);
 });`;
 
+  const jsonLdArticle = getDocArticleSchema({
+    title: 'Framework Recipes — Playground API',
+    description: 'Code snippets and recipes for React, TanStack Query, Axios, Next.js, and Playwright.',
+    url: `${siteConfig.url}/docs/recipes`,
+  });
+
+  const jsonLdBreadcrumbs = getBreadcrumbSchema([
+    { name: 'Home', url: siteConfig.url },
+    { name: 'Docs', url: `${siteConfig.url}/docs` },
+    { name: 'Framework Recipes', url: `${siteConfig.url}/docs/recipes` },
+  ]);
+
   return (
-    <div className="space-y-10 w-full max-w-none text-text-primary">
+    <div className="space-y-12 w-full max-w-none text-text-primary">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdArticle) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdBreadcrumbs) }}
+      />
+
       {/* 1. Header */}
       <div id="overview" className="space-y-2 scroll-mt-20">
         <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-text-primary">
           Framework Recipes
         </h1>
         <p className="text-base text-text-secondary leading-relaxed">
-          Production-ready code snippets and architecture patterns for popular frontend libraries and test runners.
+          Production-tested patterns for integrating Playground API with popular frontend frameworks, data-fetching libraries, and automated testing suites.
         </p>
       </div>
 
-      {/* 2. React Query */}
+      {/* React TanStack Query */}
       <div id="react-query" className="space-y-3 pt-6 border-t border-border-theme scroll-mt-20">
         <h2 className="text-xl font-bold text-text-primary">
-          React with TanStack Query
+          React & TanStack Query (v5)
         </h2>
         <p className="text-sm text-text-secondary leading-relaxed">
-          Manage sandbox state queries and mutations with automatic cache invalidation.
+          Use standard <code className="font-mono text-xs">useQuery</code> and <code className="font-mono text-xs">useMutation</code> hooks with automatic cache invalidation:
         </p>
-        <CodeBlock code={reactQuerySnippet} language="javascript" title="usePosts.js" />
+        <CodeBlock code={reactQuerySnippet} language="typescript" title="hooks/usePosts.ts" />
       </div>
 
-      {/* 3. Axios Client */}
+      {/* Axios */}
       <div id="axios" className="space-y-3 pt-6 border-t border-border-theme scroll-mt-20">
         <h2 className="text-xl font-bold text-text-primary">
-          Axios Client with JWT Interceptors
+          Axios HTTP Client
         </h2>
         <p className="text-sm text-text-secondary leading-relaxed">
-          Configured client passing session cookies and Bearer tokens seamlessly.
+          Enable <code className="font-mono text-xs">withCredentials: true</code> to maintain sandbox session persistence:
         </p>
-        <CodeBlock code={axiosSnippet} language="javascript" title="api.js" />
+        <CodeBlock code={axiosSnippet} language="typescript" title="lib/api.ts" />
       </div>
 
-      {/* 4. Playwright */}
-      <div id="playwright" className="space-y-3 pt-6 border-t border-border-theme scroll-mt-20">
+      {/* Next.js 15 Server Components */}
+      <div id="nextjs" className="space-y-3 pt-6 border-t border-border-theme scroll-mt-20">
         <h2 className="text-xl font-bold text-text-primary">
-          Playwright Automated E2E Tests
+          Next.js App Router (Server Components)
         </h2>
         <p className="text-sm text-text-secondary leading-relaxed">
-          Execute parallel tests in complete isolation using custom session identity headers.
+          Forward the session cookie from incoming server requests to preserve user overlays:
         </p>
-        <CodeBlock code={playwrightSnippet} language="javascript" title="posts.spec.js" />
+        <CodeBlock code={nextjsSnippet} language="typescript" title="app/posts/page.tsx" />
+      </div>
+
+      {/* Playwright */}
+      <div id="playwright" className="space-y-3 pt-6 border-t border-border-theme scroll-mt-20">
+        <h2 className="text-xl font-bold text-text-primary">
+          Playwright Parallel E2E Testing
+        </h2>
+        <p className="text-sm text-text-secondary leading-relaxed">
+          Use the <code className="font-mono text-xs">X-Playground-Identity</code> header to run tests in parallel without data cross-contamination:
+        </p>
+        <CodeBlock code={playwrightSnippet} language="typescript" title="tests/posts.spec.ts" />
       </div>
     </div>
   );

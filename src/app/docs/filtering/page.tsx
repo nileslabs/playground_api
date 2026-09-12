@@ -1,12 +1,31 @@
 import React from 'react';
-import Link from 'next/link';
-import { Icon } from '@iconify/react';
+import type { Metadata } from 'next';
 import { CodeBlock } from '@/components/ui/CodeBlock';
 import config from '@/config/env';
+import { siteConfig } from '@/config/site';
+import { getDocArticleSchema, getBreadcrumbSchema } from '@/lib/json-ld';
 
-export const metadata = {
-  title: 'Query Filtering & Relations',
-  description: 'Learn how to filter, paginate, sort, and query relational sub-resources in Playground API.',
+export const metadata: Metadata = {
+  title: 'Query Filtering & Relational Sub-Resources — Search, Sort & Paginate',
+  description:
+    'Complete guide to filtering, pagination, sorting, and querying relational sub-resources in Playground API. JSONPlaceholder parity with ?_page, ?_limit, ?_sort, ?q, and /users/:id/posts.',
+  keywords: [
+    'mock api filtering',
+    'relational sub-resources api',
+    'jsonplaceholder query filtering',
+    'rest api sorting and pagination',
+    'full-text search mock api',
+  ],
+  alternates: {
+    canonical: `${siteConfig.url}/docs/filtering`,
+  },
+  openGraph: {
+    title: 'Query Filtering & Relational Sub-Resources — Playground API',
+    description:
+      'Learn how to filter, paginate, sort, and query relational sub-resources in Playground API.',
+    url: `${siteConfig.url}/docs/filtering`,
+    type: 'article',
+  },
 };
 
 export default function FilteringPage() {
@@ -33,8 +52,29 @@ fetch('${publicApiUrl}/users/1/todos')
 // 4. Alternatively, use query parameter filtering
 fetch('${publicApiUrl}/posts?user_id=1')`;
 
+  const jsonLdArticle = getDocArticleSchema({
+    title: 'Query Filtering & Relational Sub-Resources — Playground API',
+    description: 'Learn how to filter, paginate, sort, and query sub-resources in Playground API.',
+    url: `${siteConfig.url}/docs/filtering`,
+  });
+
+  const jsonLdBreadcrumbs = getBreadcrumbSchema([
+    { name: 'Home', url: siteConfig.url },
+    { name: 'Docs', url: `${siteConfig.url}/docs` },
+    { name: 'Query Filtering & Relations', url: `${siteConfig.url}/docs/filtering` },
+  ]);
+
   return (
     <div className="space-y-10 w-full max-w-none text-text-primary">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdArticle) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdBreadcrumbs) }}
+      />
+
       {/* 1. Header */}
       <div id="overview" className="space-y-2 scroll-mt-20">
         <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-text-primary">
@@ -45,64 +85,26 @@ fetch('${publicApiUrl}/posts?user_id=1')`;
         </p>
       </div>
 
-      {/* 2. Pagination & Search */}
-      <div id="pagination-search" className="space-y-3 pt-6 border-t border-border-theme scroll-mt-20">
+      {/* Pagination & Sorting */}
+      <div id="pagination-sorting" className="space-y-3 pt-6 border-t border-border-theme scroll-mt-20">
         <h2 className="text-xl font-bold text-text-primary">
-          Pagination, Sorting & Full-Text Search
+          Pagination, Sorting & Search
         </h2>
         <p className="text-sm text-text-secondary leading-relaxed">
-          All collection endpoints support standard query parameters:
+          All collection endpoints support standard pagination, sorting, and search query parameters:
         </p>
-        <div className="overflow-x-auto rounded-xl border border-border-theme bg-bg-secondary">
-          <table className="w-full text-left text-xs font-mono">
-            <thead>
-              <tr className="border-b border-border-theme bg-bg-tertiary/40 text-text-muted font-semibold">
-                <th className="p-3">Parameter</th>
-                <th className="p-3">Default</th>
-                <th className="p-3 font-sans">Description</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-border-theme text-text-secondary">
-              <tr>
-                <td className="p-3 font-bold text-accent-primary">_page</td>
-                <td className="p-3 text-text-muted">1</td>
-                <td className="p-3 font-sans text-text-secondary">Page number (1-indexed)</td>
-              </tr>
-              <tr>
-                <td className="p-3 font-bold text-accent-primary">_limit</td>
-                <td className="p-3 text-text-muted">10</td>
-                <td className="p-3 font-sans text-text-secondary">Number of items per page (max 200)</td>
-              </tr>
-              <tr>
-                <td className="p-3 font-bold text-accent-primary">_sort</td>
-                <td className="p-3 text-text-muted">id</td>
-                <td className="p-3 font-sans text-text-secondary">Field name to sort by (e.g. title, createdAt)</td>
-              </tr>
-              <tr>
-                <td className="p-3 font-bold text-accent-primary">_order</td>
-                <td className="p-3 text-text-muted">asc</td>
-                <td className="p-3 font-sans text-text-secondary">Sort direction (asc or desc)</td>
-              </tr>
-              <tr>
-                <td className="p-3 font-bold text-accent-primary">q</td>
-                <td className="p-3 text-text-muted">-</td>
-                <td className="p-3 font-sans text-text-secondary">Full-text search keyword across titles and bodies</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <CodeBlock code={paginationSnippet} language="javascript" title="paginationAndSearch.js" />
+        <CodeBlock code={paginationSnippet} language="javascript" title="Pagination & Filtering" />
       </div>
 
-      {/* 3. Relational Sub-Resources */}
-      <div id="relational-subresources" className="space-y-3 pt-6 border-t border-border-theme scroll-mt-20">
+      {/* Relational Endpoints */}
+      <div id="relations" className="space-y-3 pt-6 border-t border-border-theme scroll-mt-20">
         <h2 className="text-xl font-bold text-text-primary">
-          Relational Sub-Resource Endpoints
+          Nested Relational Sub-Resources
         </h2>
         <p className="text-sm text-text-secondary leading-relaxed">
-          Navigate nested relationships naturally using intuitive nested REST paths:
+          Access nested relational data using intuitive nested paths or query parameters:
         </p>
-        <CodeBlock code={relationSnippet} language="javascript" title="relations.js" />
+        <CodeBlock code={relationSnippet} language="javascript" title="Relational Queries" />
       </div>
     </div>
   );

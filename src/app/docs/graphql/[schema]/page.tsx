@@ -660,11 +660,39 @@ const graphqlDocsData: Record<string, GraphqlSchemaDetail> = {
   },
 };
 
-export async function generateMetadata({ params }: GraphqlSchemaPageProps) {
+
+import type { Metadata } from 'next';
+import { siteConfig } from '@/config/site';
+import { getApiReferenceSchema, getBreadcrumbSchema } from '@/lib/json-ld';
+
+export async function generateMetadata({ params }: GraphqlSchemaPageProps): Promise<Metadata> {
   const { schema } = await params;
   const item = graphqlDocsData[schema];
-  if (!item) return { title: 'GraphQL Schema Not Found' };
-  return { title: item.name, description: item.description };
+  if (!item) return { title: 'GraphQL Schema Not Found — Playground API' };
+
+  const url = `${siteConfig.url}/docs/graphql/${schema}`;
+  const fullTitle = `${item.name} — Playground API GraphQL Gateway`;
+
+  return {
+    title: fullTitle,
+    description: item.description,
+    keywords: [
+      `graphql ${schema} schema`,
+      `query ${schema} graphql`,
+      `mutate ${schema} graphql`,
+      'mock graphql api',
+      'playground api graphql',
+    ],
+    alternates: {
+      canonical: url,
+    },
+    openGraph: {
+      title: fullTitle,
+      description: item.description,
+      url,
+      type: 'article',
+    },
+  };
 }
 
 export default async function GraphqlSchemaPage({ params }: GraphqlSchemaPageProps) {
@@ -675,8 +703,29 @@ export default async function GraphqlSchemaPage({ params }: GraphqlSchemaPagePro
     notFound();
   }
 
+  const jsonLdApi = getApiReferenceSchema({
+    title: item.name,
+    description: item.description,
+    url: `${siteConfig.url}/docs/graphql/${schema}`,
+  });
+
+  const jsonLdBreadcrumbs = getBreadcrumbSchema([
+    { name: 'Home', url: siteConfig.url },
+    { name: 'Docs', url: `${siteConfig.url}/docs` },
+    { name: 'GraphQL Gateway', url: `${siteConfig.url}/docs/graphql` },
+    { name: item.name, url: `${siteConfig.url}/docs/graphql/${schema}` },
+  ]);
+
   return (
     <div className="space-y-12 w-full max-w-none">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdApi) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdBreadcrumbs) }}
+      />
       {/* 1. Resource Title & Intro Header */}
       <div id="overview" className="space-y-3 border-b border-border-theme pb-6 scroll-mt-20">
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-pink-500/15 text-pink-500 text-xs font-bold">

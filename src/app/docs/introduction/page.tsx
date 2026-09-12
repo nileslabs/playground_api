@@ -1,11 +1,31 @@
 import React from 'react';
-import Link from 'next/link';
-import { Icon } from '@iconify/react';
+import type { Metadata } from 'next';
 import config from '@/config/env';
+import { siteConfig } from '@/config/site';
+import { getDocArticleSchema, getBreadcrumbSchema } from '@/lib/json-ld';
 
-export const metadata = {
-  title: 'Introduction & Key Features',
-  description: 'Welcome to Playground API — Free Sandboxed Mock REST & GraphQL Service with isolated per-user state persistence.',
+export const metadata: Metadata = {
+  title: 'Introduction & Key Features — Stateful Mock REST & GraphQL Sandbox',
+  description:
+    'Overview of Playground API: A free, zero-configuration mock REST and GraphQL backend sandbox with persistent per-visitor CRUD mutations, latency simulation, and JWT auth.',
+  keywords: [
+    'mock api introduction',
+    'stateful mock rest api',
+    'mock graphql api gateway',
+    'jsonplaceholder alternative with persistence',
+    'fake rest api features',
+    'zero config mock backend',
+  ],
+  alternates: {
+    canonical: `${siteConfig.url}/docs/introduction`,
+  },
+  openGraph: {
+    title: 'Introduction & Key Features — Playground API',
+    description:
+      'Explore Playground API: Zero-config stateful mock REST & GraphQL API sandbox with mutation persistence, JWT auth, custom collections, and latency simulation.',
+    url: `${siteConfig.url}/docs/introduction`,
+    type: 'article',
+  },
 };
 
 export default function IntroductionPage() {
@@ -58,8 +78,30 @@ export default function IntroductionPage() {
     },
   ];
 
+  const jsonLdArticle = getDocArticleSchema({
+    title: 'Introduction & Key Features — Playground API',
+    description:
+      'Learn about Playground API, a stateful mock REST & GraphQL API sandbox for frontend developers and AI coding agents.',
+    url: `${siteConfig.url}/docs/introduction`,
+  });
+
+  const jsonLdBreadcrumbs = getBreadcrumbSchema([
+    { name: 'Home', url: siteConfig.url },
+    { name: 'Docs', url: `${siteConfig.url}/docs` },
+    { name: 'Introduction', url: `${siteConfig.url}/docs/introduction` },
+  ]);
+
   return (
     <div className="space-y-12 w-full max-w-none text-text-primary">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdArticle) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdBreadcrumbs) }}
+      />
+
       {/* 1. Page Title */}
       <div id="overview" className="space-y-3 scroll-mt-20">
         <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-text-primary">

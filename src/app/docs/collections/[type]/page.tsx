@@ -170,11 +170,37 @@ const post: Post = {
   },
 };
 
-export async function generateMetadata({ params }: CollectionsPageProps) {
+import type { Metadata } from 'next';
+import { siteConfig } from '@/config/site';
+import { getSoftwareDatasetSchema, getBreadcrumbSchema } from '@/lib/json-ld';
+
+export async function generateMetadata({ params }: CollectionsPageProps): Promise<Metadata> {
   const { type } = await params;
   const item = collectionMeta[type];
-  if (!item) return { title: 'Collection Not Found' };
-  return { title: item.title, description: item.overview };
+  if (!item) return { title: 'Collection Not Found — Playground API' };
+
+  const url = `${siteConfig.url}/docs/collections/${type}`;
+  const fullTitle = `${item.title} Collection & Schema Download — Playground API`;
+
+  return {
+    title: fullTitle,
+    description: item.overview,
+    keywords: [
+      `${item.title.toLowerCase()} collection api`,
+      `download ${item.title.toLowerCase()} schema`,
+      'mock api specification download',
+      'playground api client collections',
+    ],
+    alternates: {
+      canonical: url,
+    },
+    openGraph: {
+      title: fullTitle,
+      description: item.overview,
+      url,
+      type: 'article',
+    },
+  };
 }
 
 export default async function CollectionsPage({ params }: CollectionsPageProps) {
@@ -185,8 +211,31 @@ export default async function CollectionsPage({ params }: CollectionsPageProps) 
     notFound();
   }
 
+  const jsonLdDataset = getSoftwareDatasetSchema({
+    name: `${item.title} Collection`,
+    description: item.overview,
+    url: `${siteConfig.url}/docs/collections/${type}`,
+    downloadUrl: item.downloadUrl,
+    fileFormat: item.format,
+  });
+
+  const jsonLdBreadcrumbs = getBreadcrumbSchema([
+    { name: 'Home', url: siteConfig.url },
+    { name: 'Docs', url: `${siteConfig.url}/docs` },
+    { name: 'Collections', url: `${siteConfig.url}/docs/collections/openapi` },
+    { name: item.title, url: `${siteConfig.url}/docs/collections/${type}` },
+  ]);
+
   return (
     <div className="space-y-10 w-full max-w-none">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdDataset) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdBreadcrumbs) }}
+      />
       {/* 1. Page Title */}
       <div id="overview" className="space-y-3 border-b border-border-theme pb-6 scroll-mt-20">
         <h1 className="text-4xl sm:text-5xl font-black text-text-primary tracking-tight">{item.title}</h1>

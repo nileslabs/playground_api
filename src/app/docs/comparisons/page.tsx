@@ -1,10 +1,32 @@
 import React from 'react';
-import Link from 'next/link';
+import type { Metadata } from 'next';
 import { Icon } from '@iconify/react';
+import { siteConfig } from '@/config/site';
+import { getDocArticleSchema, getBreadcrumbSchema } from '@/lib/json-ld';
 
-export const metadata = {
-  title: 'Playground API vs Alternatives',
-  description: 'Objective feature and architectural comparison between Playground API, JSONPlaceholder, json-server, DummyJSON, and Mockoon.',
+export const metadata: Metadata = {
+  title: 'Playground API vs Alternatives — JSONPlaceholder, DummyJSON, Mockoon Comparison',
+  description:
+    'In-depth architectural comparison: Playground API vs JSONPlaceholder, DummyJSON, json-server, Platzi Fake API, and Mockoon. Discover why virtual mutation overlays provide the ultimate mock developer experience.',
+  keywords: [
+    'jsonplaceholder alternative',
+    'dummyjson alternative',
+    'platzi fake api alternative',
+    'json-server alternative',
+    'mockoon alternative',
+    'best mock api for react',
+    'stateful fake rest api',
+  ],
+  alternates: {
+    canonical: `${siteConfig.url}/docs/comparisons`,
+  },
+  openGraph: {
+    title: 'Playground API vs Alternatives — Mock API Comparison',
+    description:
+      'Feature-by-feature comparison of Playground API with JSONPlaceholder, DummyJSON, json-server, and Mockoon.',
+    url: `${siteConfig.url}/docs/comparisons`,
+    type: 'article',
+  },
 };
 
 export default function ComparisonsPage() {
@@ -45,112 +67,103 @@ export default function ComparisonsPage() {
       jsonServer: 'No',
     },
     {
-      feature: 'Fake JWT Auth Loops',
+      feature: 'JWT Auth & Protected Routes',
       playground: 'Yes (/auth/login & /auth/me)',
       jsonplaceholder: 'No',
-      dummyjson: 'Basic token',
-      jsonServer: 'Requires json-server-auth',
+      dummyjson: 'Yes (Static tokens)',
+      jsonServer: 'Requires middleware',
     },
     {
-      feature: 'Dynamic Custom Collections',
-      playground: 'Yes (/custom/:collection)',
+      feature: 'Custom Schema-less Collections',
+      playground: 'Yes (/custom/:name)',
       jsonplaceholder: 'No',
       dummyjson: 'No',
-      jsonServer: 'Manual JSON edit',
+      jsonServer: 'Yes (Predefined schema)',
     },
     {
-      feature: 'Vector SVG Avatar Generator',
+      feature: 'Deterministic SVG Avatars',
       playground: 'Yes (/avatars/:seed)',
       jsonplaceholder: 'No',
-      dummyjson: 'External URLs',
+      dummyjson: 'External static URLs',
       jsonServer: 'No',
     },
     {
-      feature: 'Snapshot Export/Import (JSON)',
-      playground: 'Yes (1-Click UI & API)',
+      feature: 'Session Snapshot Import/Export',
+      playground: 'Yes (JSON Snapshots)',
       jsonplaceholder: 'No',
       dummyjson: 'No',
-      jsonServer: 'Manual file backup',
+      jsonServer: 'Manual file copy',
     },
     {
-      feature: 'OpenAPI 3.0 & Postman Specs',
-      playground: 'Yes (Live Download)',
-      jsonplaceholder: 'No',
-      dummyjson: 'No',
-      jsonServer: 'No',
-    },
-    {
-      feature: 'AI Model Knowledge Specs (/llms.txt)',
-      playground: 'Yes (/llms.txt & /product.json)',
-      jsonplaceholder: 'No',
-      dummyjson: 'No',
-      jsonServer: 'No',
+      feature: 'Zero Installation & Hosting',
+      playground: 'Yes (Cloud SaaS)',
+      jsonplaceholder: 'Yes',
+      dummyjson: 'Yes',
+      jsonServer: 'No (Requires Node.js runtime)',
     },
   ];
 
+  const jsonLdArticle = getDocArticleSchema({
+    title: 'Playground API vs Alternatives Comparison',
+    description: 'Detailed feature comparison between Playground API and other mock API tools.',
+    url: `${siteConfig.url}/docs/comparisons`,
+  });
+
+  const jsonLdBreadcrumbs = getBreadcrumbSchema([
+    { name: 'Home', url: siteConfig.url },
+    { name: 'Docs', url: `${siteConfig.url}/docs` },
+    { name: 'Comparisons', url: `${siteConfig.url}/docs/comparisons` },
+  ]);
+
   return (
     <div className="space-y-10 w-full max-w-none text-text-primary">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdArticle) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdBreadcrumbs) }}
+      />
+
       {/* 1. Header */}
       <div id="overview" className="space-y-2 scroll-mt-20">
         <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-text-primary">
           Playground API vs Alternatives
         </h1>
         <p className="text-base text-text-secondary leading-relaxed">
-          An objective comparison of feature capabilities, state management, and developer tools across popular mock API services.
+          An objective architectural comparison between Playground API, JSONPlaceholder, DummyJSON, json-server, and Mockoon.
         </p>
       </div>
 
-      {/* 2. Feature Comparison Matrix */}
-      <div id="comparison-matrix" className="space-y-3 pt-6 border-t border-border-theme scroll-mt-20">
+      {/* 2. Feature Matrix Table */}
+      <div id="matrix" className="space-y-3 pt-6 border-t border-border-theme scroll-mt-20">
         <h2 className="text-xl font-bold text-text-primary">
-          Feature Comparison Matrix
+          Feature Matrix
         </h2>
-        <div className="overflow-x-auto rounded-2xl border border-border-theme bg-bg-secondary">
+        <div className="overflow-x-auto rounded-xl border border-border-theme bg-bg-secondary">
           <table className="w-full text-left text-xs font-sans">
             <thead>
               <tr className="border-b border-border-theme bg-bg-tertiary/40 text-text-muted font-semibold">
-                <th className="p-3.5">Capability / Feature</th>
-                <th className="p-3.5 text-accent-primary font-bold">Playground API</th>
-                <th className="p-3.5">JSONPlaceholder</th>
-                <th className="p-3.5">DummyJSON</th>
-                <th className="p-3.5">json-server</th>
+                <th className="p-3">Feature</th>
+                <th className="p-3 text-accent-primary font-bold">Playground API</th>
+                <th className="p-3">JSONPlaceholder</th>
+                <th className="p-3">DummyJSON</th>
+                <th className="p-3">json-server</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-border-theme text-text-secondary">
               {comparisonMatrix.map((row) => (
-                <tr key={row.feature} className="hover:bg-bg-tertiary/30 transition-colors">
-                  <td className="p-3.5 font-semibold text-text-primary">{row.feature}</td>
-                  <td className="p-3.5 text-emerald-600 dark:text-emerald-400 font-bold bg-accent-light/10">
-                    {row.playground}
-                  </td>
-                  <td className="p-3.5 text-text-muted">{row.jsonplaceholder}</td>
-                  <td className="p-3.5 text-text-muted">{row.dummyjson}</td>
-                  <td className="p-3.5 text-text-muted">{row.jsonServer}</td>
+                <tr key={row.feature} className="hover:bg-bg-tertiary/20">
+                  <td className="p-3 font-medium text-text-primary">{row.feature}</td>
+                  <td className="p-3 font-semibold text-emerald-600 dark:text-emerald-400">{row.playground}</td>
+                  <td className="p-3">{row.jsonplaceholder}</td>
+                  <td className="p-3">{row.dummyjson}</td>
+                  <td className="p-3">{row.jsonServer}</td>
                 </tr>
               ))}
             </tbody>
           </table>
-        </div>
-      </div>
-
-      {/* 3. Deep Dive Summaries */}
-      <div id="deep-dives" className="space-y-6 pt-6 border-t border-border-theme scroll-mt-20">
-        <h2 className="text-xl font-bold text-text-primary">Detailed Breakdown</h2>
-
-        <div className="space-y-4 text-sm text-text-secondary leading-relaxed">
-          <div className="p-5 rounded-2xl bg-bg-secondary border border-border-theme space-y-2">
-            <h3 className="text-base font-bold text-text-primary">vs JSONPlaceholder</h3>
-            <p>
-              JSONPlaceholder is widely loved for quick demos, but all mutations are dummy mocks. Creating a post with <code className="font-mono">POST /posts</code> returns an object with ID 101, but the item immediately disappears on subsequent requests. Playground API maintains per-session virtual overlays so creates, updates, and deletes persist throughout your prototyping session.
-            </p>
-          </div>
-
-          <div className="p-5 rounded-2xl bg-bg-secondary border border-border-theme space-y-2">
-            <h3 className="text-base font-bold text-text-primary">vs json-server</h3>
-            <p>
-              <code className="font-mono">json-server</code> is great for local development, but requires Node.js installation, local JSON file maintenance, and cannot be easily shared with teammates or mobile devices without running a public tunnel. Playground API is globally accessible with zero setup and automatic multi-user session isolation.
-            </p>
-          </div>
         </div>
       </div>
     </div>

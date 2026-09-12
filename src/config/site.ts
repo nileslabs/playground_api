@@ -4,7 +4,7 @@ export const siteConfig = {
   name: 'Playground API',
   title: 'Playground API — Free Sandboxed Mock REST & GraphQL Service',
   description:
-    'Free, instant, sandboxed mock REST and GraphQL API for prototyping and testing. Features persistent per-identity overlays, JWT auth, custom collections, and dynamic image avatars.',
+    'Free, instant, stateful mock REST & GraphQL API sandbox for web & mobile development. Features persistent per-session CRUD mutation overlays, JWT auth loops, custom collections, and network latency simulation.',
   url: config.siteUrl,
   apiUrl: config.apiUrl,
   apiVersion: config.apiVersion,

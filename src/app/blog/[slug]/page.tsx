@@ -9,6 +9,7 @@ import { BlogPostContent } from '@/components/blog/BlogPostContent';
 import { TableOfContents } from '@/components/blog/TableOfContents';
 import { BlogSeriesNav } from '@/components/blog/BlogSeriesNav';
 import { siteConfig } from '@/config/site';
+import { getBreadcrumbSchema } from '@/lib/json-ld';
 
 interface BlogPostPageProps {
   params: Promise<{ slug: string }>;
@@ -110,12 +111,24 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     keywords: post.tags.join(', '),
   };
 
+  // BreadcrumbList JSON-LD — parsed by Google separately from visible breadcrumb nav
+  const jsonLdBreadcrumbs = getBreadcrumbSchema([
+    { name: 'Home', url: siteConfig.url },
+    { name: 'Blog', url: `${siteConfig.url}/blog` },
+    { name: post.title, url: postUrl },
+  ]);
+
   return (
     <div className="min-h-screen bg-bg-primary text-text-primary">
-      {/* JSON-LD Structured Data */}
+      {/* TechArticle JSON-LD */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      {/* BreadcrumbList JSON-LD */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdBreadcrumbs) }}
       />
 
       <article className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
@@ -129,7 +142,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             Blog
           </Link>
           <Icon icon="ph:caret-right-bold" className="w-3.5 h-3.5" />
-          <span className="text-text-primary font-medium truncate max-w-[200px] sm:max-w-xs">
+          <span className="text-text-primary font-medium truncate max-w-50 sm:max-w-xs">
             Part {post.order}: {post.slug}
           </span>
         </nav>
@@ -213,7 +226,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             </header>
 
             {/* Cover Image Banner */}
-            <div className="relative aspect-[1000/420] w-full rounded-2xl overflow-hidden bg-bg-tertiary border border-border-theme shadow-md">
+            <div className="relative aspect-1000/420 w-full rounded-2xl overflow-hidden bg-bg-tertiary border border-border-theme shadow-md">
               <Image
                 src={post.coverImage}
                 alt={post.title}
@@ -244,7 +257,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             <BlogSeriesNav prev={prev} next={next} series={post.series} order={post.order} />
 
             {/* In-Article Try It / Playground CTA */}
-            <div className="mt-12 p-6 sm:p-8 rounded-2xl border border-accent-primary/30 bg-gradient-to-r from-accent-light/30 via-bg-secondary to-bg-secondary space-y-4">
+            <div className="mt-12 p-6 sm:p-8 rounded-2xl border border-accent-primary/30 bg-linear-to-r from-accent-light/30 via-bg-secondary to-bg-secondary space-y-4">
               <div className="flex items-center gap-3">
                 <div className="p-2.5 rounded-xl bg-accent-light text-accent-primary border border-accent-primary/30">
                   <Icon icon="ph:lightning-fill" className="w-6 h-6" />
