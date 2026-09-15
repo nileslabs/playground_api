@@ -48,14 +48,27 @@ export function TryItRunner({ endpoint, defaultExpanded = false }: TryItRunnerPr
 
   // Effective query parameters list
   const activeQueryParams = useMemo(() => {
+    // If the endpoint explicitly defines its own query params, use those
     if (endpoint.queryParams && endpoint.queryParams.length > 0) {
       return endpoint.queryParams.filter((qp) => !pathParamsList.includes(qp.name));
     }
-    if (endpoint.method === 'GET' && !pathParamsList.length) {
+    // noListParams: true means this is a single-resource GET (e.g. /auth/me, /session/export)
+    // that intentionally has no collection-style query params
+    if (endpoint.noListParams) {
+      return [];
+    }
+    // Only inject default collection params for true list GETs:
+    // - method is GET
+    // - no dynamic path segments (not a /resource/:id style endpoint)
+    // - not an auth or session single-resource endpoint
+    const isSingleResourcePath =
+      endpoint.path.startsWith('/auth/') ||
+      endpoint.path.startsWith('/session/');
+    if (endpoint.method === 'GET' && !pathParamsList.length && !isSingleResourcePath) {
       return DEFAULT_GET_QUERY_PARAMS;
     }
     return [];
-  }, [endpoint.queryParams, endpoint.method, pathParamsList]);
+  }, [endpoint.queryParams, endpoint.method, endpoint.path, endpoint.noListParams, pathParamsList]);
 
   // Helper for smart initial value per param
   const getSmartInitialParamVal = (param: string) => {

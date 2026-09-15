@@ -15,6 +15,11 @@ export interface EndpointDef {
   title: string;
   description: string;
   queryParams?: QueryParamDef[];
+  /**
+   * Set to true for single-resource GET endpoints (e.g. /auth/me, /session/export)
+   * that should NOT inherit the default collection query params (q, page, limit, _sort, _order).
+   */
+  noListParams?: boolean;
   requestBody?: Record<string, unknown>;
   responseExample: Record<string, unknown> | Array<unknown> | string;
 }

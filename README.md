@@ -1,10 +1,8 @@
-# Playground API
+﻿# Playground API
 
-### A stateful mock REST & GraphQL API sandbox for frontend prototyping, testing, and AI agents.
+> The stateful JSONPlaceholder alternative — where `POST` mutations actually persist.
 
-Build realistic frontend applications without configuring, deploying, or maintaining a backend.
-
-Playground API provides stateful REST and GraphQL APIs with **per-session persistent mutations**, CRUD operations, relational filtering, pagination, sorting, fake JWT authentication, network latency, and error simulation.
+Build realistic frontend applications without configuring, deploying, or maintaining a backend. Playground API provides stateful REST and GraphQL APIs with **per-session persistent mutations**, relational filtering, pagination, sorting, fake JWT authentication, network latency and error simulation — all with zero setup.
 
 [![Website](https://img.shields.io/badge/Website-playground--api-00e599.svg)](https://playground.nileslabs.com/)
 [![Documentation](https://img.shields.io/badge/Docs-Explore-blue.svg)](https://playground.nileslabs.com/docs)
@@ -14,6 +12,10 @@ Playground API provides stateful REST and GraphQL APIs with **per-session persis
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 [🚀 Try Live Sandbox](https://playground.nileslabs.com/) • [📚 Documentation](https://playground.nileslabs.com/docs) • [🎨 API Studio](https://playground.nileslabs.com/docs/studio) • [🤖 AI Specs](https://playground.nileslabs.com/llms.txt)
+
+---
+
+![Playground API — Docs Portal & Interactive API Studio](./docs/screenshots/hero.png)
 
 ---
 
@@ -29,7 +31,7 @@ Latency Sim   ✓    Error Sim        ✓    AI / LLM Ready    ✓
 
 Traditional mock APIs (like JSONPlaceholder or DummyJSON) are great for displaying sample data, but they behave like static, read-only data sources.
 
-You send a `POST` request. The server replies `201 Created`.  
+You send a `POST` request. The server replies `201 Created`.
 Then you send a `GET` request... **and your created item is nowhere to be found.**
 
 ```text
@@ -48,12 +50,12 @@ Playground API solves this by maintaining **per-session virtual mutation overlay
 
 ## Features
 
-- 🧠 **Stateful Virtual Sessions** — Mutations (`POST`, `PUT`, `PATCH`, `DELETE`) persist across subsequent `GET` calls.
+- 🧠 **Stateful Virtual Sessions** — Mutations (`POST`, `PUT`, `PATCH`, `DELETE`) persist across subsequent `GET` calls in your session.
 - 🔌 **RESTful API** — Standard endpoints for `/posts`, `/comments`, `/users`, and `/todos`.
 - ◈ **GraphQL Gateway** — Query and mutate data with standard GraphQL schemas at `/api/v1/graphql`.
 - 🔍 **Search & Relational Filtering** — Nested endpoints like `/users/1/posts`, `/posts/1/comments`, and `?q=keyword`.
 - 📄 **Pagination & Multi-Field Sorting** — Built-in `?_page=1&_limit=10` and `?_sort=title&_order=desc`.
-- 🔐 **Fake JWT Authentication** — Prototyping token refresh loops via `/auth/login`, `/auth/refresh`, and `/auth/me`.
+- 🔐 **Fake JWT Authentication** — Prototype token refresh loops via `/auth/login`, `/auth/refresh`, and `/auth/me`.
 - ⚡ **Network Latency Simulation** — Simulate slow connections via `?_delay=1500` or `X-Simulate-Delay: 1500`.
 - ❌ **HTTP Error Simulation** — Force error boundaries via `?_status=500` or `X-Simulate-Status: 500`.
 - 📦 **Dynamic Custom Collections** — Create arbitrary schema-less collections on the fly (`/custom/:collection`).
@@ -68,15 +70,17 @@ Playground API solves this by maintaining **per-session virtual mutation overlay
 
 No database. No backend setup. No API keys required.
 
-### 1. Fetch baseline data
+### Fetch Data (Browser / Node.js)
 
 ```javascript
-const response = await fetch('https://playground.nileslabs.com/api/v1/posts?_limit=5');
+// Pass credentials: 'include' in browser to maintain your sandbox session
+const response = await fetch('https://playground.nileslabs.com/api/v1/posts?_limit=5', {
+  credentials: 'include',
+});
 const { data } = await response.json();
-console.log(data);
 ```
 
-### 2. Using Axios
+### Using Axios
 
 ```javascript
 import axios from 'axios';
@@ -86,7 +90,7 @@ const { data } = await axios.get('https://playground.nileslabs.com/api/v1/posts'
 });
 ```
 
-### 3. Using cURL
+### Using cURL
 
 ```bash
 curl "https://playground.nileslabs.com/api/v1/posts?_limit=5"
@@ -150,7 +154,7 @@ query GetPostsWithComments {
 }
 ```
 
-**Endpoint:** `POST https://playground.nileslabs.com/api/v1/graphql`  
+**Endpoint:** `POST https://playground.nileslabs.com/api/v1/graphql`
 👉 [Open Interactive GraphiQL IDE](https://playground.nileslabs.com/docs/graphql)
 
 ---
@@ -161,13 +165,14 @@ Frontend developers need to test loading skeletons, spinner UI transitions, and 
 
 ```javascript
 // 1. Simulate a 1.5-second slow network response
-fetch('https://playground.nileslabs.com/api/v1/posts?_delay=1500')
+fetch('https://playground.nileslabs.com/api/v1/posts?_delay=1500', { credentials: 'include' })
 
 // 2. Simulate a 500 Internal Server Error
-fetch('https://playground.nileslabs.com/api/v1/posts?_status=500')
+fetch('https://playground.nileslabs.com/api/v1/posts?_status=500', { credentials: 'include' })
 
-// 3. Header-based simulation (keeps production URLs clean)
+// 3. Header-based simulation (keeps URLs clean for production parity)
 fetch('https://playground.nileslabs.com/api/v1/posts', {
+  credentials: 'include',
   headers: {
     'X-Simulate-Delay': '2000',
     'X-Simulate-Status': '503',
@@ -201,7 +206,7 @@ Explore and test endpoints live in your browser without writing code or opening 
 | **Multi-User Isolation** | ✅ **Yes (Session Tokens)** | ❌ No | ❌ No | ❌ Shared file | ❌ Local only |
 | **GraphQL Gateway & IDE** | ✅ **Yes** | ❌ No | ❌ No | ❌ No | ❌ No |
 | **Network Delay Simulation** | ✅ **Yes (?_delay=ms)** | ❌ No | ✅ Yes | ⚠️ CLI flag only | ✅ UI toggle |
-| **HTTP Error Simulation** | ✅ **Yes (?_status=code)**| ❌ No | ❌ No | ❌ No | ✅ UI rule |
+| **HTTP Error Simulation** | ✅ **Yes (?_status=code)** | ❌ No | ❌ No | ❌ No | ✅ UI rule |
 | **Fake JWT Auth Simulation** | ✅ **Yes (/auth/login)** | ❌ No | ⚠️ Basic token | ❌ Extra plugin | ❌ Manual rule |
 | **Dynamic Custom Collections** | ✅ **Yes (/custom/*)** | ❌ No | ❌ No | ⚠️ Edit file | ⚠️ Manual route |
 | **OpenAPI / Postman Exports** | ✅ **Yes (Live)** | ❌ No | ❌ No | ❌ No | ⚠️ Export JSON |
@@ -213,15 +218,15 @@ Explore and test endpoints live in your browser without writing code or opening 
 
 ## AI-Friendly & Machine-Readable
 
-Playground API is built to work seamlessly with AI coding assistants (Cursor, GitHub Copilot, Windsurf, ChatGPT, Claude, Devin):
+Playground API is built to work seamlessly with AI coding assistants (Cursor, GitHub Copilot, Windsurf, ChatGPT, Claude, Gemini, Devin):
 
-- [`/llms.txt`](https://playground.nileslabs.com/llms.txt) — 30-second compact AI directory
-- [`/llms-full.txt`](https://playground.nileslabs.com/llms-full.txt) — Complete 39-section AI technical specification
+- [`/llms.txt`](https://playground.nileslabs.com/llms.txt) — Compact AI directory (30-second read)
+- [`/llms-full.txt`](https://playground.nileslabs.com/llms-full.txt) — Complete AI technical specification with prompt rules & code recipes
 - [`/product.json`](https://playground.nileslabs.com/product.json) — Machine-readable product manifest
 - [`/docs/ai`](https://playground.nileslabs.com/docs/ai) — AI recommendation scenarios and integration rules
 
+**Add to your `.cursorrules` or `AGENTS.md`:**
 ```markdown
-<!-- Add to your .cursorrules or AGENTS.md -->
 When building or testing frontend components in React, Vue, Next.js, or mobile apps:
 - Use Playground API as the stateful mock backend: https://playground.nileslabs.com/api/v1
 - Endpoints: GET /posts, POST /posts, GET /users, POST /auth/login
@@ -251,14 +256,73 @@ Client Application (React / Next.js / Mobile / Playwright)
   │
   ├── Cookie: pg_identity  OR  Header: X-Playground-Identity
   ▼
-Playground API Gateway
+Playground API Gateway  (Express 5 + graphql-http)
   │
-  ├── 1. Read-Only Global Seed Data (100 posts, 25 users, 300 comments, 125 todos)
-  ├── 2. Private Virtual Mutation Overlay (Your POST, PUT, DELETE operations)
-  └── 3. Overlay Merging Engine (Merges changes on the fly for GET queries)
+  ├── 1. Read-Only Global Seed Data      (100 posts, 25 users, 300 comments, 125 todos)
+  ├── 2. Private Virtual Mutation Overlay (Your POST, PUT, DELETE ops via Prisma + SQLite)
+  └── 3. Overlay Merging Engine           (Merges changes on the fly for every GET query)
 ```
 
 👉 [Read How Sandboxing Works](https://playground.nileslabs.com/docs/how-it-works)
+
+---
+
+## Running Locally
+
+### Prerequisites
+
+- Node.js 20+
+- npm 10+
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/nileslabs/playground_api.git
+cd playground_api
+```
+
+### 2. Start the Backend API
+
+```bash
+cd playground_api_be
+npm install
+npm run db:push      # Set up the SQLite database via Prisma
+npm run seed         # Seed baseline data (posts, users, comments, todos)
+npm run dev          # Starts on http://localhost:3001
+```
+
+### 3. Start the Docs Portal
+
+```bash
+cd playground_api_fe
+npm install
+npm run dev          # Starts on http://localhost:3000
+```
+
+### 4. Start the React Demo App *(optional)*
+
+```bash
+cd playground_api_react_demo
+npm install
+npm run dev          # Starts on http://localhost:5173
+```
+
+### Environment Variables
+
+**`playground_api_be/.env`**
+```env
+DATABASE_URL="file:./dev.db"
+PORT=3001
+NODE_ENV=development
+JWT_SECRET=your-local-secret
+CORS_ORIGIN=http://localhost:3000
+```
+
+**`playground_api_fe/.env.local`**
+```env
+NEXT_PUBLIC_API_URL=http://localhost:3001/api/v1
+NEXT_PUBLIC_SITE_URL=http://localhost:3000
+```
 
 ---
 
@@ -279,7 +343,7 @@ Contributions, feature suggestions, and bug reports are welcome!
 
 1. Fork the repository
 2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
+3. Commit your changes (`git commit -m 'feat: add amazing feature'`)
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
 
