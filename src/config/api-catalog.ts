@@ -643,16 +643,17 @@ export const apiCatalog: ResourceCatalogDef[] = [
         method: 'POST',
         path: '/auth/login',
         title: 'Fake JWT Login',
-        description: 'Authenticate user with username/email & password to receive signed JWT access and refresh tokens.',
+        description: 'Authenticate with username/email & password to receive signed JWT access and refresh tokens. Pass optional token_ttl (seconds) to control access token lifetime (min: 60, max: 2592000, default: 86400 = 1 day).',
         requestBody: {
           username: 'Bret',
           password: 'Password@123',
+          token_ttl: 86400,
         },
         responseExample: {
           access_token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEs...',
           refresh_token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEs...',
           token_type: 'Bearer',
-          expires_in: 900,
+          expires_in: 86400,
           user: {
             id: 1,
             name: 'Leanne Graham',
@@ -666,18 +667,19 @@ export const apiCatalog: ResourceCatalogDef[] = [
         method: 'POST',
         path: '/auth/register',
         title: 'Register Mock User',
-        description: 'Register a new session user and immediately receive signed JWT tokens.',
+        description: 'Register a new session user and immediately receive signed JWT tokens. Pass optional token_ttl (seconds) to control access token lifetime (min: 60, max: 2592000, default: 86400 = 1 day).',
         requestBody: {
           name: 'Alice Smith',
           username: 'alice',
           email: 'alice@example.com',
           password: 'Password@123',
+          token_ttl: 86400,
         },
         responseExample: {
           access_token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...',
           refresh_token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...',
           token_type: 'Bearer',
-          expires_in: 900,
+          expires_in: 86400,
           user: {
             id: 'local-9b1deb4d',
             name: 'Alice Smith',
@@ -691,14 +693,15 @@ export const apiCatalog: ResourceCatalogDef[] = [
         method: 'POST',
         path: '/auth/refresh',
         title: 'Refresh Access Token',
-        description: 'Exchange a valid refresh token for a fresh 15-minute Bearer access token.',
+        description: 'Exchange a valid refresh token for a new access token. Pass optional token_ttl (seconds) to set the new token lifetime (min: 60, max: 2592000, default: 86400 = 1 day).',
         requestBody: {
           refreshToken: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEs...',
+          token_ttl: 86400,
         },
         responseExample: {
           access_token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEs...',
           token_type: 'Bearer',
-          expires_in: 900,
+          expires_in: 86400,
         },
       },
       {
