@@ -31,7 +31,7 @@ const faqs = [
   },
   {
     question: 'How does JWT authentication simulation work?',
-    answer: 'Send a POST request to /api/v1/auth/login with any username/password to receive a fake JWT Bearer token. Use Authorization: Bearer <token> to fetch profile details at /api/v1/auth/me.',
+    answer: 'Send a POST request to /api/v1/auth/login with any valid system username (e.g. Bret) and password (Password@123) to receive a fake JWT Bearer token. Unknown users or wrong passwords return 401 Unauthorized.',
   },
   {
     question: 'Can I create dynamic custom collection endpoints like /custom/products?',

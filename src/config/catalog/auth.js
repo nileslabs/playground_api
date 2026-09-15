@@ -7,7 +7,7 @@ export const getAuthEndpoints = () => {
       bodyExample: JSON.stringify(
         {
           username: 'Bret',
-          password: 'password123'
+          password: 'Password@123'
         },
         null,
         2
@@ -22,7 +22,7 @@ export const getAuthEndpoints = () => {
           name: 'Alice Smith',
           username: 'alice',
           email: 'alice@example.com',
-          password: 'password123'
+          password: 'Password@123'
         },
         null,
         2

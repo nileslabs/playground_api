@@ -448,9 +448,9 @@ window.ALL_ENDPOINTS_CATALOG = [
     summary: 'Authenticate user with username/email & password to receive signed JWT access and refresh tokens.',
     params: [
       { name: 'username', in: 'body', type: 'string', description: 'Username (e.g. Bret or custom registered username).' },
-      { name: 'password', in: 'body', type: 'string', description: 'Password string.' }
+      { name: 'password', in: 'body', type: 'string', description: 'Password string (standard password: Password@123).' }
     ],
-    bodyExample: JSON.stringify({ username: "Bret", password: "password123" }, null, 2),
+    bodyExample: JSON.stringify({ username: "Bret", password: "Password@123" }, null, 2),
     responseExample: JSON.stringify({
       access_token: "eyJhbGciOiJIUzI1NiIsInR5cCI6...",
       refresh_token: "eyJhbGciOiJIUzI1NiIsInR5cCI6...",
@@ -474,7 +474,7 @@ window.ALL_ENDPOINTS_CATALOG = [
       { name: 'username', in: 'body', type: 'string', description: 'Unique username.' },
       { name: 'email', in: 'body', type: 'string', description: 'User email address.' }
     ],
-    bodyExample: JSON.stringify({ name: "Alice Smith", username: "alice", email: "alice@example.com", password: "password123" }, null, 2),
+    bodyExample: JSON.stringify({ name: "Alice Smith", username: "alice", email: "alice@example.com", password: "Password@123" }, null, 2),
     responseExample: JSON.stringify({
       access_token: "eyJhbGciOiJIUzI1NiIsInR5cCI6...",
       refresh_token: "eyJhbGciOiJIUzI1NiIsInR5cCI6...",

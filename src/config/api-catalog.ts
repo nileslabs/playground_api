@@ -641,7 +641,7 @@ export const apiCatalog: ResourceCatalogDef[] = [
         description: 'Authenticate user with username/email & password to receive signed JWT access and refresh tokens.',
         requestBody: {
           username: 'Bret',
-          password: 'password123',
+          password: 'Password@123',
         },
         responseExample: {
           access_token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEs...',
@@ -666,7 +666,7 @@ export const apiCatalog: ResourceCatalogDef[] = [
           name: 'Alice Smith',
           username: 'alice',
           email: 'alice@example.com',
-          password: 'password123',
+          password: 'Password@123',
         },
         responseExample: {
           access_token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...',

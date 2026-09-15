@@ -72,7 +72,7 @@ const scenarioCategories = [
         name: 'Login as Bret (POST /auth/login)',
         method: 'POST' as const,
         path: '/auth/login',
-        payload: '{\n  "username": "Bret",\n  "password": "password123"\n}',
+        payload: '{\n  "username": "Bret",\n  "password": "Password@123"\n}',
       },
       {
         name: 'Get Current Profile (GET /auth/me)',

@@ -553,7 +553,7 @@ const graphqlDocsData: Record<string, GraphqlSchemaDetail> = {
         title: 'Execute login mutation',
         desc: 'Simulate user login with username/email and password to receive signed JWT access and refresh tokens.',
         query: `mutation LoginUser {
-  login(username: "kminchelle", password: "password123") {
+  login(username: "Bret", password: "Password@123") {
     access_token
     refresh_token
     token_type
