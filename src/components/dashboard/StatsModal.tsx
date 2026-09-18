@@ -10,6 +10,7 @@ import { useLiveCounts } from '@/context/CountsContext';
 interface StatsModalProps {
   isOpen: boolean;
   onClose: () => void;
+  onOpenShare?: () => void;
 }
 
 interface SessionStats {
@@ -37,7 +38,7 @@ interface SessionStats {
   >;
 }
 
-export function StatsModal({ isOpen, onClose }: StatsModalProps) {
+export function StatsModal({ isOpen, onClose, onOpenShare }: StatsModalProps) {
   const { refreshCounts } = useLiveCounts();
   const [copiedUuid, setCopiedUuid] = useState(false);
   const [copiedToken, setCopiedToken] = useState(false);
@@ -339,19 +340,29 @@ export function StatsModal({ isOpen, onClose }: StatsModalProps) {
 
         {/* Action Buttons */}
         <div className="flex flex-col sm:flex-row items-center gap-3 pt-2 w-full">
+          {onOpenShare && (
+            <button
+              onClick={onOpenShare}
+              className="w-full sm:w-1/3 flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-accent-light hover:bg-accent-primary hover:text-white text-accent-primary font-sans text-xs sm:text-sm font-bold transition-all cursor-pointer border border-accent-primary/30 shadow-xs"
+            >
+              <Icon icon="ph:qr-code-bold" className="w-4 h-4" />
+              <span>Share & QR Sync</span>
+            </button>
+          )}
+
           <button
             onClick={handleReset}
             disabled={resetting}
-            className="w-full sm:w-1/2 flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-sans text-xs sm:text-sm font-bold transition-all cursor-pointer shadow-md disabled:opacity-50"
+            className="w-full sm:w-1/3 flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-sans text-xs sm:text-sm font-bold transition-all cursor-pointer shadow-md disabled:opacity-50"
           >
             <Icon icon={resetting ? 'ph:spinner-bold' : 'ph:trash-bold'} className={`w-4 h-4 ${resetting ? 'animate-spin' : ''}`} />
-            <span>{resetting ? 'Resetting Sandbox...' : 'Reset Session Sandbox'}</span>
+            <span>{resetting ? 'Resetting Sandbox...' : 'Reset Session'}</span>
           </button>
 
           <a
             href="/docs/export-import"
             onClick={onClose}
-            className="w-full sm:w-1/2 flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-bg-tertiary hover:bg-border-theme text-text-primary text-xs sm:text-sm font-semibold transition-colors"
+            className="w-full sm:w-1/3 flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-bg-tertiary hover:bg-border-theme text-text-primary text-xs sm:text-sm font-semibold transition-colors"
           >
             <Icon icon="ph:cloud-arrow-up-bold" className="w-4 h-4 text-accent-primary" />
             <span>Export / Import JSON</span>

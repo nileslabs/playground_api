@@ -6,7 +6,8 @@ export const getSessionEndpoints = () => {
       title: 'Export Session Sandbox Snapshot JSON',
       description: 'Serializes all session sandbox overlay records (creates, updates, deletes) into a downloadable JSON snapshot file for backups or team sharing.',
       params: [
-        { name: 'resource', type: 'String (Query)', desc: 'Resource filter ("all", "users", "posts", "comments", "todos"). Default: "all".' }
+        { name: 'resource', type: 'String (Query)', desc: 'Resource filter ("all", "users", "posts", "comments", "todos"). Default: "all".' },
+        { name: '_sandbox', type: 'String (Query)', desc: 'Optional sandbox UUID or signed token to target a specific shared sandbox identity.' }
       ],
       responseExample: JSON.stringify({
         version: "1.0",
@@ -46,7 +47,9 @@ export const getSessionEndpoints = () => {
       path: '/session/reset',
       title: 'Purge Session Sandbox Overlay',
       description: 'Purges all created, updated, and deleted overlay mutations for your session identity, resetting your view to clean baseline global data.',
-      params: [],
+      params: [
+        { name: '_sandbox', type: 'String (Query)', desc: 'Optional target sandbox UUID to purge for cross-device shared sessions.' }
+      ],
       bodyExample: null,
       responseExample: JSON.stringify({
         message: "Session sandbox overlay purged successfully.",

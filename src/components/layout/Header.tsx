@@ -7,12 +7,14 @@ import { useTheme } from '@/components/theme/ThemeProvider';
 import { LogoIcon } from '@/components/ui/LogoIcon';
 import { SandboxPill } from '@/components/dashboard/SandboxPill';
 import { StatsModal } from '@/components/dashboard/StatsModal';
+import { ShareSandboxModal } from '@/components/dashboard/ShareSandboxModal';
 import { SearchModal } from '@/components/layout/SearchModal';
 import { Sidebar } from '@/components/layout/Sidebar';
 import { siteConfig } from '@/config/site';
 
 export function Header() {
   const [statsOpen, setStatsOpen] = useState(false);
+  const [shareOpen, setShareOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -108,9 +110,19 @@ export function Header() {
               <span className="hidden sm:inline">Stats</span>
             </button>
 
+            {/* Share / QR Code Sync Trigger */}
+            <button
+              onClick={() => setShareOpen(true)}
+              className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-xl bg-bg-secondary hover:bg-bg-tertiary border border-border-theme text-xs sm:text-sm font-medium text-text-primary transition-colors cursor-pointer"
+              title="Share Sandbox URL & QR Sync"
+            >
+              <Icon icon="ph:qr-code-bold" className="w-4 h-4 text-emerald-400" />
+              <span className="hidden md:inline">Share</span>
+            </button>
+
             {/* Sandbox Status Pill */}
             <div className="hidden xs:block">
-              <SandboxPill />
+              <SandboxPill onOpenShare={() => setShareOpen(true)} />
             </div>
 
             {/* Theme Selector */}
@@ -189,7 +201,10 @@ export function Header() {
       )}
 
       {/* Stats Modal */}
-      <StatsModal isOpen={statsOpen} onClose={() => setStatsOpen(false)} />
+      <StatsModal isOpen={statsOpen} onClose={() => setStatsOpen(false)} onOpenShare={() => { setStatsOpen(false); setShareOpen(true); }} />
+
+      {/* Share & QR Sync Modal */}
+      <ShareSandboxModal isOpen={shareOpen} onClose={() => setShareOpen(false)} />
 
       {/* Algolia-Style Command+K Search Modal */}
       <SearchModal isOpen={searchOpen} onClose={() => setSearchOpen(false)} />

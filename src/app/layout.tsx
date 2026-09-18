@@ -11,6 +11,8 @@ import { getWebApiSchema } from '@/lib/json-ld';
 import { GoogleAnalytics } from '@/components/analytics/GoogleAnalytics';
 import config from '@/config/env';
 
+import { SandboxSyncHandler } from '@/components/dashboard/SandboxSyncHandler';
+
 export const viewport: Viewport = {
   themeColor: [
     { media: '(prefers-color-scheme: light)', color: '#ffffff' },
@@ -146,6 +148,9 @@ export default function RootLayout({
         />
         <ThemeProvider>
           <CountsProvider>
+            <Suspense fallback={null}>
+              <SandboxSyncHandler />
+            </Suspense>
             <Header />
             <main className="flex-1 w-full">{children}</main>
             <Footer />

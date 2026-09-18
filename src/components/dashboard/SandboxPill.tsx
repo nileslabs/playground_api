@@ -4,7 +4,11 @@ import React, { useState, useEffect } from 'react';
 import { Icon } from '@iconify/react';
 import config from '@/config/env';
 
-export function SandboxPill() {
+interface SandboxPillProps {
+  onOpenShare?: () => void;
+}
+
+export function SandboxPill({ onOpenShare }: SandboxPillProps = {}) {
   const [copied, setCopied] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [fullToken, setFullToken] = useState('');
@@ -67,13 +71,24 @@ export function SandboxPill() {
         {mounted ? displayId : 'Active'}
       </span>
       {fullToken && (
-        <button
-          onClick={handleCopy}
-          title="Copy Signed Identity Token"
-          className="text-text-muted hover:text-text-primary transition-colors cursor-pointer ml-1"
-        >
-          <Icon icon={copied ? 'ph:check-bold' : 'ph:copy-bold'} className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-        </button>
+        <div className="flex items-center gap-1 ml-1">
+          <button
+            onClick={handleCopy}
+            title="Copy Signed Identity Token"
+            className="text-text-muted hover:text-text-primary transition-colors cursor-pointer"
+          >
+            <Icon icon={copied ? 'ph:check-bold' : 'ph:copy-bold'} className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+          </button>
+          {onOpenShare && (
+            <button
+              onClick={onOpenShare}
+              title="Share Sandbox URL & QR Code"
+              className="text-text-muted hover:text-emerald-400 transition-colors cursor-pointer"
+            >
+              <Icon icon="ph:qr-code-bold" className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+            </button>
+          )}
+        </div>
       )}
     </div>
   );

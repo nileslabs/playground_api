@@ -209,3 +209,23 @@ export interface ThumbnailOptions {
   subtitle?: string;
 }
 
+// Shareable Sandbox & Simulation Query Parameters
+export interface SandboxQueryParams {
+  _sandbox?: string;
+  _delay?: number;
+  _status?: number;
+  _page?: number;
+  _limit?: number;
+  _sort?: string;
+  _order?: 'asc' | 'desc';
+}
+
+export interface ShareableSandboxSession {
+  identityId: string;
+  signedToken: string;
+  shareUrl: string;
+  createdAt: string;
+  lastSeenAt: string;
+}
+
+
