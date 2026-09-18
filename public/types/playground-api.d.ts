@@ -214,6 +214,8 @@ export interface SandboxQueryParams {
   _sandbox?: string;
   _delay?: number;
   _status?: number;
+  _chaos?: number | string;
+  _chaos_errors?: string;
   _page?: number;
   _limit?: number;
   _sort?: string;
