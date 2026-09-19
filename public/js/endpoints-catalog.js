@@ -1191,5 +1191,52 @@ window.ALL_ENDPOINTS_CATALOG = [
       success: true,
       message: 'File successfully deleted.'
     }, null, 2)
+  },
+  // RBAC & AUTH ROLES
+  {
+    resource: 'auth',
+    method: 'GET',
+    path: '/auth/roles',
+    summary: 'Retrieve all supported RBAC roles, test persona credentials, and default scopes.',
+    params: [],
+    bodyExample: null,
+    responseExample: JSON.stringify({
+      success: true,
+      roles: ['admin', 'editor', 'viewer', 'guest'],
+      personas: {
+        admin: { description: 'Full access to all operations', testCredentials: { username: 'admin', password: 'Password@123' }, defaultScopes: ['*'] },
+        editor: { description: 'Read, create, update; 403 on delete/reset', testCredentials: { username: 'editor', password: 'Password@123' }, defaultScopes: ['*:read', '*:write'] },
+        viewer: { description: 'Read-only access; 403 on mutations', testCredentials: { username: 'viewer', password: 'Password@123' }, defaultScopes: ['*:read'] },
+        guest: { description: 'Anonymous / public caller; 401 on protected', testCredentials: null, defaultScopes: ['public:read'] }
+      }
+    }, null, 2)
+  },
+  {
+    resource: 'auth',
+    method: 'GET',
+    path: '/auth/permissions',
+    summary: 'Retrieve the granular permission matrix, allowed HTTP actions per role, and wildcard scope definitions.',
+    params: [],
+    bodyExample: null,
+    responseExample: JSON.stringify({
+      success: true,
+      matrix: {
+        admin: { description: 'Full unconstrained access', allowedActions: ['read', 'create', 'update', 'delete', 'reset'], scopes: ['*'] },
+        editor: { description: 'Content authoring and editing', allowedActions: ['read', 'create', 'update'], scopes: ['*:read', '*:write', 'posts:create', 'posts:update'] },
+        viewer: { description: 'Strict read-only access', allowedActions: ['read'], scopes: ['*:read', 'posts:read', 'users:read'] },
+        guest: { description: 'Public unauthenticated caller', allowedActions: ['read:public'], scopes: ['public:read'] }
+      },
+      wildcards: {
+        globalAll: '*',
+        globalRead: '*:read',
+        globalWrite: '*:write',
+        globalDelete: '*:delete',
+        resourceAll: '<resource>:*',
+        resourceRead: '<resource>:read',
+        resourceWrite: '<resource>:write',
+        resourceDelete: '<resource>:delete'
+      }
+    }, null, 2)
   }
 ];
+

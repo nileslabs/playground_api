@@ -720,3 +720,39 @@ export interface GraphQLResourceClient {
   ): () => void;
 }
 
+// RBAC & Permission Simulation Types
+export type UserRole = 'admin' | 'editor' | 'viewer' | 'guest';
+
+export interface RbacRoleDetail {
+  role: UserRole;
+  description: string;
+  defaultScopes: string[];
+  testCredentials: {
+    username: string;
+    password: string;
+  };
+}
+
+export interface RbacMatrix {
+  roles: Record<UserRole, {
+    description: string;
+    allowedActions: string[];
+    scopes: string[];
+    testCredentials: {
+      username: string;
+      password: string;
+    };
+  }>;
+  wildcards: {
+    globalAll: string;
+    globalRead: string;
+    globalWrite: string;
+    globalDelete: string;
+    resourceAll: string;
+    resourceRead: string;
+    resourceWrite: string;
+    resourceDelete: string;
+  };
+}
+
+

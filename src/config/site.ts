@@ -48,6 +48,7 @@ export const siteConfig = {
       icon: 'ph:gear-six-bold',
       items: [
         { title: 'Interactive API Studio', href: '/docs/studio', icon: 'ph:play-circle-bold' },
+        { title: 'RBAC & Scope Permissions', href: '/docs/rbac', badge: 'RBAC', icon: 'ph:shield-check-bold' },
         { title: 'Mock Payment Gateway', href: '/docs/payments', badge: 'Stripe', icon: 'ph:credit-card-bold' },
         { title: 'Virtual Email & SMS Inbox', href: '/docs/inbox', badge: 'Inbox', icon: 'ph:mailbox-bold' },
         { title: 'File Uploads & Cloud CDN', href: '/docs/uploads', badge: 'Cloud', icon: 'ph:cloud-arrow-up-bold' },
