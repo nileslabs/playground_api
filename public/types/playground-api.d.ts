@@ -755,4 +755,64 @@ export interface RbacMatrix {
   };
 }
 
+// Analytics & Event Telemetry Types
+export interface AnalyticsTrackPayload {
+  event: string;
+  name?: string;
+  eventType?: string;
+  userId?: string | number;
+  user_id?: string | number;
+  distinctId?: string | number;
+  properties?: Record<string, unknown>;
+  traits?: Record<string, unknown>;
+  timestamp?: string;
+  time?: string | number;
+  context?: Record<string, unknown>;
+  [key: string]: unknown;
+}
+
+export type AnalyticsBatchPayload = AnalyticsTrackPayload[] | { batch: AnalyticsTrackPayload[] } | { events: AnalyticsTrackPayload[] };
+
+export interface AnalyticsEventRecord {
+  id: string;
+  event: string;
+  userId: string;
+  user_id: string;
+  properties: Record<string, unknown>;
+  traits: Record<string, unknown>;
+  timestamp: string;
+  context?: {
+    ip?: string;
+    userAgent?: string;
+    [key: string]: unknown;
+  };
+  created_at: string;
+  _sandbox?: 'created' | 'updated';
+}
+
+export interface AnalyticsBatchResponse {
+  success: boolean;
+  summary: {
+    total: number;
+    processed: number;
+    failed: number;
+  };
+  events: AnalyticsEventRecord[];
+  errors?: Array<{ index: number; error: string }>;
+}
+
+export interface AnalyticsSummaryResponse {
+  success: boolean;
+  summary: {
+    totalEvents: number;
+    uniqueEventTypes: number;
+    uniqueUsers: number;
+    eventCounts: Record<string, number>;
+    topEvents: Array<{ event: string; count: number; percentage: number }>;
+    recentEvents: AnalyticsEventRecord[];
+    timeline: Array<{ time: string; count: number }>;
+  };
+}
+
+
 

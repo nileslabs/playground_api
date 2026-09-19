@@ -51,6 +51,7 @@ export const siteConfig = {
         { title: 'RBAC & Scope Permissions', href: '/docs/rbac', badge: 'RBAC', icon: 'ph:shield-check-bold' },
         { title: 'Mock Payment Gateway', href: '/docs/payments', badge: 'Stripe', icon: 'ph:credit-card-bold' },
         { title: 'Virtual Email & SMS Inbox', href: '/docs/inbox', badge: 'Inbox', icon: 'ph:mailbox-bold' },
+        { title: 'Mock Analytics & Telemetry', href: '/docs/analytics', badge: 'Events', icon: 'ph:chart-line-up-bold' },
         { title: 'File Uploads & Cloud CDN', href: '/docs/uploads', badge: 'Cloud', icon: 'ph:cloud-arrow-up-bold' },
         { title: 'Real-Time Chat & WebSockets', href: '/docs/chat', icon: 'ph:chats-circle-bold' },
         { title: 'Outgoing Webhooks Dispatcher', href: '/docs/webhooks', icon: 'ph:paper-plane-tilt-bold' },

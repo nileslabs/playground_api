@@ -1643,4 +1643,125 @@ export const apiCatalog: ResourceCatalogDef[] = [
       }
     ]
   },
+  {
+    id: 'analytics',
+    name: 'Analytics & Telemetry',
+    singular: 'Analytics Event',
+    description: 'PostHog, Mixpanel, and Segment compatible event tracking stream, batch ingestion, and conversion metrics simulation.',
+    itemCount: 'Dynamic',
+    baseUrl: `${baseUrl}/analytics`,
+    icon: 'ph:chart-line-up-bold',
+    endpoints: [
+      {
+        id: 'track-event',
+        method: 'POST',
+        path: '/analytics/track',
+        title: 'Ingest Event Beacon',
+        description: 'Record a single telemetry event beacon with event name, user ID, custom properties, and traits in your isolated sandbox.',
+        requestBody: {
+          event: 'button_clicked',
+          userId: 'usr_dev_101',
+          properties: {
+            page: '/pricing',
+            plan: 'pro_annual',
+            cta_position: 'hero'
+          }
+        },
+        responseExample: {
+          success: true,
+          message: 'Event recorded successfully in session telemetry stream.',
+          event: {
+            id: 'evt_a8f9c0e123456789',
+            event: 'button_clicked',
+            userId: 'usr_dev_101',
+            user_id: 'usr_dev_101',
+            properties: { page: '/pricing', plan: 'pro_annual', cta_position: 'hero' },
+            traits: {},
+            timestamp: '2026-09-19T14:30:00.000Z',
+            created_at: '2026-09-19T14:30:00.000Z',
+            _sandbox: 'created'
+          }
+        }
+      },
+      {
+        id: 'track-batch',
+        method: 'POST',
+        path: '/analytics/batch',
+        title: 'Batch Event Ingestion',
+        description: 'Ingest a batch of up to 50 event beacons atomically in a single request (Segment/Mixpanel parity).',
+        requestBody: {
+          batch: [
+            { event: 'page_view', properties: { path: '/home' } },
+            { event: 'button_click', properties: { btn: 'pricing_hero' } }
+          ]
+        },
+        responseExample: {
+          success: true,
+          summary: { total: 2, processed: 2, failed: 0 },
+          events: [
+            { id: 'evt_1', event: 'page_view', properties: { path: '/home' } },
+            { id: 'evt_2', event: 'button_click', properties: { btn: 'pricing_hero' } }
+          ]
+        }
+      },
+      {
+        id: 'list-events',
+        method: 'GET',
+        path: '/analytics/events',
+        title: 'List Telemetry Stream',
+        description: 'Query recorded events with optional filtering by event name or user ID.',
+        queryParams: [
+          { name: 'event', type: 'string', required: false, description: 'Filter events by exact or partial event name.' },
+          { name: 'userId', type: 'string', required: false, description: 'Filter events dispatched by a specific user ID.' },
+          { name: 'page', type: 'integer', required: false, defaultVal: '1', description: 'Page number.' },
+          { name: 'limit', type: 'integer', required: false, defaultVal: '20', description: 'Number of events per page.' }
+        ],
+        responseExample: {
+          data: [
+            {
+              id: 'evt_a8f9c0e123456789',
+              event: 'button_clicked',
+              userId: 'usr_dev_101',
+              properties: { page: '/pricing', plan: 'pro_annual' },
+              timestamp: '2026-09-19T14:30:00.000Z'
+            }
+          ],
+          pagination: { page: 1, limit: 20, total: 1, totalPages: 1, hasNextPage: false, hasPrevPage: false }
+        }
+      },
+      {
+        id: 'analytics-summary',
+        method: 'GET',
+        path: '/analytics/summary',
+        title: 'Get Analytics Summary & Breakdown',
+        description: 'Retrieve aggregate metrics: total events count, unique event types, distinct users, and top events.',
+        noListParams: true,
+        responseExample: {
+          success: true,
+          summary: {
+            totalEvents: 42,
+            uniqueEventTypes: 6,
+            uniqueUsers: 14,
+            eventCounts: { page_view: 24, button_click: 12, checkout_completed: 6 },
+            topEvents: [
+              { event: 'page_view', count: 24, percentage: 57 },
+              { event: 'button_click', count: 12, percentage: 29 }
+            ]
+          }
+        }
+      },
+      {
+        id: 'clear-events',
+        method: 'DELETE',
+        path: '/analytics/events',
+        title: 'Clear Telemetry Stream',
+        description: 'Purge all recorded analytics events for your session sandbox.',
+        responseExample: {
+          success: true,
+          message: 'Analytics event stream cleared successfully.',
+          purgedCount: 42
+        }
+      }
+    ]
+  },
 ];

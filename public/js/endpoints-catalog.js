@@ -1237,6 +1237,115 @@ window.ALL_ENDPOINTS_CATALOG = [
         resourceDelete: '<resource>:delete'
       }
     }, null, 2)
+  },
+  // ANALYTICS & TELEMETRY
+  {
+    resource: 'analytics',
+    method: 'POST',
+    path: '/analytics/track',
+    summary: 'Ingest a single event beacon with user ID, properties, and traits.',
+    params: [
+      { name: 'event', in: 'body', type: 'string', description: 'Event name (e.g. page_view, button_clicked).' },
+      { name: 'userId', in: 'body', type: 'string', description: 'User or distinct identifier.' },
+      { name: 'properties', in: 'body', type: 'object', description: 'Custom event metadata properties.' }
+    ],
+    bodyExample: JSON.stringify({
+      event: 'button_clicked',
+      userId: 'usr_dev_101',
+      properties: { page: '/pricing', plan: 'pro_annual' }
+    }, null, 2),
+    responseExample: JSON.stringify({
+      success: true,
+      message: 'Event recorded successfully in session telemetry stream.',
+      event: {
+        id: 'evt_a8f9c0e123456789',
+        event: 'button_clicked',
+        userId: 'usr_dev_101',
+        properties: { page: '/pricing', plan: 'pro_annual' },
+        timestamp: '2026-09-19T14:30:00.000Z'
+      }
+    }, null, 2)
+  },
+  {
+    resource: 'analytics',
+    method: 'POST',
+    path: '/analytics/batch',
+    summary: 'Ingest a batch of up to 50 event beacons atomically.',
+    params: [
+      { name: 'batch', in: 'body', type: 'array', description: 'Array of event beacon objects.' }
+    ],
+    bodyExample: JSON.stringify({
+      batch: [
+        { event: 'page_view', properties: { path: '/home' } },
+        { event: 'button_click', properties: { btn: 'cta_hero' } }
+      ]
+    }, null, 2),
+    responseExample: JSON.stringify({
+      success: true,
+      summary: { total: 2, processed: 2, failed: 0 },
+      events: [
+        { id: 'evt_1', event: 'page_view', properties: { path: '/home' } },
+        { id: 'evt_2', event: 'button_click', properties: { btn: 'cta_hero' } }
+      ]
+    }, null, 2)
+  },
+  {
+    resource: 'analytics',
+    method: 'GET',
+    path: '/analytics/events',
+    summary: 'List recorded telemetry stream with optional filtering.',
+    params: [
+      { name: 'event', in: 'query', type: 'string', description: 'Filter events by exact or partial event name.' },
+      { name: 'userId', in: 'query', type: 'string', description: 'Filter events by user ID.' }
+    ],
+    bodyExample: null,
+    responseExample: JSON.stringify({
+      data: [
+        {
+          id: 'evt_a8f9c0e123456789',
+          event: 'button_clicked',
+          userId: 'usr_dev_101',
+          properties: { page: '/pricing', plan: 'pro_annual' },
+          timestamp: '2026-09-19T14:30:00.000Z'
+        }
+      ],
+      pagination: { page: 1, limit: 20, total: 1, totalPages: 1, hasNextPage: false, hasPrevPage: false }
+    }, null, 2)
+  },
+  {
+    resource: 'analytics',
+    method: 'GET',
+    path: '/analytics/summary',
+    summary: 'Retrieve aggregate telemetry metrics and event breakdown.',
+    params: [],
+    bodyExample: null,
+    responseExample: JSON.stringify({
+      success: true,
+      summary: {
+        totalEvents: 42,
+        uniqueEventTypes: 6,
+        uniqueUsers: 14,
+        eventCounts: { page_view: 24, button_click: 12, checkout_completed: 6 },
+        topEvents: [
+          { event: 'page_view', count: 24, percentage: 57 },
+          { event: 'button_click', count: 12, percentage: 29 }
+        ]
+      }
+    }, null, 2)
+  },
+  {
+    resource: 'analytics',
+    method: 'DELETE',
+    path: '/analytics/events',
+    summary: 'Clear all recorded analytics events for this session sandbox.',
+    params: [],
+    bodyExample: null,
+    responseExample: JSON.stringify({
+      success: true,
+      message: 'Analytics event stream cleared successfully.',
+      purgedCount: 42
+    }, null, 2)
   }
 ];
+
 
