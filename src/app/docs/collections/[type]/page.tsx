@@ -140,32 +140,30 @@ pg_identity: <your_signed_session_token>`,
   },
 
   typescript: {
-    title: 'TypeScript SDK',
-    subtitle: 'TypeScript Type Declarations (.d.ts)',
+    title: 'TypeScript Types (.d.ts)',
+    subtitle: 'TypeScript Type Declarations (.d.ts) & SDK',
     overview:
-      'Strongly typed interface declarations for Posts, Users, Comments, Todos, Auth, and Custom payload schemas for full auto-complete in VS Code.',
+      'Strongly typed interface declarations for Posts, Users, Comments, Todos, Auth, Webhooks, and Custom payload schemas for full auto-complete in VS Code, or install our official npm SDK.',
     icon: 'simple-icons:typescript',
-    downloadUrl: `${config.apiUrl}/types/ts`,
+    downloadUrl: `${config.apiUrl}/downloads/playground-api.d.ts`,
     format: 'TypeScript (.d.ts)',
     benefits: [
       'Full TypeScript IntelliSense auto-complete in VS Code and IDEs.',
       'Eliminates type errors when sending POST/PUT payloads to Playground API.',
-      'Includes Post, Comment, User, Todo, and Auth payload interfaces.',
+      'Includes Post, Comment, User, Todo, Webhook, and Auth payload interfaces.',
+      'Also available as our official npm client library: playground-api.',
     ],
     gettingStarted: [
-      'Download playground-api.d.ts file below.',
-      'Save the file in your project under src/types/playground-api.d.ts.',
+      'Install official SDK via "npm install playground-api" (or download .d.ts below).',
+      'If downloading .d.ts, save the file under src/types/playground-api.d.ts.',
       'Ensure tsconfig.json includes "src/**/*.d.ts" in the include array.',
-      'Import types into your React/Next.js components!',
+      'Import types or initialize PlaygroundClient in your React/Next.js components!',
     ],
-    codeSnippet: `import { Post, User, AuthPayload } from './types/playground-api';
+    codeSnippet: `// 1. Install official SDK: npm i playground-api
+import { PlaygroundClient, Post } from 'playground-api';
 
-const post: Post = {
-  id: 'local-123',
-  title: 'Typed Sandbox Post',
-  body: 'Full type safety!',
-  user_id: 1
-};`,
+const api = new PlaygroundClient({ apiUrl: '${config.apiUrl}' });
+const { data: posts } = await api.posts.list({ limit: 5 });`,
     prevPage: { title: 'Insomnia Collection', href: '/docs/collections/insomnia' },
   },
 };

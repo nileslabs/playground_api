@@ -86,11 +86,12 @@ export const siteConfig = {
       title: 'API Downloads & Specs',
       icon: 'ph:download-simple-bold',
       items: [
+        { title: 'Official TypeScript SDK', href: '/docs/sdk', badge: 'v1.0', icon: 'simple-icons:typescript' },
         { title: 'OpenAPI 3.0 Spec', href: '/docs/collections/openapi', icon: 'ph:file-code-bold' },
         { title: 'Postman Collection', href: '/docs/collections/postman', icon: 'ph:paper-plane-tilt-bold' },
         { title: 'Bruno Collection', href: '/docs/collections/bruno', icon: 'ph:brackets-curly-bold' },
         { title: 'Insomnia Collection', href: '/docs/collections/insomnia', icon: 'ph:moon-stars-bold' },
-        { title: 'TypeScript SDK (.d.ts)', href: '/docs/collections/typescript', icon: 'ph:file-ts-bold' },
+        { title: 'TypeScript Types (.d.ts)', href: '/docs/collections/typescript', icon: 'ph:file-ts-bold' },
         { title: 'CSV & Excel Export', href: '/docs/collections/csv-excel', icon: 'ph:file-csv-bold' },
       ],
     },
