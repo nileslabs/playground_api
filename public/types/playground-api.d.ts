@@ -136,13 +136,16 @@ export interface AuthResponse {
   refresh_token: string;
   token_type: 'Bearer';
   expires_in: number;
+  expires_at?: string;
   user: User;
 }
 
 export interface RefreshTokenResponse {
   access_token: string;
+  refresh_token?: string;
   token_type: 'Bearer';
   expires_in: number;
+  expires_at?: string;
 }
 
 export interface SnapshotRecord {
@@ -218,6 +221,10 @@ export interface SandboxQueryParams {
   _chaos_errors?: string;
   _format?: 'csv' | 'xlsx' | 'json';
   format?: 'csv' | 'xlsx' | 'json';
+  _jwt_expiry?: string;
+  jwt_expiry?: string;
+  _clock_skew?: string | number;
+  clock_skew?: string | number;
   _page?: number;
   _limit?: number;
   _sort?: string;

@@ -643,7 +643,7 @@ export const apiCatalog: ResourceCatalogDef[] = [
         method: 'POST',
         path: '/auth/login',
         title: 'Fake JWT Login',
-        description: 'Authenticate with username/email & password to receive signed JWT access and refresh tokens. Pass optional token_ttl (seconds) to control access token lifetime (min: 60, max: 2592000, default: 86400 = 1 day).',
+        description: 'Authenticate with username/email & password to receive signed JWT access and refresh tokens. Supports simulation headers (X-Simulate-JWT-Expiry: 5s, X-Simulate-Clock-Skew: +120) and custom token_ttl for testing short-lived auth loops.',
         requestBody: {
           username: 'Bret',
           password: 'Password@123',
@@ -654,6 +654,7 @@ export const apiCatalog: ResourceCatalogDef[] = [
           refresh_token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEs...',
           token_type: 'Bearer',
           expires_in: 86400,
+          expires_at: '2026-09-20T10:00:00.000Z',
           user: {
             id: 1,
             name: 'Leanne Graham',
@@ -667,7 +668,7 @@ export const apiCatalog: ResourceCatalogDef[] = [
         method: 'POST',
         path: '/auth/register',
         title: 'Register Mock User',
-        description: 'Register a new session user and immediately receive signed JWT tokens. Pass optional token_ttl (seconds) to control access token lifetime (min: 60, max: 2592000, default: 86400 = 1 day).',
+        description: 'Register a new session user and immediately receive signed JWT tokens. Pass optional token_ttl or X-Simulate-JWT-Expiry to configure token lifetimes.',
         requestBody: {
           name: 'Alice Smith',
           username: 'alice',
@@ -680,6 +681,7 @@ export const apiCatalog: ResourceCatalogDef[] = [
           refresh_token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...',
           token_type: 'Bearer',
           expires_in: 86400,
+          expires_at: '2026-09-20T10:00:00.000Z',
           user: {
             id: 'local-9b1deb4d',
             name: 'Alice Smith',
@@ -692,16 +694,18 @@ export const apiCatalog: ResourceCatalogDef[] = [
         id: 'auth-refresh',
         method: 'POST',
         path: '/auth/refresh',
-        title: 'Refresh Access Token',
-        description: 'Exchange a valid refresh token for a new access token. Pass optional token_ttl (seconds) to set the new token lifetime (min: 60, max: 2592000, default: 86400 = 1 day).',
+        title: 'Refresh Access Token & Rotate Refresh Token',
+        description: 'Exchange a valid refresh token for a fresh access token and a newly rotated refresh token. Includes active reuse detection: presenting an already-consumed refresh token invalidates the token family with error code REFRESH_TOKEN_REUSED (401).',
         requestBody: {
           refreshToken: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEs...',
           token_ttl: 86400,
         },
         responseExample: {
           access_token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEs...',
+          refresh_token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEs...',
           token_type: 'Bearer',
           expires_in: 86400,
+          expires_at: '2026-09-20T10:00:00.000Z',
         },
       },
       {
