@@ -246,4 +246,38 @@ export interface ShareableSandboxSession {
   lastSeenAt: string;
 }
 
+// Real-Time WebSockets, Socket.io & Live Stream Types
+export interface ChatMessage {
+  id: string | number;
+  room: string;
+  sender_id: string | number;
+  sender_name: string;
+  recipient_id?: string | number | null;
+  text: string;
+  created_at: string;
+  _sandbox?: 'created' | 'updated';
+}
+
+export interface WsMessagePayload {
+  type: 'message' | 'join' | 'typing' | 'connected' | 'joined' | 'error' | 'ping' | 'pong';
+  room?: string;
+  sender_id?: string | number;
+  sender_name?: string;
+  text?: string;
+  user?: string;
+  isTyping?: boolean;
+  status?: boolean;
+  clientId?: string;
+  timestamp?: string;
+}
+
+export interface SseNotification {
+  id: string;
+  title: string;
+  body: string;
+  type?: 'post' | 'comment' | 'todo' | 'system';
+  timestamp: string;
+}
+
+
 

@@ -715,5 +715,64 @@ window.ALL_ENDPOINTS_CATALOG = [
     responseExample: JSON.stringify({
       message: "Record 'local-f9e8d7c6' removed from custom collection 'products'"
     }, null, 2)
+  },
+  // MESSAGES & REALTIME
+  {
+    resource: 'messages',
+    method: 'GET',
+    path: '/messages',
+    summary: 'Retrieve paginated chat messages for a channel room or universal feed.',
+    params: [
+      { name: 'room', in: 'query', type: 'string', description: 'Room channel name (e.g. general, support, random).' },
+      { name: 'limit', in: 'query', type: 'integer', description: 'Number of messages per page (default 20).' },
+      { name: 'cursor', in: 'query', type: 'string', description: 'Base64 cursor for infinite scroll pagination.' }
+    ],
+    bodyExample: null,
+    responseExample: JSON.stringify({
+      data: [
+        {
+          id: 1,
+          room: 'general',
+          sender_id: 1,
+          sender_name: 'Leanne Graham',
+          text: 'Welcome to Playground API live chat simulation! 🚀',
+          created_at: '2026-09-19T06:00:00.000Z'
+        }
+      ],
+      pagination: { page: 1, limit: 20, total: 2, hasNextPage: false }
+    }, null, 2)
+  },
+  {
+    resource: 'messages',
+    method: 'POST',
+    path: '/messages',
+    summary: 'Publish a chat message that persists in session overlay and broadcasts to WebSocket and Socket.io peers.',
+    params: [
+      { name: 'room', in: 'body', type: 'string', description: 'Channel room name (e.g. support).' },
+      { name: 'sender_name', in: 'body', type: 'string', description: 'Display name of sender.' },
+      { name: 'text', in: 'body', type: 'string', description: 'Message body text.' }
+    ],
+    bodyExample: JSON.stringify({
+      room: 'support',
+      sender_name: 'Alice',
+      text: 'How do I test simulated 429 rate limits?'
+    }, null, 2),
+    responseExample: JSON.stringify({
+      id: 'local-550e8400-e29b-41d4-a716-446655440000',
+      room: 'support',
+      sender_id: 1,
+      sender_name: 'Alice',
+      text: 'How do I test simulated 429 rate limits?',
+      created_at: '2026-09-19T07:20:00.000Z'
+    }, null, 2)
+  },
+  {
+    resource: 'messages',
+    method: 'GET',
+    path: '/stream/notifications',
+    summary: 'Server-Sent Events (SSE) notification stream for real-time background status and activity broadcasts.',
+    params: [],
+    bodyExample: null,
+    responseExample: 'event: notification\ndata: {"id":"notif-1","type":"info","title":"System Ready","message":"Playground API live","timestamp":"2026-09-19T07:20:00.000Z"}\n\n'
   }
 ];

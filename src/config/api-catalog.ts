@@ -1033,4 +1033,76 @@ export const apiCatalog: ResourceCatalogDef[] = [
       },
     ],
   },
+  {
+    id: 'messages',
+    name: 'Messages',
+    singular: 'Message',
+    description: 'Real-time chat messages and Server-Sent Events stream notifications.',
+    itemCount: 'Live',
+    baseUrl: `${baseUrl}/messages`,
+    icon: 'ph:chats-circle-bold',
+    prevPage: { title: 'Media & Avatars', href: '/docs/avatars' },
+    nextPage: { title: 'Real-Time Chat & WebSockets', href: '/docs/chat' },
+    endpoints: [
+      {
+        id: 'list-messages',
+        method: 'GET',
+        path: '/messages',
+        title: 'List Chat Messages',
+        description: 'Fetch paginated chat messages for a specific room or universal feed, supporting offset and cursor pagination.',
+        queryParams: [
+          { name: 'room', type: 'string', required: false, defaultVal: 'general', description: 'Chat room channel (e.g. general, support, random).' },
+          { name: 'q', type: 'string', required: false, defaultVal: '', description: 'Full-text search query across message text and sender name.' },
+          { name: 'limit', type: 'integer', required: false, defaultVal: '20', description: 'Page size limit (1 to 100).' },
+          { name: 'cursor', type: 'string', required: false, defaultVal: '', description: 'Cursor token for infinite scroll pagination.' },
+        ],
+        responseExample: {
+          data: [
+            {
+              id: 1,
+              room: 'general',
+              sender_id: 1,
+              sender_name: 'Leanne Graham',
+              text: 'Welcome to the Playground API live chat simulation! 🚀',
+              created_at: '2026-09-19T06:00:00.000Z'
+            }
+          ],
+          pagination: {
+            page: 1,
+            limit: 20,
+            total: 3,
+            hasNextPage: false
+          }
+        }
+      },
+      {
+        id: 'create-message',
+        method: 'POST',
+        path: '/messages',
+        title: 'Post a Chat Message',
+        description: 'Publish a chat message that is persisted in your session sandbox and broadcast live to all connected WebSocket and Socket.io clients.',
+        requestBody: {
+          room: 'support',
+          sender_name: 'Alice',
+          text: 'How do I test simulated 429 rate limits?'
+        },
+        responseExample: {
+          id: 'local-550e8400-e29b-41d4-a716-446655440000',
+          room: 'support',
+          sender_id: 1,
+          sender_name: 'Alice',
+          text: 'How do I test simulated 429 rate limits?',
+          created_at: '2026-09-19T07:20:00.000Z'
+        }
+      },
+      {
+        id: 'stream-notifications',
+        method: 'GET',
+        path: '/stream/notifications',
+        title: 'Server-Sent Events (SSE) Stream',
+        description: 'Establish a text/event-stream connection to receive live system events, notifications, and background status broadcasts.',
+        responseExample: 'event: notification\ndata: {"id":"notif-1","type":"info","title":"System Ready","message":"Playground API live","timestamp":"2026-09-19T07:20:00.000Z"}\n\n'
+      }
+    ],
+  },
 ];
