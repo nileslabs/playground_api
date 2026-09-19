@@ -75,6 +75,33 @@ export function useResilientPosts() {
   });
 }`;
 
+  const rateLimitSample = `// 1. Simulate strict rate limit: 5 requests per 10-second sliding window
+fetch('${publicApiUrl}/posts?_ratelimit=5:10')
+
+// 2. Clean Header-Based Rate Limit for Axios / Fetch
+fetch('${publicApiUrl}/users', {
+  headers: {
+    'X-Simulate-RateLimit': '3:5', // Max 3 requests per 5-second window
+  },
+});
+
+// Response on breach (HTTP 429 Too Many Requests):
+// Headers:
+//   Retry-After: 4
+//   X-RateLimit-Limit: 3
+//   X-RateLimit-Remaining: 0
+//   X-RateLimit-Reset: 1726741234
+// Body:
+// {
+//   "status": 429,
+//   "error": "Too Many Requests",
+//   "message": "Rate limit threshold breached: 3 requests per 5s window.",
+//   "limit": 3,
+//   "windowSeconds": 5,
+//   "retryAfterSeconds": 4,
+//   "resetAt": "2026-09-19T10:20:34.000Z"
+// }`;
+
   const delayAndStatusSample = `// 1. Simulate 1.5-second network latency (0ms to 5,000ms)
 fetch('${publicApiUrl}/posts?_delay=1500')
 
@@ -111,13 +138,13 @@ fetch('${publicApiUrl}/users/999?_delay=2000&_status=404')`;
       <div id="overview" className="space-y-3 border-b border-border-theme pb-6 scroll-mt-20">
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-amber-500/15 text-amber-400 text-xs sm:text-sm font-bold border border-amber-500/30">
           <Icon icon="ph:timer-bold" className="w-4 h-4" />
-          Network Reliability & Chaos Engine
+          Network Reliability & Simulation Engine
         </div>
         <h1 className="text-3xl sm:text-4xl font-extrabold text-text-primary tracking-tight">
-          Network & Chaos Simulation
+          Network, Chaos & Rate-Limit Simulation
         </h1>
         <p className="text-sm sm:text-base text-text-secondary leading-relaxed">
-          Test frontend loading skeletons, TanStack Query exponential retries, SWR revalidation, and React error boundaries with stochastic Chaos Mode (<code className="font-mono text-accent-primary">?_chaos=0.3</code>), artificial latency (<code className="font-mono text-accent-primary">?_delay=1500</code>), and HTTP error status codes (<code className="font-mono text-accent-primary">?_status=500</code>).
+          Test frontend loading skeletons, TanStack Query retries, SWR revalidation, 429 countdown toasts, and client-side throttle queues with stochastic Chaos Mode (<code className="font-mono text-accent-primary">?_chaos=0.3</code>), sliding-window rate limits (<code className="font-mono text-accent-primary">?_ratelimit=5:10</code>), artificial latency (<code className="font-mono text-accent-primary">?_delay=1500</code>), and status codes (<code className="font-mono text-accent-primary">?_status=500</code>).
         </p>
       </div>
 
@@ -146,7 +173,23 @@ fetch('${publicApiUrl}/users/999?_delay=2000&_status=404')`;
         </ul>
       </div>
 
-      {/* 4. Chaos Mode Usage & React Query Integration */}
+      {/* 4. Rate Limit Simulation */}
+      <div id="rate-limit" className="space-y-4 pt-6 border-t border-border-theme scroll-mt-20">
+        <div className="flex items-center gap-2">
+          <span className="p-1.5 rounded-lg bg-rose-500/10 text-rose-400">
+            <Icon icon="ph:gauge-bold" className="w-5 h-5" />
+          </span>
+          <h2 className="text-xl sm:text-2xl font-bold text-text-primary">
+            Sliding-Window Rate-Limit & Quota Violation Simulator
+          </h2>
+        </div>
+        <p className="text-sm sm:text-base text-text-secondary leading-relaxed">
+          Simulate strict API rate limits and test how your UI handles <code className="font-mono text-rose-400">429 Too Many Requests</code> status codes, <code className="font-mono text-accent-primary">Retry-After</code> countdown headers, and client-side throttle queues on demand:
+        </p>
+        <CodeBlock code={rateLimitSample} language="javascript" title="Rate-Limit Simulation Examples (Header & Query Parameter)" />
+      </div>
+
+      {/* 5. Chaos Mode Usage & React Query Integration */}
       <div id="chaos-code" className="space-y-4 pt-6 border-t border-border-theme scroll-mt-20">
         <h2 className="text-xl font-bold text-text-primary">
           Chaos Mode Code Examples
@@ -164,7 +207,7 @@ fetch('${publicApiUrl}/users/999?_delay=2000&_status=404')`;
         </div>
       </div>
 
-      {/* 5. Latency & Deterministic Status Codes */}
+      {/* 6. Latency & Deterministic Status Codes */}
       <div id="delay-status" className="space-y-4 pt-6 border-t border-border-theme scroll-mt-20">
         <h2 className="text-xl font-bold text-text-primary">
           Deterministic Latency & Status Codes
@@ -195,7 +238,7 @@ fetch('${publicApiUrl}/users/999?_delay=2000&_status=404')`;
         <CodeBlock code={delayAndStatusSample} language="javascript" title="Deterministic Delay & Status Code Examples" />
       </div>
 
-      {/* 6. Supported Headers Summary Table */}
+      {/* 7. Supported Headers Summary Table */}
       <div id="headers-reference" className="space-y-3 pt-6 border-t border-border-theme scroll-mt-20">
         <h2 className="text-xl font-bold text-text-primary">
           Simulation Headers & Parameters Reference
@@ -211,6 +254,18 @@ fetch('${publicApiUrl}/users/999?_delay=2000&_status=404')`;
               </tr>
             </thead>
             <tbody className="divide-y divide-border-theme font-medium text-text-primary">
+              <tr>
+                <td className="p-3 font-mono font-bold text-accent-primary">X-Simulate-RateLimit / ?_ratelimit</td>
+                <td className="p-3 font-mono text-text-secondary">String</td>
+                <td className="p-3 font-mono text-rose-400">5:10 or 3:5</td>
+                <td className="p-3 text-text-secondary">Enforces max requests per sliding window seconds. Returns 429 with Retry-After on breach.</td>
+              </tr>
+              <tr>
+                <td className="p-3 font-mono font-bold text-accent-primary">X-RateLimit-Limit / Remaining / Reset</td>
+                <td className="p-3 font-mono text-text-secondary">Response Headers</td>
+                <td className="p-3 font-mono text-emerald-400">5 / 2 / 1726741234</td>
+                <td className="p-3 text-text-secondary">Standard RFC rate-limit headers returned on every request when rate limit simulation is active.</td>
+              </tr>
               <tr>
                 <td className="p-3 font-mono font-bold text-accent-primary">X-Simulate-Chaos / ?_chaos</td>
                 <td className="p-3 font-mono text-text-secondary">Float / Int</td>
