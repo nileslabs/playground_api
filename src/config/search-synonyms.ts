@@ -509,4 +509,18 @@ export const searchSynonyms: IntentSynonymMap = {
     'event beacon simulator',
     'telemetry stream',
   ],
+  '/docs/devtools': [
+    'devtools extension',
+    'chrome extension',
+    'edge extension',
+    'browser extension',
+    'devtools companion panel',
+    'playground api extension',
+    'f12 devtools mock',
+    'latency slider extension',
+    'error injection extension',
+    'reset sandbox extension',
+    'download extension zip',
+    'chrome web store',
+  ],
 };

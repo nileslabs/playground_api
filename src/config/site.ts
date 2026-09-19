@@ -93,6 +93,7 @@ export const siteConfig = {
       icon: 'ph:download-simple-bold',
       items: [
         { title: 'Official TypeScript SDK', href: '/docs/sdk', badge: 'v1.0', icon: 'simple-icons:typescript' },
+        { title: 'Browser DevTools Extension', href: '/docs/devtools', badge: 'Chrome/Edge', icon: 'ph:browsers-bold' },
         { title: 'OpenAPI 3.0 Spec', href: '/docs/collections/openapi', icon: 'ph:file-code-bold' },
         { title: 'Postman Collection', href: '/docs/collections/postman', icon: 'ph:paper-plane-tilt-bold' },
         { title: 'Bruno Collection', href: '/docs/collections/bruno', icon: 'ph:brackets-curly-bold' },
