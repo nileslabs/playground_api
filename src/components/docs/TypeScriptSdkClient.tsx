@@ -139,6 +139,32 @@ return {
 };`,
   },
   {
+    id: 'file-uploads',
+    title: 'Cloud CDN File Uploads',
+    description: 'Upload files to Cloud CDN sandbox with progress tracking and category organization.',
+    code: `const api = new PlaygroundAPI.PlaygroundClient({
+  apiUrl: '${config.apiUrl}'
+});
+
+// 1. Create a simulated sample file (Blob/File in browser)
+const sampleContent = new Blob(['Hello Playground API Sandbox!'], { type: 'text/plain' });
+const sampleFile = new File([sampleContent], 'welcome_note.txt', { type: 'text/plain' });
+
+// 2. Upload with category and progress callback
+const uploadRes = await api.uploads.upload(sampleFile, {
+  category: 'documents',
+  onProgress: (percent) => console.log(\`Upload: \${percent}%\`)
+});
+
+// 3. List active uploads in this sandbox
+const listRes = await api.uploads.list({ category: 'documents' });
+
+return {
+  uploadedFile: uploadRes,
+  activeDocuments: listRes.data
+};`,
+  },
+  {
     id: 'session-reset',
     title: 'Reset Session Sandbox',
     description: 'Purge all session mutations and restore pristine baseline mock data.',

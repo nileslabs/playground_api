@@ -658,3 +658,45 @@ export interface Customer {
   metadata?: Record<string, unknown>;
   created_at?: string;
 }
+
+// File Uploads & Cloud Storage Sandbox Types
+export interface UploadedFile {
+  id: string;
+  filename: string;
+  mimetype: string;
+  sizeBytes: number;
+  category: 'avatars' | 'documents' | 'products' | 'general' | string;
+  url: string;
+  secure_url: string;
+  public_id: string;
+  format?: string;
+  dimensions?: {
+    width: number;
+    height: number;
+  } | null;
+  description?: string | null;
+  tags?: string[];
+  created_at: string;
+  _sandbox?: 'created' | 'updated';
+}
+
+export interface UploadFileResult {
+  filename: string;
+  status: 'success' | 'rejected';
+  file?: UploadedFile;
+  code?: 'PROHIBITED_FILE_TYPE' | 'FILE_TOO_LARGE' | 'QUOTA_EXCEEDED' | 'PROCESSING_ERROR' | string;
+  error?: string;
+}
+
+export interface BulkUploadSummary {
+  total: number;
+  successful: number;
+  failed: number;
+}
+
+export interface BulkUploadResponse {
+  success: boolean;
+  summary: BulkUploadSummary;
+  results: UploadFileResult[];
+}
+

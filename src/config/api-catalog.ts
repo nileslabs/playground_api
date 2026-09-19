@@ -1492,4 +1492,110 @@ export const apiCatalog: ResourceCatalogDef[] = [
       }
     ]
   },
+  {
+    id: 'uploads',
+    name: 'File Uploads & Cloud Storage',
+    singular: 'Upload',
+    description: 'Multipart/form-data single and bulk file upload sandbox with magic byte sniffing and Cloudinary CDN URLs.',
+    itemCount: 'Dynamic',
+    baseUrl: `${baseUrl}/uploads`,
+    icon: 'ph:cloud-arrow-up-bold',
+    endpoints: [
+      {
+        id: 'upload-single',
+        method: 'POST',
+        path: '/uploads',
+        title: 'Upload Single File',
+        description: 'Upload a single multipart/form-data file (max 5 MB) to the simulated Cloud CDN.',
+        responseExample: {
+          success: true,
+          data: {
+            id: 'up_d98f7e2a-1b4c-4e89-8b01-123456789abc',
+            original_name: 'profile_picture.png',
+            category: 'avatars',
+            mime_type: 'image/png',
+            size_bytes: 245760,
+            size_formatted: '240.0 KB',
+            url: 'https://res.cloudinary.com/boc5g8ph/image/upload/v1726744800/playground_api/uploads/avatars/ident_xyz/profile_picture.png',
+            created_at: '2026-09-19T11:45:00.000Z'
+          }
+        }
+      },
+      {
+        id: 'upload-bulk',
+        method: 'POST',
+        path: '/uploads/bulk',
+        title: 'Upload Bulk Files',
+        description: 'Upload multiple files simultaneously (max 25 MB batch) with itemized per-file results.',
+        responseExample: {
+          success: true,
+          summary: {
+            total: 3,
+            successful: 2,
+            failed: 1
+          },
+          results: [
+            {
+              original_name: 'contract.pdf',
+              status: 'success',
+              id: 'up_a1b2c3d4-e5f6-7890-abcd-112233445566',
+              category: 'documents',
+              mime_type: 'application/pdf',
+              size_bytes: 1048576,
+              size_formatted: '1.0 MB',
+              url: 'https://res.cloudinary.com/boc5g8ph/image/upload/v1726744800/playground_api/uploads/documents/ident_xyz/contract.pdf',
+              created_at: '2026-09-19T11:46:00.000Z'
+            },
+            {
+              original_name: 'script.sh',
+              status: 'rejected',
+              error: 'Executable and script file uploads are strictly prohibited for security reasons.',
+              code: 'PROHIBITED_FILE_TYPE'
+            }
+          ]
+        }
+      },
+      {
+        id: 'list-uploads',
+        method: 'GET',
+        path: '/uploads',
+        title: 'List Uploaded Files',
+        description: 'List all uploaded files in your session sandbox with optional category filter.',
+        queryParams: [
+          {
+            name: 'category',
+            type: 'string',
+            required: false,
+            description: 'Filter files by category (e.g. avatars, documents, attachments, receipts).'
+          }
+        ],
+        responseExample: {
+          success: true,
+          data: [
+            {
+              id: 'up_d98f7e2a-1b4c-4e89-8b01-123456789abc',
+              original_name: 'profile_picture.png',
+              category: 'avatars',
+              mime_type: 'image/png',
+              size_bytes: 245760,
+              size_formatted: '240.0 KB',
+              url: 'https://res.cloudinary.com/boc5g8ph/image/upload/v1726744800/playground_api/uploads/avatars/ident_xyz/profile_picture.png',
+              created_at: '2026-09-19T11:45:00.000Z'
+            }
+          ]
+        }
+      },
+      {
+        id: 'delete-upload',
+        method: 'DELETE',
+        path: '/uploads/:id',
+        title: 'Delete Uploaded File',
+        description: 'Delete an uploaded file from sandbox storage and Cloudinary CDN.',
+        responseExample: {
+          success: true,
+          message: 'File successfully deleted.'
+        }
+      }
+    ]
+  },
 ];

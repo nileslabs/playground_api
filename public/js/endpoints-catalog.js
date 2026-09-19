@@ -1099,5 +1099,97 @@ window.ALL_ENDPOINTS_CATALOG = [
       url: 'https://playground.nileslabs.com/checkout/pay/cs_test_session_xyz789',
       created_at: '2026-09-19T10:57:00.000Z'
     }, null, 2)
+  },
+  // UPLOADS & CLOUD STORAGE
+  {
+    resource: 'uploads',
+    method: 'POST',
+    path: '/uploads',
+    summary: 'Upload a single multipart/form-data file (max 5 MB) to Cloud CDN.',
+    params: [
+      { name: 'file', in: 'formData', type: 'file', description: 'The binary file payload.' },
+      { name: 'category', in: 'formData', type: 'string', description: 'Optional folder category (avatars, documents, attachments).' }
+    ],
+    bodyExample: null,
+    responseExample: JSON.stringify({
+      success: true,
+      data: {
+        id: 'up_d98f7e2a-1b4c-4e89-8b01-123456789abc',
+        original_name: 'profile_picture.png',
+        category: 'avatars',
+        mime_type: 'image/png',
+        size_bytes: 245760,
+        size_formatted: '240.0 KB',
+        url: 'https://res.cloudinary.com/boc5g8ph/image/upload/v1726744800/playground_api/uploads/avatars/ident_xyz/profile_picture.png',
+        created_at: '2026-09-19T11:45:00.000Z'
+      }
+    }, null, 2)
+  },
+  {
+    resource: 'uploads',
+    method: 'POST',
+    path: '/uploads/bulk',
+    summary: 'Upload multiple files simultaneously (max 25 MB total) with itemized results.',
+    params: [
+      { name: 'files', in: 'formData', type: 'file[]', description: 'Multiple binary file attachments.' },
+      { name: 'category', in: 'formData', type: 'string', description: 'Optional folder category.' }
+    ],
+    bodyExample: null,
+    responseExample: JSON.stringify({
+      success: true,
+      summary: { total: 2, successful: 2, failed: 0 },
+      results: [
+        {
+          original_name: 'contract.pdf',
+          status: 'success',
+          id: 'up_a1b2c3d4-e5f6-7890-abcd-112233445566',
+          category: 'documents',
+          mime_type: 'application/pdf',
+          size_bytes: 1048576,
+          size_formatted: '1.0 MB',
+          url: 'https://res.cloudinary.com/boc5g8ph/image/upload/v1726744800/playground_api/uploads/documents/ident_xyz/contract.pdf',
+          created_at: '2026-09-19T11:46:00.000Z'
+        }
+      ]
+    }, null, 2)
+  },
+  {
+    resource: 'uploads',
+    method: 'GET',
+    path: '/uploads',
+    summary: 'List uploaded files in current sandbox identity.',
+    params: [
+      { name: 'category', in: 'query', type: 'string', description: 'Filter files by category.' }
+    ],
+    bodyExample: null,
+    responseExample: JSON.stringify({
+      success: true,
+      data: [
+        {
+          id: 'up_d98f7e2a-1b4c-4e89-8b01-123456789abc',
+          original_name: 'profile_picture.png',
+          category: 'avatars',
+          mime_type: 'image/png',
+          size_bytes: 245760,
+          size_formatted: '240.0 KB',
+          url: 'https://res.cloudinary.com/boc5g8ph/image/upload/v1726744800/playground_api/uploads/avatars/ident_xyz/profile_picture.png',
+          created_at: '2026-09-19T11:45:00.000Z'
+        }
+      ]
+    }, null, 2)
+  },
+  {
+    resource: 'uploads',
+    method: 'DELETE',
+    path: '/uploads/:id',
+    summary: 'Delete an uploaded file from sandbox storage and Cloudinary CDN.',
+    params: [
+      { name: 'id', in: 'path', type: 'string', description: 'Upload ID to delete.' }
+    ],
+    bodyExample: null,
+    responseExample: JSON.stringify({
+      success: true,
+      message: 'File successfully deleted.'
+    }, null, 2)
   }
 ];

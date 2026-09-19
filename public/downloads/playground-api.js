@@ -250,6 +250,39 @@ var PlaygroundAPI = (function () {
     create(payload, options) { return this.client.request('/customers', { method: 'POST', body: payload, ...options }); }
   }
 
+  class UploadsResource {
+    constructor(client) { this.client = client; }
+    upload(file, options = {}) {
+      const formData = new FormData();
+      if (options.filename && typeof file === 'object' && !(file instanceof File)) {
+        formData.append('file', file, options.filename);
+      } else {
+        formData.append('file', file);
+      }
+      if (options.category) formData.append('category', options.category);
+      if (options.description) formData.append('description', options.description);
+      const { filename, category, description, tags, ...requestOpts } = options;
+      return this.client.request('/uploads', { method: 'POST', body: formData, ...requestOpts });
+    }
+    uploadBulk(files, options = {}) {
+      const formData = new FormData();
+      files.forEach((f, idx) => {
+        if (options.filename && typeof f === 'object' && !(f instanceof File)) {
+          formData.append('files', f, (options.filename || 'file') + '_' + idx);
+        } else {
+          formData.append('files', f);
+        }
+      });
+      if (options.category) formData.append('category', options.category);
+      if (options.description) formData.append('description', options.description);
+      const { filename, category, description, tags, ...requestOpts } = options;
+      return this.client.request('/uploads/bulk', { method: 'POST', body: formData, ...requestOpts });
+    }
+    list(params, options) { return this.client.request('/uploads', { method: 'GET', params, ...options }); }
+    get(id, options) { return this.client.request('/uploads/' + id, { method: 'GET', ...options }); }
+    delete(id, options) { return this.client.request('/uploads/' + id, { method: 'DELETE', ...options }); }
+  }
+
   class PlaygroundClient {
     constructor(options = {}) {
       this.apiUrl = options.apiUrl || 'http://localhost:3000/api/v1';
@@ -281,6 +314,7 @@ var PlaygroundAPI = (function () {
       this.payments = new PaymentsResource(this);
       this.checkout = new CheckoutResource(this);
       this.customers = new CustomersResource(this);
+      this.uploads = new UploadsResource(this);
       this._graphqlResource = new GraphQLResource(this);
     }
 
@@ -410,7 +444,8 @@ var PlaygroundAPI = (function () {
     InboxResource,
     PaymentsResource,
     CheckoutResource,
-    CustomersResource
+    CustomersResource,
+    UploadsResource
   };
 })();
 
