@@ -41,7 +41,7 @@ export default function BlogIndexPage() {
           </h1>
 
           <p className="text-base sm:text-lg text-text-secondary leading-relaxed">
-            A 12-part technical handbook on stateful mock APIs, React CRUD workflows, GraphQL mutations, JWT authentication loops, and network resilience.
+            A comprehensive {posts.length}-part technical masterclass on stateful mock APIs, WebSockets, Webhooks, File Uploads, RBAC, GraphQL Subscriptions, Payment Simulation, and frontend resilience.
           </p>
         </div>
 
