@@ -700,3 +700,23 @@ export interface BulkUploadResponse {
   results: UploadFileResult[];
 }
 
+// GraphQL Subscriptions (graphql-ws) Types
+export interface GraphQLSubscriptionHandlers<T = any> {
+  onNext?: (data: T) => void;
+  onError?: (err: unknown) => void;
+  onComplete?: () => void;
+}
+
+export interface GraphQLResourceClient {
+  query<T = any>(
+    query: string,
+    variables?: Record<string, unknown>,
+    options?: Record<string, unknown>
+  ): Promise<{ data?: T; errors?: Array<{ message: string; locations?: unknown[]; path?: string[] }> }>;
+  subscribe<T = any>(
+    query: string,
+    variables?: Record<string, unknown>,
+    handlers?: GraphQLSubscriptionHandlers<T>
+  ): () => void;
+}
+

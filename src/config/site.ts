@@ -78,6 +78,7 @@ export const siteConfig = {
       icon: 'simple-icons:graphql',
       items: [
         { title: 'GraphiQL IDE & Explorer', href: '/docs/graphql', icon: 'ph:planet-bold' },
+        { title: 'Live Subscriptions (WS)', href: '/docs/graphql/subscriptions', badge: 'Live WS', icon: 'ph:broadcast-bold' },
         { title: 'Posts GraphQL Schema', href: '/docs/graphql/posts', icon: 'ph:newspaper-bold' },
         { title: 'Comments GraphQL Schema', href: '/docs/graphql/comments', icon: 'ph:chat-circle-text-bold' },
         { title: 'Users GraphQL Schema', href: '/docs/graphql/users', icon: 'ph:users-bold' },

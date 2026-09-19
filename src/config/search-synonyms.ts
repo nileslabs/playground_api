@@ -462,4 +462,17 @@ export const searchSynonyms: IntentSynonymMap = {
     'simulate upload latency',
     'playwright file upload',
   ],
+  '/docs/graphql/subscriptions': [
+    'graphql subscriptions',
+    'graphql-ws',
+    'websocket graphql',
+    'apollo client subscriptions',
+    'urql subscriptions',
+    'realtime graphql sandbox',
+    'postAdded subscription',
+    'commentAdded subscription',
+    'todoUpdated subscription',
+    'graphql live queries',
+    'reactive mock api',
+  ],
 };
