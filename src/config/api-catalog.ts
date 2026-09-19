@@ -1223,4 +1223,122 @@ export const apiCatalog: ResourceCatalogDef[] = [
       }
     ],
   },
+  {
+    id: 'inbox',
+    name: 'Virtual Inbox & SMS',
+    singular: 'Inbox Message',
+    description: 'Virtual in-browser mailbox and SMS receiver for inspecting transactional emails, OTP verification codes, and Cloudinary attachments in sandbox mode.',
+    itemCount: 'Dynamic',
+    baseUrl: `${baseUrl}/inbox`,
+    icon: 'ph:mailbox-bold',
+    endpoints: [
+      {
+        id: 'send-email',
+        method: 'POST',
+        path: '/emails/send',
+        title: 'Send Virtual Transactional Email',
+        description: 'Dispatches a templated or raw HTML email into the current sandbox session inbox with optional Cloudinary CDN attachments and variable interpolation.',
+        requestBody: {
+          to: 'developer@example.com',
+          template: 'welcome-verification',
+          data: {
+            name: 'Alex Developer',
+            otp: '482910',
+            verification_link: 'https://playground.nileslabs.com/docs/inbox?code=482910',
+            expires_in_minutes: 15
+          }
+        },
+        responseExample: {
+          success: true,
+          email: {
+            id: 'local-msg-7f3b8912-45e6-42d1-b6a8-23456789abcd',
+            to: 'developer@example.com',
+            from: 'no-reply@playground.nileslabs.com',
+            subject: 'Verify your Playground API account',
+            html: '<!DOCTYPE html><html><body>...</body></html>',
+            template: 'welcome-verification',
+            otp_code: '482910',
+            created_at: '2026-09-19T07:35:00.000Z'
+          }
+        }
+      },
+      {
+        id: 'list-emails',
+        method: 'GET',
+        path: '/emails',
+        title: 'List Sent Emails',
+        description: 'Retrieves all sent and captured emails for the active identity sandbox.',
+        responseExample: {
+          data: [
+            {
+              id: 'local-msg-7f3b8912-45e6-42d1-b6a8-23456789abcd',
+              to: 'developer@example.com',
+              from: 'no-reply@playground.nileslabs.com',
+              subject: 'Verify your Playground API account',
+              otp_code: '482910',
+              created_at: '2026-09-19T07:35:00.000Z'
+            }
+          ]
+        }
+      },
+      {
+        id: 'send-sms',
+        method: 'POST',
+        path: '/sms/send',
+        title: 'Send Simulated SMS',
+        description: 'Sends a virtual SMS message to a phone number. Automatically extracts numeric OTP verification codes.',
+        requestBody: {
+          to: '+1 (555) 839-2049',
+          body: 'Your Playground API verification code is 582910. Valid for 10 minutes.'
+        },
+        responseExample: {
+          success: true,
+          sms: {
+            id: 'local-sms-8f3b8912-45e6-42d1-b6a8-23456789abcd',
+            to: '+1 (555) 839-2049',
+            from: '+1 (555) 019-9000',
+            body: 'Your Playground API verification code is 582910. Valid for 10 minutes.',
+            otp_code: '582910',
+            created_at: '2026-09-19T07:36:00.000Z'
+          }
+        }
+      },
+      {
+        id: 'list-inbox',
+        method: 'GET',
+        path: '/inbox',
+        title: 'List Unified Inbox (Emails & SMS)',
+        description: 'Returns all communication items in chronological order with optional ?type=email or ?type=sms filter.',
+        queryParams: [
+          { name: 'type', type: 'string', required: false, defaultVal: '-', description: 'Filter by message type: email or sms.' },
+          { name: 'to', type: 'string', required: false, defaultVal: '-', description: 'Filter by recipient email or phone number.' },
+          { name: 'q', type: 'string', required: false, defaultVal: '-', description: 'Search term across subject, body, or OTP code.' }
+        ],
+        responseExample: {
+          data: [
+            {
+              id: 'local-msg-7f3b8912-45e6-42d1-b6a8-23456789abcd',
+              type: 'email',
+              to: 'developer@example.com',
+              from: 'no-reply@playground.nileslabs.com',
+              subject: 'Verify your Playground API account',
+              otp_code: '482910',
+              created_at: '2026-09-19T07:35:00.000Z'
+            }
+          ]
+        }
+      },
+      {
+        id: 'clear-inbox',
+        method: 'DELETE',
+        path: '/inbox',
+        title: 'Clear Inbox & Purge Cloudinary Assets',
+        description: 'Purges all virtual email and SMS records for the active identity and cleans up any uploaded Cloudinary email attachments.',
+        responseExample: {
+          success: true,
+          message: 'Inbox cleared successfully.'
+        }
+      }
+    ]
+  },
 ];

@@ -175,6 +175,51 @@ var PlaygroundAPI = (function () {
     }
   }
 
+  class EmailsResource {
+    constructor(client) { this.client = client; }
+    async send(payload, options) {
+      const res = await this.client.request('/emails/send', { method: 'POST', body: payload, ...options });
+      return (res && res.email) || res;
+    }
+    async list(options) {
+      const res = await this.client.request('/emails', { method: 'GET', ...options });
+      return Array.isArray(res) ? res : ((res && res.data) || []);
+    }
+    get(id, options) { return this.client.request('/emails/' + id, { method: 'GET', ...options }); }
+    delete(id, options) { return this.client.request('/emails/' + id, { method: 'DELETE', ...options }); }
+    async listTemplates(options) {
+      const res = await this.client.request('/emails/templates', { method: 'GET', ...options });
+      return Array.isArray(res) ? res : ((res && res.data) || []);
+    }
+    async createTemplate(template, options) {
+      const res = await this.client.request('/emails/templates', { method: 'POST', body: template, ...options });
+      return (res && res.template) || res;
+    }
+  }
+
+  class SmsResource {
+    constructor(client) { this.client = client; }
+    async send(payload, options) {
+      const res = await this.client.request('/sms/send', { method: 'POST', body: payload, ...options });
+      return (res && res.sms) || res;
+    }
+    async list(options) {
+      const res = await this.client.request('/sms', { method: 'GET', ...options });
+      return Array.isArray(res) ? res : ((res && res.data) || []);
+    }
+    get(id, options) { return this.client.request('/sms/' + id, { method: 'GET', ...options }); }
+    delete(id, options) { return this.client.request('/sms/' + id, { method: 'DELETE', ...options }); }
+  }
+
+  class InboxResource {
+    constructor(client) { this.client = client; }
+    async list(filters, options) {
+      const res = await this.client.request('/inbox', { method: 'GET', params: filters, ...options });
+      return Array.isArray(res) ? res : ((res && res.data) || []);
+    }
+    clear(options) { return this.client.request('/inbox', { method: 'DELETE', ...options }); }
+  }
+
   class PlaygroundClient {
     constructor(options = {}) {
       this.apiUrl = options.apiUrl || 'http://localhost:3000/api/v1';
@@ -199,6 +244,9 @@ var PlaygroundAPI = (function () {
       this.messages = new MessagesResource(this);
       this.session = new SessionResource(this);
       this.realtime = new RealtimeResource(this);
+      this.emails = new EmailsResource(this);
+      this.sms = new SmsResource(this);
+      this.inbox = new InboxResource(this);
       this._graphqlResource = new GraphQLResource(this);
     }
 
@@ -225,7 +273,7 @@ var PlaygroundAPI = (function () {
         jwtExpiry
       } = options;
 
-      let cleanEndpoint = endpoint.startsWith('/') ? endpoint : '/' + endpoint;
+      let cleanEndpoint = endpoint.startsWith('/') ? endpoint : ('/' + endpoint);
       const cleanBaseUrl = this.apiUrl.replace(/\/$/, '');
       let url = cleanBaseUrl + cleanEndpoint;
 
@@ -237,9 +285,7 @@ var PlaygroundAPI = (function () {
           }
         }
         const qs = searchParams.toString();
-        if (qs) {
-          url += (url.includes('?') ? '&' : '?') + qs;
-        }
+        if (qs) url += (url.includes('?') ? '&' : '?') + qs;
       }
 
       const headers = {
@@ -253,14 +299,10 @@ var PlaygroundAPI = (function () {
       }
 
       const effectiveIdentity = identityToken || this.identityToken;
-      if (effectiveIdentity) {
-        headers['X-Playground-Identity'] = effectiveIdentity;
-      }
+      if (effectiveIdentity) headers['X-Playground-Identity'] = effectiveIdentity;
 
       const effectiveAuth = authToken || this.authToken;
-      if (effectiveAuth) {
-        headers['Authorization'] = 'Bearer ' + effectiveAuth;
-      }
+      if (effectiveAuth) headers['Authorization'] = 'Bearer ' + effectiveAuth;
 
       const effDelay = delay !== undefined ? delay : this.simulation.delay;
       if (effDelay !== undefined && effDelay > 0) headers['X-Simulate-Delay'] = String(effDelay);
@@ -324,7 +366,10 @@ var PlaygroundAPI = (function () {
     MessagesResource,
     SessionResource,
     GraphQLResource,
-    RealtimeResource
+    RealtimeResource,
+    EmailsResource,
+    SmsResource,
+    InboxResource
   };
 })();
 

@@ -872,5 +872,120 @@ window.ALL_ENDPOINTS_CATALOG = [
       ],
       total: 1
     }, null, 2)
+  },
+  // INBOX & COMMUNICATION (Feature 27)
+  {
+    resource: 'inbox',
+    method: 'POST',
+    path: '/emails/send',
+    summary: 'Send a virtual transactional email with template interpolation and optional Cloudinary attachments.',
+    params: [
+      { name: 'to', in: 'body', type: 'string', description: 'Recipient email address.' },
+      { name: 'template', in: 'body', type: 'string', description: 'Template ID (e.g. welcome-verification, password-reset, invoice-receipt, 2fa-code).' },
+      { name: 'data', in: 'body', type: 'object', description: 'Variables to interpolate into template.' }
+    ],
+    bodyExample: JSON.stringify({
+      to: 'developer@example.com',
+      template: 'welcome-verification',
+      data: {
+        name: 'Alex Developer',
+        otp: '482910',
+        verification_link: 'https://playground.nileslabs.com/docs/inbox?code=482910',
+        expires_in_minutes: 15
+      }
+    }, null, 2),
+    responseExample: JSON.stringify({
+      success: true,
+      email: {
+        id: 'local-msg-7f3b8912-45e6-42d1-b6a8-23456789abcd',
+        to: 'developer@example.com',
+        from: 'no-reply@playground.nileslabs.com',
+        subject: 'Verify your Playground API account',
+        template: 'welcome-verification',
+        otp_code: '482910',
+        created_at: '2026-09-19T07:35:00.000Z'
+      }
+    }, null, 2)
+  },
+  {
+    resource: 'inbox',
+    method: 'GET',
+    path: '/emails',
+    summary: 'List all emails captured in current sandbox session.',
+    params: [],
+    bodyExample: null,
+    responseExample: JSON.stringify({
+      data: [
+        {
+          id: 'local-msg-7f3b8912-45e6-42d1-b6a8-23456789abcd',
+          to: 'developer@example.com',
+          from: 'no-reply@playground.nileslabs.com',
+          subject: 'Verify your Playground API account',
+          otp_code: '482910',
+          created_at: '2026-09-19T07:35:00.000Z'
+        }
+      ]
+    }, null, 2)
+  },
+  {
+    resource: 'inbox',
+    method: 'POST',
+    path: '/sms/send',
+    summary: 'Send a simulated SMS message and automatically parse OTP codes.',
+    params: [
+      { name: 'to', in: 'body', type: 'string', description: 'Recipient phone number.' },
+      { name: 'body', in: 'body', type: 'string', description: 'SMS message text.' }
+    ],
+    bodyExample: JSON.stringify({
+      to: '+1 (555) 839-2049',
+      body: 'Your verification code is 582910. Valid for 10 minutes.'
+    }, null, 2),
+    responseExample: JSON.stringify({
+      success: true,
+      sms: {
+        id: 'local-sms-8f3b8912-45e6-42d1-b6a8-23456789abcd',
+        to: '+1 (555) 839-2049',
+        from: '+1 (555) 019-9000',
+        body: 'Your verification code is 582910. Valid for 10 minutes.',
+        otp_code: '582910',
+        created_at: '2026-09-19T07:36:00.000Z'
+      }
+    }, null, 2)
+  },
+  {
+    resource: 'inbox',
+    method: 'GET',
+    path: '/inbox',
+    summary: 'Retrieve unified inbox items (emails and SMS) for active sandbox session.',
+    params: [
+      { name: 'type', in: 'query', type: 'string', description: 'Filter by type: email or sms.' },
+      { name: 'to', in: 'query', type: 'string', description: 'Filter by recipient.' }
+    ],
+    bodyExample: null,
+    responseExample: JSON.stringify({
+      data: [
+        {
+          id: 'local-msg-7f3b8912-45e6-42d1-b6a8-23456789abcd',
+          type: 'email',
+          to: 'developer@example.com',
+          from: 'no-reply@playground.nileslabs.com',
+          subject: 'Verify your Playground API account',
+          otp_code: '482910',
+          created_at: '2026-09-19T07:35:00.000Z'
+        }
+      ]
+    }, null, 2)
+  },
+  {
+    resource: 'inbox',
+    method: 'DELETE',
+    path: '/inbox',
+    summary: 'Clear all virtual emails, SMS messages, and Cloudinary email attachments in session sandbox.',
+    params: [],
+    bodyExample: null,
+    responseExample: JSON.stringify({
+      success: true,
+      message: 'Inbox cleared successfully.'
+    }, null, 2)
   }
 ];
