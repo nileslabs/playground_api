@@ -269,7 +269,7 @@ export function LiveInboxViewer() {
   return (
     <div className="space-y-6">
       {/* Top Header Card */}
-      <div className="relative overflow-hidden rounded-2xl border border-slate-200/80 dark:border-slate-800/80 bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 p-6 md:p-8 text-white shadow-xl">
+      <div className="relative overflow-hidden rounded-2xl border border-slate-200/80 dark:border-slate-800/80 bg-linear-to-br from-slate-900 via-indigo-950 to-slate-900 p-6 md:p-8 text-white shadow-xl">
         <div className="absolute top-0 right-0 -mt-8 -mr-8 w-64 h-64 bg-indigo-500/20 rounded-full blur-3xl pointer-events-none" />
         <div className="absolute bottom-0 left-1/3 -mb-12 w-64 h-64 bg-purple-500/10 rounded-full blur-3xl pointer-events-none" />
 
@@ -319,7 +319,7 @@ export function LiveInboxViewer() {
       </div>
 
       {/* Main Split-Pane Workspace */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 min-h-[680px]">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 min-h-170">
         {/* Left Column: Messages List (5 Cols) */}
         <div className="lg:col-span-5 flex flex-col rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 overflow-hidden shadow-sm">
           {/* List Header & Filters */}
@@ -392,7 +392,7 @@ export function LiveInboxViewer() {
           </div>
 
           {/* List Items Scroll Area */}
-          <div className="flex-1 overflow-y-auto divide-y divide-slate-100 dark:divide-slate-800/60 max-h-[580px]">
+          <div className="flex-1 overflow-y-auto divide-y divide-slate-100 dark:divide-slate-800/60 max-h-145">
             {filteredItems.length === 0 ? (
               <div className="p-8 text-center flex flex-col items-center justify-center h-full">
                 <div className="w-12 h-12 rounded-2xl bg-indigo-50 dark:bg-indigo-950/40 text-indigo-500 flex items-center justify-center mb-3">
@@ -557,7 +557,7 @@ export function LiveInboxViewer() {
 
                 {/* OTP Quick Extract Banner */}
                 {selectedItem.otp_code && (
-                  <div className="p-3.5 rounded-xl bg-gradient-to-r from-amber-500/10 via-amber-500/5 to-transparent border border-amber-500/30 flex items-center justify-between gap-4">
+                  <div className="p-3.5 rounded-xl bg-linear-to-r from-amber-500/10 via-amber-500/5 to-transparent border border-amber-500/30 flex items-center justify-between gap-4">
                     <div className="flex items-center gap-3">
                       <div className="w-9 h-9 rounded-xl bg-amber-500/20 text-amber-600 dark:text-amber-400 flex items-center justify-center shrink-0">
                         <Icon icon="lucide:key" className="w-5 h-5" />
@@ -702,7 +702,7 @@ export function LiveInboxViewer() {
                 {activeTab === 'html' && selectedItem.type === 'email' && (
                   <div className="flex justify-center h-full">
                     <div className={`transition-all duration-300 bg-white rounded-xl shadow-md border border-slate-200 overflow-hidden ${
-                      previewDevice === 'mobile' ? 'w-[375px] h-[550px]' : 'w-full h-full min-h-[480px]'
+                      previewDevice === 'mobile' ? 'w-93.75 h-137.5' : 'w-full h-full min-h-120'
                     }`}>
                       <iframe
                         srcDoc={selectedItem.html || '<p>No HTML body</p>'}
@@ -962,7 +962,7 @@ export function LiveInboxViewer() {
               </button>
             </div>
 
-            <div className="flex flex-col items-center justify-center p-6 bg-slate-50 dark:bg-slate-800/40 rounded-xl min-h-[220px]">
+            <div className="flex flex-col items-center justify-center p-6 bg-slate-50 dark:bg-slate-800/40 rounded-xl min-h-55">
               <Icon icon="lucide:file-check" className="w-16 h-16 text-indigo-500 mb-3" />
               <p className="text-xs font-medium text-slate-700 dark:text-slate-300">
                 Cloudinary CDN Hosted Asset

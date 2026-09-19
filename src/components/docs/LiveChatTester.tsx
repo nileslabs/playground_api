@@ -358,7 +358,7 @@ export function LiveChatTester() {
                     isMe
                       ? 'bg-cyan-600 text-white rounded-br-none'
                       : isBot
-                      ? 'bg-gradient-to-r from-amber-950/60 to-slate-900 border border-amber-500/30 text-slate-200 rounded-bl-none shadow'
+                      ? 'bg-linear-to-r from-amber-950/60 to-slate-900 border border-amber-500/30 text-slate-200 rounded-bl-none shadow'
                       : isSys
                       ? 'bg-slate-800/80 text-cyan-200 border border-slate-700/60'
                       : 'bg-slate-800 text-slate-200 rounded-bl-none border border-slate-700/50'

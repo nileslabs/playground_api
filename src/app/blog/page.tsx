@@ -91,7 +91,7 @@ export default function BlogIndexPage() {
         </section>
 
         {/* Bottom CTA Card */}
-        <section className="p-8 sm:p-12 rounded-3xl border border-accent-primary/30 bg-gradient-to-br from-accent-light/50 via-bg-secondary to-bg-secondary text-center space-y-6 shadow-xl">
+        <section className="p-8 sm:p-12 rounded-3xl border border-accent-primary/30 bg-linear-to-br from-accent-light/50 via-bg-secondary to-bg-secondary text-center space-y-6 shadow-xl">
           <div className="inline-flex p-3 rounded-2xl bg-accent-light text-accent-primary border border-accent-primary/30">
             <Icon icon="ph:lightning-fill" className="w-8 h-8" />
           </div>

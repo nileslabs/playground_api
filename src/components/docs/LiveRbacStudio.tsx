@@ -280,7 +280,7 @@ export function LiveRbacStudio() {
   };
 
   return (
-    <div className="not-prose my-8 rounded-2xl border border-border/80 bg-gradient-to-b from-card/90 to-card/40 backdrop-blur-xl shadow-2xl overflow-hidden">
+    <div className="not-prose my-8 rounded-2xl border border-border/80 bg-linear-to-b from-card/90 to-card/40 backdrop-blur-xl shadow-2xl overflow-hidden">
       {/* Header Bar */}
       <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border/60 bg-muted/30 px-6 py-4">
         <div className="flex items-center gap-3">
@@ -566,7 +566,7 @@ export function LiveRbacStudio() {
                 </div>
               </div>
             ) : (
-              <div className="space-y-3 max-h-[480px] overflow-y-auto pr-1">
+              <div className="space-y-3 max-h-120 overflow-y-auto pr-1">
                 {logs.map((log) => {
                   const isExpanded = expandedLogId === log.id;
                   const isForbidden = log.status === 403;

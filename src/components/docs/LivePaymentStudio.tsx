@@ -555,7 +555,7 @@ export function LivePaymentStudio() {
           {/* Left Column: 3D Credit Card & Preset Quick Buttons */}
           <div className="lg:col-span-6 space-y-5">
             {/* Visual Credit Card Preview */}
-            <div className="relative w-full aspect-[1.586/1] max-w-[420px] mx-auto perspective-1000">
+            <div className="relative w-full aspect-[1.586/1] max-w-105 mx-auto perspective-1000">
               <div
                 className={`relative w-full h-full duration-500 transform-style-3d transition-transform rounded-2xl shadow-xl overflow-hidden ${
                   isFlipped ? 'rotate-y-180' : ''
@@ -592,7 +592,7 @@ export function LivePaymentStudio() {
                   <div className="flex items-center justify-between text-xs">
                     <div>
                       <div className="text-[9px] uppercase tracking-wider text-zinc-400">Cardholder</div>
-                      <div className="font-medium tracking-wide truncate max-w-[170px] uppercase">
+                      <div className="font-medium tracking-wide truncate max-w-42.5 uppercase">
                         {cardHolder || 'CARDHOLDER NAME'}
                       </div>
                     </div>
@@ -916,7 +916,7 @@ export function LivePaymentStudio() {
           {/* Active Checkout Session Simulator Preview */}
           <div className="lg:col-span-6">
             {activeCheckoutSession ? (
-              <div className="p-5 bg-gradient-to-br from-zinc-50 to-zinc-100 dark:from-zinc-900 dark:to-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-2xl space-y-4 shadow-sm">
+              <div className="p-5 bg-linear-to-br from-zinc-50 to-zinc-100 dark:from-zinc-900 dark:to-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-2xl space-y-4 shadow-sm">
                 <div className="flex items-center justify-between border-b border-zinc-200 dark:border-zinc-800 pb-3">
                   <div>
                     <span className="text-[10px] font-mono uppercase tracking-wider text-zinc-400">
@@ -952,7 +952,7 @@ export function LivePaymentStudio() {
                   </div>
                   <div className="flex justify-between text-zinc-600 dark:text-zinc-400">
                     <span>Checkout URL:</span>
-                    <span className="font-mono text-[11px] truncate max-w-[200px]">
+                    <span className="font-mono text-[11px] truncate max-w-50">
                       {activeCheckoutSession.url}
                     </span>
                   </div>

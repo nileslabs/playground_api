@@ -419,7 +419,7 @@ export function LiveGraphqlSubscriptionStudio() {
           </div>
 
           {/* Quick Action Trigger Box */}
-          <div className="p-4 rounded-2xl border border-indigo-200 dark:border-indigo-900/60 bg-gradient-to-br from-indigo-50/60 to-purple-50/60 dark:from-indigo-950/20 dark:to-purple-950/20 space-y-3">
+          <div className="p-4 rounded-2xl border border-indigo-200 dark:border-indigo-900/60 bg-linear-to-br from-indigo-50/60 to-purple-50/60 dark:from-indigo-950/20 dark:to-purple-950/20 space-y-3">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <span className="p-1 rounded-md bg-indigo-600 text-white">
@@ -454,7 +454,7 @@ export function LiveGraphqlSubscriptionStudio() {
         </div>
 
         {/* Right: Live Event Stream Terminal */}
-        <div className="lg:col-span-6 flex flex-col rounded-2xl border border-slate-200 dark:border-slate-800 bg-slate-950 overflow-hidden shadow-lg h-[460px]">
+        <div className="lg:col-span-6 flex flex-col rounded-2xl border border-slate-200 dark:border-slate-800 bg-slate-950 overflow-hidden shadow-lg h-115">
           {/* Terminal Top Bar */}
           <div className="flex items-center justify-between px-4 py-2.5 bg-slate-900 border-b border-slate-800 text-xs">
             <div className="flex items-center gap-2 text-slate-300 font-semibold">

@@ -250,7 +250,7 @@ export function TypeScriptSdkClient() {
   return (
     <div className="space-y-12 pb-16">
       {/* Hero Section */}
-      <div className="relative overflow-hidden rounded-2xl border border-slate-700/60 bg-gradient-to-br from-slate-900 via-indigo-950/40 to-slate-900 p-8 sm:p-10 shadow-2xl">
+      <div className="relative overflow-hidden rounded-2xl border border-slate-700/60 bg-linear-to-br from-slate-900 via-indigo-950/40 to-slate-900 p-8 sm:p-10 shadow-2xl">
         <div className="relative z-10 space-y-4">
           <div className="flex flex-wrap items-center gap-2">
             <span className="inline-flex items-center gap-1.5 rounded-full bg-indigo-500/10 border border-indigo-500/30 px-3 py-1 text-xs font-semibold text-indigo-400">
@@ -399,9 +399,9 @@ export function TypeScriptSdkClient() {
               )}
             </div>
 
-            <div className="flex-1 rounded-xl border border-slate-800/80 bg-slate-900/90 p-4 font-mono text-xs overflow-auto max-h-[380px]">
+            <div className="flex-1 rounded-xl border border-slate-800/80 bg-slate-900/90 p-4 font-mono text-xs overflow-auto max-h-95">
               {isRunning && (
-                <div className="flex h-full min-h-[200px] flex-col items-center justify-center space-y-2 text-slate-400">
+                <div className="flex h-full min-h-50 flex-col items-center justify-center space-y-2 text-slate-400">
                   <Icon icon="line-md:loading-loop" className="h-6 w-6 text-indigo-400" />
                   <span>Dispatching SDK request...</span>
                 </div>
@@ -424,7 +424,7 @@ export function TypeScriptSdkClient() {
               )}
 
               {!isRunning && !runnerError && !runnerOutput && (
-                <div className="flex h-full min-h-[200px] flex-col items-center justify-center space-y-1.5 text-slate-500">
+                <div className="flex h-full min-h-50 flex-col items-center justify-center space-y-1.5 text-slate-500">
                   <Icon icon="ph:cursor-click-bold" className="h-8 w-8 text-slate-600" />
                   <span>Click &quot;Run in Browser&quot; above to execute snippet</span>
                 </div>
