@@ -49,6 +49,7 @@ export const siteConfig = {
       items: [
         { title: 'Interactive API Studio', href: '/docs/studio', icon: 'ph:play-circle-bold' },
         { title: 'Real-Time Chat & WebSockets', href: '/docs/chat', icon: 'ph:chats-circle-bold' },
+        { title: 'Outgoing Webhooks Dispatcher', href: '/docs/webhooks', icon: 'ph:paper-plane-tilt-bold' },
         { title: 'Network & Chaos Simulation', href: '/docs/simulation', icon: 'ph:timer-bold' },
         { title: 'Snapshot Import & Export', href: '/docs/export-import', icon: 'ph:cloud-arrow-up-bold' },
         { title: 'Shareable Sandbox & QR Sync', href: '/docs/sandbox-sync', icon: 'ph:qr-code-bold' },

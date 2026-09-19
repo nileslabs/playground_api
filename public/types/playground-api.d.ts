@@ -279,5 +279,35 @@ export interface SseNotification {
   timestamp: string;
 }
 
+// Outgoing Webhooks Dispatcher & Delivery Inspector Types
+export interface WebhookSubscription {
+  id: string | number;
+  name?: string;
+  url: string;
+  events: string[];
+  secret: string;
+  isActive: boolean;
+  created_at: string;
+}
 
+export interface WebhookPayload<T = unknown> {
+  id: string;
+  event: string;
+  timestamp: string;
+  data: T;
+}
 
+export interface WebhookDeliveryLog {
+  id: string;
+  webhookId: string | number;
+  webhookUrl: string;
+  event: string;
+  status: number;
+  success: boolean;
+  durationMs: number;
+  requestHeaders: Record<string, string>;
+  requestBody: WebhookPayload;
+  responseBody: string;
+  error?: string | null;
+  timestamp: string;
+}

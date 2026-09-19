@@ -1105,4 +1105,122 @@ export const apiCatalog: ResourceCatalogDef[] = [
       }
     ],
   },
+  {
+    id: 'webhooks',
+    name: 'Webhooks',
+    singular: 'Webhook',
+    description: 'Outgoing webhook dispatcher, delivery logs, and HMAC SHA-256 signature verification.',
+    itemCount: 'Live',
+    baseUrl: `${baseUrl}/webhooks`,
+    icon: 'ph:paper-plane-tilt-bold',
+    prevPage: { title: 'Real-Time Chat & WebSockets', href: '/docs/chat' },
+    nextPage: { title: 'Interactive API Studio', href: '/docs/studio' },
+    endpoints: [
+      {
+        id: 'list-webhooks',
+        method: 'GET',
+        path: '/webhooks',
+        title: 'List Registered Webhooks',
+        description: 'Fetch all active webhook receiver subscriptions for the caller session identity.',
+        responseExample: {
+          data: [
+            {
+              id: 'local-550e8400-e29b-41d4-a716-446655440000',
+              name: 'My Webhook Receiver',
+              url: 'https://myapp.ngrok.io/api/webhooks/playground',
+              events: ['post.*', 'auth.*'],
+              secret: 'whsec_demo_secret_key_123',
+              isActive: true,
+              created_at: '2026-09-19T07:30:00.000Z'
+            }
+          ],
+          total: 1
+        }
+      },
+      {
+        id: 'create-webhook',
+        method: 'POST',
+        path: '/webhooks',
+        title: 'Register Webhook Receiver',
+        description: 'Register a target URL to receive real signed HTTP POST webhook dispatches on matching events.',
+        requestBody: {
+          name: 'My Webhook Receiver',
+          url: 'https://myapp.ngrok.io/api/webhooks/playground',
+          events: ['post.*', 'auth.*'],
+          secret: 'whsec_demo_secret_key_123'
+        },
+        responseExample: {
+          id: 'local-550e8400-e29b-41d4-a716-446655440000',
+          name: 'My Webhook Receiver',
+          url: 'https://myapp.ngrok.io/api/webhooks/playground',
+          events: ['post.*', 'auth.*'],
+          secret: 'whsec_demo_secret_key_123',
+          isActive: true,
+          created_at: '2026-09-19T07:30:00.000Z'
+        }
+      },
+      {
+        id: 'test-webhook-ping',
+        method: 'POST',
+        path: '/webhooks/test',
+        title: 'Send Test Webhook Ping',
+        description: 'Dispatches an immediate sample test ping payload with signed HMAC headers to a registered or ad-hoc webhook endpoint.',
+        requestBody: {
+          url: 'https://httpbin.org/post',
+          event: 'test.ping',
+          data: { message: 'Hello from Playground API Webhook Tester!' }
+        },
+        responseExample: {
+          message: 'Webhook dispatched successfully.',
+          delivery: {
+            id: 'del_550e8400-e29b-41d4-a716-446655440000',
+            event: 'test.ping',
+            status: 200,
+            success: true,
+            durationMs: 42,
+            timestamp: '2026-09-19T07:30:00.000Z'
+          }
+        }
+      },
+      {
+        id: 'list-webhook-deliveries',
+        method: 'GET',
+        path: '/webhooks/deliveries',
+        title: 'List Webhook Delivery Logs',
+        description: 'Retrieve recent outgoing webhook delivery attempts, status codes, latencies, and response payloads.',
+        responseExample: {
+          data: [
+            {
+              id: 'del_550e8400-e29b-41d4-a716-446655440000',
+              webhookUrl: 'https://httpbin.org/post',
+              event: 'post.created',
+              status: 200,
+              success: true,
+              durationMs: 38,
+              timestamp: '2026-09-19T07:30:00.000Z'
+            }
+          ],
+          total: 1
+        }
+      },
+      {
+        id: 'redeliver-webhook',
+        method: 'POST',
+        path: '/webhooks/deliveries/:deliveryId/redeliver',
+        title: 'Re-deliver Webhook Payload',
+        description: 'Re-sends an existing webhook payload to test receiver idempotency and retry handlers.',
+        responseExample: {
+          message: 'Payload re-delivered.',
+          delivery: {
+            id: 'del_770e8400-e29b-41d4-a716-446655440000',
+            event: 'post.created',
+            status: 200,
+            success: true,
+            durationMs: 41,
+            timestamp: '2026-09-19T07:32:00.000Z'
+          }
+        }
+      }
+    ],
+  },
 ];

@@ -774,5 +774,103 @@ window.ALL_ENDPOINTS_CATALOG = [
     params: [],
     bodyExample: null,
     responseExample: 'event: notification\ndata: {"id":"notif-1","type":"info","title":"System Ready","message":"Playground API live","timestamp":"2026-09-19T07:20:00.000Z"}\n\n'
+  },
+  // WEBHOOKS
+  {
+    resource: 'webhooks',
+    method: 'GET',
+    path: '/webhooks',
+    summary: 'Retrieve all registered webhook receiver endpoints for your session.',
+    params: [],
+    bodyExample: null,
+    responseExample: JSON.stringify({
+      data: [
+        {
+          id: 'local-550e8400-e29b-41d4-a716-446655440000',
+          name: 'My Webhook Receiver',
+          url: 'https://myapp.ngrok.io/api/webhooks/playground',
+          events: ['post.*', 'auth.*'],
+          secret: 'whsec_demo_secret_key_123',
+          isActive: true,
+          created_at: '2026-09-19T07:30:00.000Z'
+        }
+      ],
+      total: 1
+    }, null, 2)
+  },
+  {
+    resource: 'webhooks',
+    method: 'POST',
+    path: '/webhooks',
+    summary: 'Register a new webhook URL to receive signed HMAC-SHA256 HTTP POST dispatches on matching events.',
+    params: [
+      { name: 'url', in: 'body', type: 'string', description: 'Destination HTTP/HTTPS webhook receiver URL.' },
+      { name: 'events', in: 'body', type: 'array', description: 'Event pattern subscriptions (e.g. ["post.*", "auth.*", "*"]).' },
+      { name: 'secret', in: 'body', type: 'string', description: 'Secret key for HMAC SHA-256 signature verification.' },
+      { name: 'name', in: 'body', type: 'string', description: 'Optional display label for webhook.' }
+    ],
+    bodyExample: JSON.stringify({
+      name: 'Local Dev Server Webhook',
+      url: 'https://myapp.ngrok.io/api/webhooks/playground',
+      events: ['post.*', 'auth.*'],
+      secret: 'whsec_demo_secret_key_123'
+    }, null, 2),
+    responseExample: JSON.stringify({
+      id: 'local-550e8400-e29b-41d4-a716-446655440000',
+      name: 'Local Dev Server Webhook',
+      url: 'https://myapp.ngrok.io/api/webhooks/playground',
+      events: ['post.*', 'auth.*'],
+      secret: 'whsec_demo_secret_key_123',
+      isActive: true,
+      created_at: '2026-09-19T07:30:00.000Z'
+    }, null, 2)
+  },
+  {
+    resource: 'webhooks',
+    method: 'POST',
+    path: '/webhooks/test',
+    summary: 'Send an immediate test ping webhook to a registered or custom URL.',
+    params: [
+      { name: 'url', in: 'body', type: 'string', description: 'Target destination URL (optional if testing existing webhook).' },
+      { name: 'event', in: 'body', type: 'string', description: 'Event name (default test.ping).' }
+    ],
+    bodyExample: JSON.stringify({
+      url: 'https://httpbin.org/post',
+      event: 'test.ping',
+      data: { message: 'Hello from Playground API Webhook Tester!' }
+    }, null, 2),
+    responseExample: JSON.stringify({
+      message: 'Webhook dispatched successfully.',
+      delivery: {
+        id: 'del_550e8400-e29b-41d4-a716-446655440000',
+        event: 'test.ping',
+        status: 200,
+        success: true,
+        durationMs: 42,
+        timestamp: '2026-09-19T07:30:00.000Z'
+      }
+    }, null, 2)
+  },
+  {
+    resource: 'webhooks',
+    method: 'GET',
+    path: '/webhooks/deliveries',
+    summary: 'Retrieve recent webhook delivery attempt logs and responses.',
+    params: [],
+    bodyExample: null,
+    responseExample: JSON.stringify({
+      data: [
+        {
+          id: 'del_550e8400-e29b-41d4-a716-446655440000',
+          webhookUrl: 'https://httpbin.org/post',
+          event: 'post.created',
+          status: 200,
+          success: true,
+          durationMs: 38,
+          timestamp: '2026-09-19T07:30:00.000Z'
+        }
+      ],
+      total: 1
+    }, null, 2)
   }
 ];
