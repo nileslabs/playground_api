@@ -326,4 +326,17 @@ export const searchSynonyms: IntentSynonymMap = {
     'strong typing mock',
     'sdk declarations',
   ],
+  '/docs/collections/csv-excel': [
+    'csv export',
+    'excel spreadsheet download',
+    'xlsx export',
+    'download posts csv',
+    'download users excel',
+    'table data export',
+    'spreadsheet mock data',
+    'flat dot notation',
+    'rfc 4180 csv',
+    'tanstack table data',
+    'pandas mock dataframe',
+  ],
 };

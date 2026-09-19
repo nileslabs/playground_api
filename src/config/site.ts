@@ -89,6 +89,7 @@ export const siteConfig = {
         { title: 'Bruno Collection', href: '/docs/collections/bruno', icon: 'ph:brackets-curly-bold' },
         { title: 'Insomnia Collection', href: '/docs/collections/insomnia', icon: 'ph:moon-stars-bold' },
         { title: 'TypeScript SDK (.d.ts)', href: '/docs/collections/typescript', icon: 'ph:file-ts-bold' },
+        { title: 'CSV & Excel Export', href: '/docs/collections/csv-excel', icon: 'ph:file-csv-bold' },
       ],
     },
   ],

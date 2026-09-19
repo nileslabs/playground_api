@@ -216,6 +216,8 @@ export interface SandboxQueryParams {
   _status?: number;
   _chaos?: number | string;
   _chaos_errors?: string;
+  _format?: 'csv' | 'xlsx' | 'json';
+  format?: 'csv' | 'xlsx' | 'json';
   _page?: number;
   _limit?: number;
   _sort?: string;
