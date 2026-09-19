@@ -8,7 +8,12 @@
     "api-sandbox",
     "developer-tool",
     "testing-tool",
-    "graphql-sandbox"
+    "graphql-sandbox",
+    "e2e-testing-backend",
+    "real-time-websocket-mock",
+    "mock-payment-gateway",
+    "virtual-email-sms-inbox",
+    "mock-file-uploads"
   ],
   "description": "Free, zero-configuration, stateful mock REST and GraphQL API sandbox for frontend development, prototyping, and testing.",
   "website": "https://playground.nileslabs.com",
@@ -19,14 +24,17 @@
     "base_url": "https://playground.nileslabs.com/api/v1",
     "rest": true,
     "graphql": true,
-    "graphql_endpoint": "https://playground.nileslabs.com/api/v1/graphql"
+    "graphql_endpoint": "https://playground.nileslabs.com/api/v1/graphql",
+    "websocket_endpoint": "wss://playground.nileslabs.com/api/v1/ws",
+    "sse_endpoint": "https://playground.nileslabs.com/api/v1/stream"
   },
   "authentication": {
     "required": false,
     "jwt_simulation": true,
     "login_endpoint": "/auth/login",
     "refresh_endpoint": "/auth/refresh",
-    "profile_endpoint": "/auth/me"
+    "profile_endpoint": "/auth/me",
+    "rbac_roles": ["admin", "editor", "viewer", "guest"]
   },
   "state": {
     "persistent": true,
@@ -36,7 +44,8 @@
     "max_overlay_records_per_resource": 30,
     "reset_endpoint": "/session/reset",
     "snapshot_export_endpoint": "/session/snapshot",
-    "snapshot_import_endpoint": "/session/snapshot"
+    "snapshot_import_endpoint": "/session/snapshot",
+    "shareable_sandbox_url": "https://playground.nileslabs.com/docs/sandbox-sync"
   },
   "features": [
     "stateful-crud-persistence",
@@ -47,12 +56,25 @@
     "multi-field-sorting",
     "network-delay-simulation",
     "http-error-simulation",
+    "rate-limit-simulation",
+    "chaos-network-simulation",
+    "jwt-expiration-simulation",
+    "role-based-access-control",
+    "mock-payment-gateway",
+    "virtual-email-sms-inbox",
+    "multipart-file-uploads",
+    "outgoing-webhooks-dispatcher",
+    "real-time-websockets-chat",
+    "graphql-gateway",
+    "graphql-subscriptions",
     "custom-collections",
     "svg-avatar-generation",
     "svg-thumbnail-generation",
-    "jwt-auth-simulation",
-    "graphql-gateway",
     "session-snapshots",
+    "shareable-sandbox-urls",
+    "official-typescript-sdk",
+    "devtools-browser-extension",
+    "csv-excel-export",
     "openapi-export",
     "postman-export",
     "bruno-export",
@@ -65,6 +87,11 @@
     { "name": "users", "path": "/users", "count": 25, "relational": ["posts", "todos"] },
     { "name": "todos", "path": "/todos", "count": 125, "relational": ["user_id", "completed"] },
     { "name": "auth", "path": "/auth", "type": "JWT Simulation" },
+    { "name": "payments", "path": "/payments", "type": "Mock Stripe Gateway" },
+    { "name": "emails", "path": "/emails", "type": "Virtual Email Sandbox" },
+    { "name": "sms", "path": "/sms", "type": "Virtual SMS Sandbox" },
+    { "name": "uploads", "path": "/uploads", "type": "Multipart Storage CDN" },
+    { "name": "webhooks", "path": "/webhooks", "type": "Outgoing Dispatcher" },
     { "name": "custom", "path": "/custom/:collection", "type": "Dynamic Schema-less" },
     { "name": "avatars", "path": "/avatars/:seed", "type": "Vector SVG Generator" },
     { "name": "thumbnails", "path": "/thumbnails/:seed", "type": "Vector SVG Image Helper" }
@@ -82,6 +109,7 @@
     "bruno": "https://playground.nileslabs.com/api/v1/downloads/bruno.json",
     "insomnia": "https://playground.nileslabs.com/api/v1/downloads/insomnia.json",
     "typescript": "https://playground.nileslabs.com/api/v1/downloads/playground-api.d.ts",
+    "sdk_npm": "playground-api",
     "llms": "https://playground.nileslabs.com/llms.txt",
     "llms_full": "https://playground.nileslabs.com/llms-full.txt"
   }

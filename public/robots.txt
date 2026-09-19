@@ -1,6 +1,9 @@
-# Playground API Robots File
+# Playground API Robots Directives
+# Allows search engine web crawlers and AI search/model bots to index documentation, endpoints, and machine-readable specs.
+
 User-agent: *
 Allow: /
-Allow: /docs/
 
+# Canonical Sitemaps & Host
 Sitemap: https://playground.nileslabs.com/sitemap.xml
+Host: https://playground.nileslabs.com

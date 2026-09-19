@@ -20,9 +20,19 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: '/docs/errors', priority: 0.9, changeFrequency: 'weekly' },
     { path: '/docs/comparisons', priority: 0.95, changeFrequency: 'weekly' },
     { path: '/docs/ai', priority: 0.95, changeFrequency: 'weekly' },
-    { path: '/docs/studio', priority: 0.9, changeFrequency: 'daily' },
+    { path: '/docs/studio', priority: 0.95, changeFrequency: 'daily' },
+
+    // Features & Developer Sandbox Tools
+    { path: '/docs/rbac', priority: 0.95, changeFrequency: 'weekly' },
+    { path: '/docs/payments', priority: 0.95, changeFrequency: 'daily' },
+    { path: '/docs/inbox', priority: 0.95, changeFrequency: 'daily' },
+    { path: '/docs/analytics', priority: 0.9, changeFrequency: 'weekly' },
+    { path: '/docs/uploads', priority: 0.9, changeFrequency: 'weekly' },
+    { path: '/docs/chat', priority: 0.95, changeFrequency: 'daily' },
+    { path: '/docs/webhooks', priority: 0.9, changeFrequency: 'weekly' },
     { path: '/docs/simulation', priority: 0.9, changeFrequency: 'weekly' },
     { path: '/docs/export-import', priority: 0.85, changeFrequency: 'weekly' },
+    { path: '/docs/sandbox-sync', priority: 0.9, changeFrequency: 'weekly' },
     { path: '/docs/stats', priority: 0.85, changeFrequency: 'weekly' },
     { path: '/docs/showcase', priority: 0.9, changeFrequency: 'weekly' },
 
@@ -37,18 +47,22 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
     // GraphQL Gateway & Sub-Schemas
     { path: '/docs/graphql', priority: 0.95, changeFrequency: 'daily' },
+    { path: '/docs/graphql/subscriptions', priority: 0.9, changeFrequency: 'weekly' },
     { path: '/docs/graphql/posts', priority: 0.85, changeFrequency: 'weekly' },
     { path: '/docs/graphql/comments', priority: 0.85, changeFrequency: 'weekly' },
     { path: '/docs/graphql/users', priority: 0.85, changeFrequency: 'weekly' },
     { path: '/docs/graphql/todos', priority: 0.85, changeFrequency: 'weekly' },
     { path: '/docs/graphql/auth', priority: 0.85, changeFrequency: 'weekly' },
 
-    // Client Collections & Specs Downloads
+    // Client Collections, SDK & Specs Downloads
+    { path: '/docs/sdk', priority: 0.95, changeFrequency: 'daily' },
+    { path: '/docs/devtools', priority: 0.9, changeFrequency: 'weekly' },
     { path: '/docs/collections/openapi', priority: 0.85, changeFrequency: 'monthly' },
     { path: '/docs/collections/postman', priority: 0.85, changeFrequency: 'monthly' },
     { path: '/docs/collections/bruno', priority: 0.85, changeFrequency: 'monthly' },
     { path: '/docs/collections/insomnia', priority: 0.85, changeFrequency: 'monthly' },
     { path: '/docs/collections/typescript', priority: 0.85, changeFrequency: 'monthly' },
+    { path: '/docs/collections/csv-excel', priority: 0.85, changeFrequency: 'monthly' },
 
     // Machine-Readable AI Endpoints
     { path: '/product.json', priority: 0.85, changeFrequency: 'weekly' },
