@@ -1341,4 +1341,155 @@ export const apiCatalog: ResourceCatalogDef[] = [
       }
     ]
   },
+  {
+    id: 'payments',
+    name: 'Payments & Checkout',
+    singular: 'Payment',
+    description: 'Stripe-parity payment intents, deterministic card processing, 3DS authentication challenge flows, hosted checkout sessions, and refund ledgers.',
+    itemCount: 'Live',
+    baseUrl: `${baseUrl}/payments`,
+    icon: 'ph:credit-card-bold',
+    prevPage: { title: 'Virtual Email & SMS Inbox', href: '/docs/inbox' },
+    nextPage: { title: 'Real-Time Chat & WebSockets', href: '/docs/chat' },
+    endpoints: [
+      {
+        id: 'charge-card',
+        method: 'POST',
+        path: '/payments/charge',
+        title: 'Direct Card Charge (1-Step)',
+        description: 'Direct charge helper that creates and confirms a Payment Intent in a single API call with deterministic card outcomes.',
+        requestBody: {
+          amount: 2999,
+          currency: 'usd',
+          cardNumber: '4242424242424242',
+          expMonth: 12,
+          expYear: 2028,
+          cvc: '123',
+          receipt_email: 'buyer@example.com',
+          description: 'Pro Subscription'
+        },
+        responseExample: {
+          id: 'pi_test_a1b2c3d4e5f6g7h8',
+          object: 'payment_intent',
+          amount: 2999,
+          currency: 'usd',
+          status: 'succeeded',
+          client_secret: 'pi_test_a1b2c3d4e5f6g7h8_secret_xyz123',
+          description: 'Pro Subscription',
+          receipt_email: 'buyer@example.com',
+          created_at: '2026-09-19T10:55:00.000Z'
+        }
+      },
+      {
+        id: 'create-payment-intent',
+        method: 'POST',
+        path: '/payments/intents',
+        title: 'Create Payment Intent',
+        description: 'Initializes a new Payment Intent with amount and currency in requires_payment_method status.',
+        requestBody: {
+          amount: 5000,
+          currency: 'usd',
+          receipt_email: 'customer@example.com',
+          description: 'E-commerce order #1042'
+        },
+        responseExample: {
+          id: 'pi_test_9988776655443322',
+          object: 'payment_intent',
+          amount: 5000,
+          currency: 'usd',
+          status: 'requires_payment_method',
+          client_secret: 'pi_test_9988776655443322_secret_abc999',
+          created_at: '2026-09-19T10:55:00.000Z'
+        }
+      },
+      {
+        id: 'confirm-payment-intent',
+        method: 'POST',
+        path: '/payments/intents/:id/confirm',
+        title: 'Confirm Payment Intent',
+        description: 'Confirms a Payment Intent with test card details. Supports instant success, decline codes, or 3DS requires_action.',
+        requestBody: {
+          cardNumber: '4242424242424242',
+          expMonth: 12,
+          expYear: 2028,
+          cvc: '123'
+        },
+        responseExample: {
+          id: 'pi_test_9988776655443322',
+          object: 'payment_intent',
+          amount: 5000,
+          currency: 'usd',
+          status: 'succeeded',
+          created_at: '2026-09-19T10:55:00.000Z'
+        }
+      },
+      {
+        id: 'confirm-3ds',
+        method: 'POST',
+        path: '/payments/intents/:id/confirm-3ds',
+        title: 'Authorize 3D Secure Challenge',
+        description: 'Simulates customer completing OTP challenge in 3D Secure verification modal, moving state to succeeded.',
+        responseExample: {
+          id: 'pi_test_3ds_example',
+          object: 'payment_intent',
+          amount: 5000,
+          currency: 'usd',
+          status: 'succeeded',
+          created_at: '2026-09-19T10:55:00.000Z'
+        }
+      },
+      {
+        id: 'create-refund',
+        method: 'POST',
+        path: '/payments/refunds',
+        title: 'Create Refund',
+        description: 'Issues a full or partial refund for a succeeded Payment Intent.',
+        requestBody: {
+          payment_intent: 'pi_test_9988776655443322',
+          amount: 2500,
+          reason: 'requested_by_customer'
+        },
+        responseExample: {
+          id: 're_test_ref1234567890',
+          object: 'refund',
+          amount: 2500,
+          currency: 'usd',
+          payment_intent: 'pi_test_9988776655443322',
+          status: 'succeeded',
+          reason: 'requested_by_customer',
+          created_at: '2026-09-19T10:56:00.000Z'
+        }
+      },
+      {
+        id: 'create-checkout-session',
+        method: 'POST',
+        path: '/checkout/sessions',
+        title: 'Create Hosted Checkout Session',
+        description: 'Creates a hosted checkout session with itemized line items, success/cancel URLs, and customer email.',
+        requestBody: {
+          customer_email: 'customer@example.com',
+          mode: 'payment',
+          line_items: [
+            {
+              name: 'Pro Subscription',
+              amount: 4900,
+              quantity: 1,
+              currency: 'usd'
+            }
+          ]
+        },
+        responseExample: {
+          id: 'cs_test_session_xyz789',
+          object: 'checkout_session',
+          amount_total: 4900,
+          currency: 'usd',
+          customer_email: 'customer@example.com',
+          payment_status: 'unpaid',
+          status: 'open',
+          url: 'https://playground.nileslabs.com/checkout/pay/cs_test_session_xyz789',
+          created_at: '2026-09-19T10:57:00.000Z'
+        }
+      }
+    ]
+  },
 ];

@@ -108,6 +108,37 @@ return {
 };`,
   },
   {
+    id: 'payments-charge',
+    title: 'Payment Gateway & Checkout',
+    description: 'Simulate direct credit card charge, payment intents, and hosted checkout sessions.',
+    code: `const api = new PlaygroundAPI.PlaygroundClient({
+  apiUrl: '${config.apiUrl}'
+});
+
+// 1. Direct charge with test card (deterministic success)
+const charge = await api.payments.charge({
+  amount: 2999, // $29.99
+  currency: 'usd',
+  cardNumber: '4242424242424242',
+  expMonth: 12,
+  expYear: 2028,
+  cvc: '123',
+  receipt_email: 'buyer@example.com',
+  description: 'Pro Subscription'
+});
+
+// 2. Create hosted checkout session
+const checkout = await api.checkout.createSession({
+  customer_email: 'buyer@example.com',
+  line_items: [{ name: 'Pro Plan', amount: 2999, quantity: 1 }]
+});
+
+return {
+  paymentIntent: charge,
+  checkoutSession: checkout
+};`,
+  },
+  {
     id: 'session-reset',
     title: 'Reset Session Sandbox',
     description: 'Purge all session mutations and restore pristine baseline mock data.',

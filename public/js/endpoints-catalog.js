@@ -987,5 +987,117 @@ window.ALL_ENDPOINTS_CATALOG = [
       success: true,
       message: 'Inbox cleared successfully.'
     }, null, 2)
+  },
+  // PAYMENTS & CHECKOUT
+  {
+    resource: 'payments',
+    method: 'POST',
+    path: '/payments/charge',
+    summary: 'Direct charge helper that creates and confirms a Payment Intent with test card credentials.',
+    params: [
+      { name: 'amount', in: 'body', type: 'integer', description: 'Amount in smallest currency unit (e.g. cents).' },
+      { name: 'cardNumber', in: 'body', type: 'string', description: 'Deterministic test credit card number.' },
+      { name: 'expMonth', in: 'body', type: 'integer', description: 'Expiry month (1-12).' },
+      { name: 'expYear', in: 'body', type: 'integer', description: 'Expiry year (e.g. 2028).' },
+      { name: 'cvc', in: 'body', type: 'string', description: 'Card security code.' }
+    ],
+    bodyExample: JSON.stringify({
+      amount: 2999,
+      currency: 'usd',
+      cardNumber: '4242424242424242',
+      expMonth: 12,
+      expYear: 2028,
+      cvc: '123',
+      receipt_email: 'buyer@example.com'
+    }, null, 2),
+    responseExample: JSON.stringify({
+      id: 'pi_test_a1b2c3d4e5f6g7h8',
+      object: 'payment_intent',
+      amount: 2999,
+      currency: 'usd',
+      status: 'succeeded',
+      receipt_email: 'buyer@example.com',
+      created_at: '2026-09-19T10:55:00.000Z'
+    }, null, 2)
+  },
+  {
+    resource: 'payments',
+    method: 'POST',
+    path: '/payments/intents',
+    summary: 'Create a new Payment Intent in requires_payment_method status.',
+    params: [
+      { name: 'amount', in: 'body', type: 'integer', description: 'Amount in cents.' },
+      { name: 'currency', in: 'body', type: 'string', description: '3-letter currency code (usd, eur, gbp).' }
+    ],
+    bodyExample: JSON.stringify({
+      amount: 5000,
+      currency: 'usd',
+      receipt_email: 'customer@example.com'
+    }, null, 2),
+    responseExample: JSON.stringify({
+      id: 'pi_test_9988776655443322',
+      object: 'payment_intent',
+      amount: 5000,
+      currency: 'usd',
+      status: 'requires_payment_method',
+      created_at: '2026-09-19T10:55:00.000Z'
+    }, null, 2)
+  },
+  {
+    resource: 'payments',
+    method: 'POST',
+    path: '/payments/refunds',
+    summary: 'Issue a full or partial refund for a succeeded Payment Intent.',
+    params: [
+      { name: 'payment_intent', in: 'body', type: 'string', description: 'Payment Intent ID (pi_test_...).' },
+      { name: 'amount', in: 'body', type: 'integer', description: 'Refund amount in cents (optional for full refund).' }
+    ],
+    bodyExample: JSON.stringify({
+      payment_intent: 'pi_test_9988776655443322',
+      amount: 2500,
+      reason: 'requested_by_customer'
+    }, null, 2),
+    responseExample: JSON.stringify({
+      id: 're_test_ref1234567890',
+      object: 'refund',
+      amount: 2500,
+      currency: 'usd',
+      payment_intent: 'pi_test_9988776655443322',
+      status: 'succeeded',
+      created_at: '2026-09-19T10:56:00.000Z'
+    }, null, 2)
+  },
+  {
+    resource: 'payments',
+    method: 'POST',
+    path: '/checkout/sessions',
+    summary: 'Create a hosted checkout session with itemized line items.',
+    params: [
+      { name: 'customer_email', in: 'body', type: 'string', description: 'Customer email address.' },
+      { name: 'line_items', in: 'body', type: 'array', description: 'List of products with amount and quantity.' }
+    ],
+    bodyExample: JSON.stringify({
+      customer_email: 'customer@example.com',
+      mode: 'payment',
+      line_items: [
+        {
+          name: 'Pro Subscription',
+          amount: 4900,
+          quantity: 1,
+          currency: 'usd'
+        }
+      ]
+    }, null, 2),
+    responseExample: JSON.stringify({
+      id: 'cs_test_session_xyz789',
+      object: 'checkout_session',
+      amount_total: 4900,
+      currency: 'usd',
+      customer_email: 'customer@example.com',
+      payment_status: 'unpaid',
+      status: 'open',
+      url: 'https://playground.nileslabs.com/checkout/pay/cs_test_session_xyz789',
+      created_at: '2026-09-19T10:57:00.000Z'
+    }, null, 2)
   }
 ];

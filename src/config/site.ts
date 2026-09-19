@@ -48,7 +48,8 @@ export const siteConfig = {
       icon: 'ph:gear-six-bold',
       items: [
         { title: 'Interactive API Studio', href: '/docs/studio', icon: 'ph:play-circle-bold' },
-        { title: 'Virtual Email & SMS Inbox', href: '/docs/inbox', badge: 'New', icon: 'ph:mailbox-bold' },
+        { title: 'Mock Payment Gateway', href: '/docs/payments', badge: 'Stripe', icon: 'ph:credit-card-bold' },
+        { title: 'Virtual Email & SMS Inbox', href: '/docs/inbox', badge: 'Inbox', icon: 'ph:mailbox-bold' },
         { title: 'Real-Time Chat & WebSockets', href: '/docs/chat', icon: 'ph:chats-circle-bold' },
         { title: 'Outgoing Webhooks Dispatcher', href: '/docs/webhooks', icon: 'ph:paper-plane-tilt-bold' },
         { title: 'Network & Chaos Simulation', href: '/docs/simulation', icon: 'ph:timer-bold' },

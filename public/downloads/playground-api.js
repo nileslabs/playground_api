@@ -220,6 +220,36 @@ var PlaygroundAPI = (function () {
     clear(options) { return this.client.request('/inbox', { method: 'DELETE', ...options }); }
   }
 
+  class PaymentsResource {
+    constructor(client) { this.client = client; }
+    listIntents(params, options) { return this.client.request('/payments/intents', { method: 'GET', params, ...options }); }
+    getIntent(id, options) { return this.client.request('/payments/intents/' + id, { method: 'GET', ...options }); }
+    createIntent(payload, options) { return this.client.request('/payments/intents', { method: 'POST', body: payload, ...options }); }
+    confirmIntent(id, payload, options) { return this.client.request('/payments/intents/' + id + '/confirm', { method: 'POST', body: payload, ...options }); }
+    confirm3DS(id, options) { return this.client.request('/payments/intents/' + id + '/confirm-3ds', { method: 'POST', ...options }); }
+    cancelIntent(id, options) { return this.client.request('/payments/intents/' + id + '/cancel', { method: 'POST', ...options }); }
+    charge(payload, options) { return this.client.request('/payments/charge', { method: 'POST', body: payload, ...options }); }
+    createRefund(payload, options) { return this.client.request('/payments/refunds', { method: 'POST', body: payload, ...options }); }
+    listRefunds(params, options) { return this.client.request('/payments/refunds', { method: 'GET', params, ...options }); }
+    getRefund(id, options) { return this.client.request('/payments/refunds/' + id, { method: 'GET', ...options }); }
+  }
+
+  class CheckoutResource {
+    constructor(client) { this.client = client; }
+    listSessions(params, options) { return this.client.request('/checkout/sessions', { method: 'GET', params, ...options }); }
+    getSession(id, options) { return this.client.request('/checkout/sessions/' + id, { method: 'GET', ...options }); }
+    createSession(payload, options) { return this.client.request('/checkout/sessions', { method: 'POST', body: payload, ...options }); }
+    completeSession(id, payload, options) { return this.client.request('/checkout/sessions/' + id + '/complete', { method: 'POST', body: payload, ...options }); }
+    expireSession(id, options) { return this.client.request('/checkout/sessions/' + id + '/expire', { method: 'POST', ...options }); }
+  }
+
+  class CustomersResource {
+    constructor(client) { this.client = client; }
+    list(params, options) { return this.client.request('/customers', { method: 'GET', params, ...options }); }
+    get(id, options) { return this.client.request('/customers/' + id, { method: 'GET', ...options }); }
+    create(payload, options) { return this.client.request('/customers', { method: 'POST', body: payload, ...options }); }
+  }
+
   class PlaygroundClient {
     constructor(options = {}) {
       this.apiUrl = options.apiUrl || 'http://localhost:3000/api/v1';
@@ -232,7 +262,8 @@ var PlaygroundAPI = (function () {
         chaos: options.chaos !== undefined ? options.chaos : (options.simulation && options.simulation.chaos),
         status: options.status !== undefined ? options.status : (options.simulation && options.simulation.status),
         rateLimit: options.rateLimit !== undefined ? options.rateLimit : (options.simulation && options.simulation.rateLimit),
-        jwtExpiry: options.jwtExpiry !== undefined ? options.jwtExpiry : (options.simulation && options.simulation.jwtExpiry)
+        jwtExpiry: options.jwtExpiry !== undefined ? options.jwtExpiry : (options.simulation && options.simulation.jwtExpiry),
+        paymentStatus: options.paymentStatus !== undefined ? options.paymentStatus : (options.simulation && options.simulation.paymentStatus)
       };
 
       this.posts = new PostsResource(this);
@@ -247,6 +278,9 @@ var PlaygroundAPI = (function () {
       this.emails = new EmailsResource(this);
       this.sms = new SmsResource(this);
       this.inbox = new InboxResource(this);
+      this.payments = new PaymentsResource(this);
+      this.checkout = new CheckoutResource(this);
+      this.customers = new CustomersResource(this);
       this._graphqlResource = new GraphQLResource(this);
     }
 
@@ -270,7 +304,8 @@ var PlaygroundAPI = (function () {
         chaos,
         status,
         rateLimit,
-        jwtExpiry
+        jwtExpiry,
+        paymentStatus
       } = options;
 
       let cleanEndpoint = endpoint.startsWith('/') ? endpoint : ('/' + endpoint);
@@ -318,6 +353,9 @@ var PlaygroundAPI = (function () {
 
       const effJwtExpiry = jwtExpiry !== undefined ? jwtExpiry : this.simulation.jwtExpiry;
       if (effJwtExpiry !== undefined) headers['X-Simulate-JWT-Expiry'] = String(effJwtExpiry);
+
+      const effPaymentStatus = paymentStatus !== undefined ? paymentStatus : this.simulation.paymentStatus;
+      if (effPaymentStatus !== undefined) headers['X-Simulate-Payment-Status'] = String(effPaymentStatus);
 
       const fetchInit = {
         method,
@@ -369,7 +407,10 @@ var PlaygroundAPI = (function () {
     RealtimeResource,
     EmailsResource,
     SmsResource,
-    InboxResource
+    InboxResource,
+    PaymentsResource,
+    CheckoutResource,
+    CustomersResource
   };
 })();
 
