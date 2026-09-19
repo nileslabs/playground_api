@@ -65,12 +65,15 @@ export interface Todo {
 }
 
 export interface PaginationMeta {
-  page: number;
+  page?: number;
   limit: number;
   total: number;
-  totalPages: number;
-  hasNextPage: boolean;
-  hasPrevPage: boolean;
+  totalPages?: number;
+  hasNextPage?: boolean;
+  hasPrevPage?: boolean;
+  nextCursor?: string | null;
+  prevCursor?: string | null;
+  hasMore?: boolean;
 }
 
 export interface PaginatedResponse<T> {
@@ -227,6 +230,8 @@ export interface SandboxQueryParams {
   jwt_expiry?: string;
   _clock_skew?: string | number;
   clock_skew?: string | number;
+  cursor?: string;
+  _cursor?: string;
   _page?: number;
   _limit?: number;
   _sort?: string;

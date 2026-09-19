@@ -40,6 +40,7 @@ export const getCustomEndpoints = () => {
         { name: 'collection', type: 'String (Path)', desc: 'Custom collection name (e.g. products, orders, notes, leads).' },
         { name: 'page', type: 'Integer (Query)', desc: 'Page number (default 1).' },
         { name: 'limit', type: 'Integer (Query)', desc: 'Records per page (default 10).' },
+        { name: 'cursor', type: 'String (Query)', desc: 'Base64 cursor for infinite scroll pagination.' },
         { name: 'q', type: 'String (Query)', desc: 'Case-insensitive full-text search term.' },
         { name: '_sort', type: 'String (Query)', desc: 'Field name to sort by.' }
       ],
