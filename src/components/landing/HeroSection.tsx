@@ -6,29 +6,103 @@ import { Icon } from '@iconify/react';
 import { CodeBlock } from '@/components/ui/CodeBlock';
 import config from '@/config/env';
 
+interface PresetEndpoint {
+  id: string;
+  label: string;
+  method: 'GET' | 'POST' | 'PUT' | 'DELETE';
+  path: string;
+  body?: any;
+  description: string;
+}
+
+const PRESETS: PresetEndpoint[] = [
+  {
+    id: 'get-posts',
+    label: 'GET /posts',
+    method: 'GET',
+    path: '/posts?_limit=3',
+    description: 'Fetch paginated blog posts',
+  },
+  {
+    id: 'post-post',
+    label: 'POST /posts',
+    method: 'POST',
+    path: '/posts',
+    body: {
+      title: 'Hello from Playground API',
+      body: 'This item persists across page reloads in your private sandbox session.',
+      user_id: 1,
+    },
+    description: 'Create a post that persists in your session',
+  },
+  {
+    id: 'get-user',
+    label: 'GET /users/1',
+    method: 'GET',
+    path: '/users/1',
+    description: 'Fetch user profile with address and avatar',
+  },
+  {
+    id: 'delay-test',
+    label: 'GET /posts?_delay=1200',
+    method: 'GET',
+    path: '/posts?_limit=2&_delay=1200',
+    description: 'Simulate 1.2s slow 3G network latency',
+  },
+  {
+    id: 'auth-login',
+    label: 'POST /auth/login',
+    method: 'POST',
+    path: '/auth/login',
+    body: {
+      username: 'Bret',
+      password: 'Password@123',
+    },
+    description: 'Simulate JWT authentication and receive Bearer token',
+  },
+  {
+    id: 'reset-session',
+    label: 'DELETE /session/reset',
+    method: 'DELETE',
+    path: '/session/reset',
+    description: 'Purge sandbox mutations and restore baseline records',
+  },
+];
+
 export function HeroSection() {
-  const [activeAction, setActiveAction] = useState<'create' | 'fetch' | 'delay' | 'reset'>('create');
-  const [loading, setLoading] = useState(false);
-  const [copiedCurl, setCopiedCurl] = useState(false);
-  const [latencyMs, setLatencyMs] = useState<number | null>(null);
-  const [responseStatus, setResponseStatus] = useState<string>('201 Created');
+  const [selectedPreset, setSelectedPreset] = useState<PresetEndpoint>(PRESETS[0]);
+  const [method, setMethod] = useState<'GET' | 'POST' | 'PUT' | 'DELETE'>('GET');
+  const [endpointPath, setEndpointPath] = useState<string>('/posts?_limit=3');
+  const [requestBodyText, setRequestBodyText] = useState<string>('');
+  const [loading, setLoading] = useState<boolean>(false);
+  const [latencyMs, setLatencyMs] = useState<number | null>(42);
+  const [responseStatus, setResponseStatus] = useState<string>('200 OK');
+  const [copiedResponse, setCopiedResponse] = useState<boolean>(false);
 
   const [baseUrl, setBaseUrl] = useState<string>(
     config.publicApiUrl || `${config.siteUrl}${config.apiUrl || '/api/v1'}`
   );
 
-  const [consoleOutput, setConsoleOutput] = useState<any>({
-    id: 101,
-    title: '✨ My First Sandbox Post',
-    body: 'This item was created in real-time and persists in your private session overlay!',
-    user_id: 1,
-    created_at: '2026-08-20T10:00:00.000Z',
-    _sandbox: {
-      persisted: true,
-      isolated: true,
-      note: 'Click "Fetch Posts" to see this record at the top of your list.',
+  const [responseOutput, setResponseOutput] = useState<any>([
+    {
+      id: 1,
+      title: 'sunt aut facere repellat provident occaecati excepturi optio reprehenderit',
+      body: 'quia et suscipit suscipit recusandae consequuntur expedita et cum reprehenderit molestiae ut ut quas totam nostrum rerum est autem sunt rem eveniet architecto',
+      user_id: 1,
     },
-  });
+    {
+      id: 2,
+      title: 'qui est esse',
+      body: 'est rerum tempore vitae sequi sint nihil reprehenderit dolor beatae ea dolores neque fugiat blanditiis voluptate porro vel nihil molestiae ut reiciendis',
+      user_id: 1,
+    },
+    {
+      id: 3,
+      title: 'ea molestias quasi exercitationem repellat qui ipsa sit aut',
+      body: 'et iusto sed quo iure voluptatem occaecati omnis eligendi aut ad voluptatem doloribus vel accusantium quis pariatur molestiae porro eius odio et labore et velit aut',
+      user_id: 1,
+    },
+  ]);
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -40,299 +114,302 @@ export function HeroSection() {
     }
   }, []);
 
-  const handleCopyCurl = () => {
-    navigator.clipboard.writeText(`curl -X GET "${baseUrl}/posts?_limit=5"`);
-    setCopiedCurl(true);
-    setTimeout(() => setCopiedCurl(false), 2000);
+  const handleSelectPreset = (preset: PresetEndpoint) => {
+    setSelectedPreset(preset);
+    setMethod(preset.method);
+    setEndpointPath(preset.path);
+    if (preset.body) {
+      setRequestBodyText(JSON.stringify(preset.body, null, 2));
+    } else {
+      setRequestBodyText('');
+    }
+    // Auto execute request on preset select
+    executeRequest(preset.method, preset.path, preset.body);
   };
 
-  const handleAction = async (action: 'create' | 'fetch' | 'delay' | 'reset') => {
-    setActiveAction(action);
+  const executeRequest = async (
+    reqMethod = method,
+    reqPath = endpointPath,
+    reqBody = requestBodyText ? tryParseJson(requestBodyText) : undefined
+  ) => {
     setLoading(true);
     const start = performance.now();
+    const cleanPath = reqPath.startsWith('/') ? reqPath : `/${reqPath}`;
+    const url = `${baseUrl}${cleanPath}`;
 
     try {
-      if (action === 'create') {
-        const res = await fetch(`${config.apiUrl || '/api/v1'}/posts`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          credentials: 'include',
-          body: JSON.stringify({
-            title: '✨ My First Sandbox Post',
-            body: 'This item was created in real-time and persists in your private session overlay!',
-            user_id: 1,
-          }),
-        });
-        const data = await res.json();
-        const elapsed = Math.round(performance.now() - start);
-        setLatencyMs(elapsed);
-        setResponseStatus('201 Created');
-        setConsoleOutput(data);
-      } else if (action === 'fetch') {
-        const res = await fetch(`${config.apiUrl || '/api/v1'}/posts?_limit=3`, {
-          credentials: 'include',
-        });
-        const data = await res.json();
-        const elapsed = Math.round(performance.now() - start);
-        setLatencyMs(elapsed);
-        setResponseStatus('200 OK');
-        setConsoleOutput(data);
-      } else if (action === 'delay') {
-        const res = await fetch(`${config.apiUrl || '/api/v1'}/posts?_limit=2&_delay=1200`, {
-          credentials: 'include',
-          headers: { 'X-Simulate-Delay': '1200' },
-        });
-        const data = await res.json();
-        const elapsed = Math.round(performance.now() - start);
-        setLatencyMs(elapsed);
-        setResponseStatus(`200 OK (${elapsed}ms)`);
-        setConsoleOutput({
-          notice: 'Simulated 3G network latency injected seamlessly via header/param.',
-          latency: `${elapsed}ms`,
-          data: (data.data || data)[0],
-        });
-      } else if (action === 'reset') {
-        const res = await fetch(`${config.apiUrl || '/api/v1'}/session/reset`, {
-          method: 'DELETE',
-          credentials: 'include',
-        });
-        const data = await res.json();
-        const elapsed = Math.round(performance.now() - start);
-        setLatencyMs(elapsed);
-        setResponseStatus('200 OK (Purged)');
-        setConsoleOutput({
-          status: 'success',
-          message: data.message || 'Session sandbox mutations purged. Baseline global data restored.',
-          timestamp: new Date().toISOString(),
-        });
+      const options: RequestInit = {
+        method: reqMethod,
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      };
+
+      if (reqBody && (reqMethod === 'POST' || reqMethod === 'PUT')) {
+        options.body = typeof reqBody === 'string' ? reqBody : JSON.stringify(reqBody);
       }
+
+      const res = await fetch(url, options);
+      const elapsed = Math.round(performance.now() - start);
+      setLatencyMs(elapsed);
+      setResponseStatus(`${res.status} ${res.statusText}`);
+
+      const data = await res.json();
+      setResponseOutput(data);
     } catch {
       const elapsed = Math.round(performance.now() - start);
       setLatencyMs(elapsed);
-      setResponseStatus('200 OK (Local Sample)');
-      setConsoleOutput({
-        endpoint: `${baseUrl}/posts`,
-        action,
-        status: 'Sample response displayed',
+      setResponseStatus('200 OK');
+      setResponseOutput({
+        status: 'simulated_fallback',
+        url,
+        method: reqMethod,
+        note: 'Displaying offline fallback data.',
       });
     } finally {
       setLoading(false);
     }
   };
 
+  const tryParseJson = (str: string) => {
+    try {
+      return JSON.parse(str);
+    } catch {
+      return str;
+    }
+  };
+
+  const handleCopyResponse = () => {
+    if (!responseOutput) return;
+    navigator.clipboard.writeText(JSON.stringify(responseOutput, null, 2));
+    setCopiedResponse(true);
+    setTimeout(() => setCopiedResponse(false), 2000);
+  };
+
+  const getMethodBadgeClass = (m: string) => {
+    switch (m) {
+      case 'POST':
+        return 'bg-blue-50 dark:bg-blue-950/50 text-blue-700 dark:text-blue-400 border-blue-200 dark:border-blue-600/30';
+      case 'DELETE':
+        return 'bg-rose-50 dark:bg-rose-950/50 text-rose-700 dark:text-rose-400 border-rose-200 dark:border-rose-600/30';
+      default:
+        return 'bg-emerald-50 dark:bg-emerald-950/50 text-emerald-700 dark:text-emerald-400 border-emerald-200 dark:border-emerald-600/30';
+    }
+  };
+
   return (
-    <section className="relative overflow-hidden py-12 lg:py-20 lg:pt-10 border-b border-border-theme bg-linear-to-b from-bg-primary via-bg-secondary/40 to-bg-primary">
-      {/* Subtle Background Glows */}
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-150 h-87.5 bg-accent-primary/10 rounded-full blur-3xl pointer-events-none -z-10" />
-      <div className="absolute top-1/3 right-10 w-75 h-75 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none -z-10" />
+    <section className="relative overflow-hidden py-16 sm:py-24 border-b border-border-theme bg-bg-primary">
+      {/* Background Accent Radial Glow */}
+      <div className="absolute top-12 left-1/2 -translate-x-1/2 w-200 h-96 bg-accent-primary/8 rounded-full blur-3xl pointer-events-none -z-10" />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 items-center">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12 sm:space-y-16">
+        
+        {/* CENTERED HERO HEADER */}
+        <div className="text-center space-y-6 max-w-3xl mx-auto">
+
+          {/* Main Headline */}
+          <h1 className="text-4xl sm:text-6xl lg:text-[4.25rem] font-black tracking-tight text-text-primary leading-[1.08]">
+            The mock API that{' '}
+            <span className="text-accent-primary underline decoration-accent-primary/35 decoration-wavy underline-offset-8">
+              remembers.
+            </span>
+          </h1>
+
+          {/* Subtitle */}
+          <p className="text-lg sm:text-xl text-text-secondary leading-relaxed max-w-2xl mx-auto font-normal">
+            Build realistic frontend applications before your backend exists. Create, update, and delete data with isolated browser sessions that actually persist.
+          </p>
+
+          {/* Action Buttons */}
+          <div className="flex flex-wrap items-center justify-center gap-4 pt-2">
+            <Link
+              href="/docs/studio"
+              className="inline-flex items-center gap-2.5 px-8 py-4 rounded-xl bg-accent-primary hover:bg-accent-hover text-white text-base sm:text-lg font-bold shadow-lg shadow-accent-primary/25 transition-all hover:scale-[1.02]"
+            >
+              <Icon icon="ph:play-circle-bold" className="w-5 h-5" />
+              <span>Try Playground</span>
+            </Link>
+            <Link
+              href="/docs/introduction"
+              className="inline-flex items-center gap-2.5 px-7 py-4 rounded-xl bg-bg-secondary hover:bg-bg-tertiary border border-border-theme text-text-primary text-base sm:text-lg font-bold transition-all hover:scale-[1.02]"
+            >
+              <Icon icon="ph:book-open-text-bold" className="w-5 h-5 text-accent-primary" />
+              <span>Read Docs</span>
+            </Link>
+          </div>
+
+          {/* Quick Value Points */}
+          <div className="flex flex-wrap items-center justify-center gap-y-2 gap-x-6 text-sm text-text-secondary pt-3 font-medium">
+            <span className="flex items-center gap-2">
+              <Icon icon="ph:check-circle-fill" className="w-4.5 h-4.5 text-accent-primary shrink-0" />
+              <span>Zero signup</span>
+            </span>
+            <span className="flex items-center gap-2">
+              <Icon icon="ph:check-circle-fill" className="w-4.5 h-4.5 text-accent-primary shrink-0" />
+              <span>No API key required</span>
+            </span>
+            <span className="flex items-center gap-2">
+              <Icon icon="ph:check-circle-fill" className="w-4.5 h-4.5 text-accent-primary shrink-0" />
+              <span>Persistent per-visitor mutations</span>
+            </span>
+          </div>
+        </div>
+
+        {/* INTERACTIVE API RUNNER SANDBOX */}
+        <div className="rounded-2xl border border-border-theme bg-bg-secondary shadow-2xl overflow-hidden">
           
-          {/* LEFT COLUMN: Value Proposition & Developer CTAs (Cols 6/12) */}
-          <div className="lg:col-span-6 space-y-6 text-left">
-
-            {/* Headline */}
-            <div className="space-y-3">
-              <h1 className="text-3xl sm:text-5xl lg:text-5xl font-black tracking-tight text-text-primary leading-[1.15]">
-                Free, Stateful Mock REST & GraphQL Backend for{' '}
-                <span className="text-accent-primary underline decoration-accent-primary/30 decoration-wavy underline-offset-4">
-                  Frontend Prototypes
+          {/* Sandbox Top Bar */}
+          <div className="flex flex-wrap items-center justify-between gap-3 px-5 py-3.5 border-b border-border-theme bg-bg-tertiary/60">
+            <div className="flex items-center gap-2.5">
+              <span className="w-3 h-3 rounded-full bg-rose-500/80 inline-block" />
+              <span className="w-3 h-3 rounded-full bg-amber-500/80 inline-block" />
+              <span className="w-3 h-3 rounded-full bg-emerald-500/80 inline-block" />
+              <span className="ml-2 font-mono text-xs sm:text-sm font-bold text-text-primary">
+                Interactive API Explorer
+              </span>
+            </div>
+            
+            <div className="flex items-center gap-3">
+              {latencyMs !== null && (
+                <span className="text-xs font-mono font-semibold px-2.5 py-1 rounded bg-bg-primary text-text-secondary border border-border-theme">
+                  ⚡ {latencyMs}ms
                 </span>
-              </h1>
-              <p className="text-sm sm:text-base text-text-secondary leading-relaxed max-w-xl">
-                Build real CRUD applications with working JWT authentication, dynamic custom tables, and network latency simulation — with zero database or server configuration.
-              </p>
-            </div>
-
-            {/* Feature Highlights Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 py-1 text-xs text-text-secondary">
-              <div className="flex items-center gap-2">
-                <Icon icon="ph:check-circle-fill" className="w-4 h-4 text-accent-primary shrink-0" />
-                <span>Real CRUD State Persistence</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Icon icon="ph:check-circle-fill" className="w-4 h-4 text-accent-primary shrink-0" />
-                <span>REST & GraphQL Unified</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Icon icon="ph:check-circle-fill" className="w-4 h-4 text-accent-primary shrink-0" />
-                <span>Fake JWT Auth & Bearer Loops</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Icon icon="ph:check-circle-fill" className="w-4 h-4 text-accent-primary shrink-0" />
-                <span>Zero Database / API Key Setup</span>
-              </div>
-            </div>
-
-            {/* Action CTA Buttons */}
-            <div className="flex flex-wrap items-center gap-3 pt-2">
-              <Link
-                href="/docs/introduction"
-                className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-accent-primary hover:bg-accent-hover text-white text-sm font-bold shadow-md shadow-accent-primary/20 transition-all hover:scale-[1.02]"
-              >
-                <Icon icon="ph:book-open-text-bold" className="w-4 h-4" />
-                <span>Explore Docs</span>
-              </Link>
-              <Link
-                href="/docs/studio"
-                className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-bg-secondary hover:bg-bg-tertiary border border-border-theme text-text-primary text-sm font-bold transition-all hover:scale-[1.02]"
-              >
-                <Icon icon="ph:play-circle-bold" className="w-4 h-4 text-accent-primary" />
-                <span>API Studio</span>
-              </Link>
-              <Link
-                href="/docs/showcase"
-                className="inline-flex items-center gap-2 px-4 py-3 rounded-xl bg-bg-secondary hover:bg-bg-tertiary border border-border-theme text-text-secondary hover:text-text-primary text-sm font-medium transition-all"
-              >
-                <Icon icon="ph:rocket-launch-bold" className="w-4 h-4 text-emerald-400" />
-                <span>React Demo</span>
-              </Link>
-            </div>
-
-            {/* Quick cURL Bar */}
-            <div className="flex items-center justify-between gap-2 p-2.5 rounded-xl bg-bg-secondary border border-border-theme max-w-lg font-mono text-xs text-text-secondary">
-              <div className="flex items-center gap-2 truncate">
-                <span className="text-accent-primary font-bold select-none">$</span>
-                <span className="truncate text-text-primary">curl {baseUrl}/posts</span>
-              </div>
-              <button
-                onClick={handleCopyCurl}
-                className="px-2.5 py-1 rounded-md bg-bg-tertiary hover:bg-border-theme text-[11px] font-sans font-semibold text-text-primary transition-colors cursor-pointer shrink-0 flex items-center gap-1"
-                title="Copy cURL Command"
-              >
-                <Icon icon={copiedCurl ? 'ph:check-bold' : 'ph:copy-bold'} className="w-3.5 h-3.5 text-accent-primary" />
-                <span>{copiedCurl ? 'Copied' : 'Copy'}</span>
-              </button>
-            </div>
-
-            {/* Social / Baseline Badges */}
-            <div className="flex items-center gap-4 text-xs text-text-muted pt-1">
-              <span>🚀 100+ Baseline Records</span>
-              <span>•</span>
-              <span>🔒 Zero Auth Required</span>
-              <span>•</span>
-              <span>⚡ 100% Free</span>
+              )}
+              <span className="text-xs font-mono font-bold px-2.5 py-1 rounded-md bg-accent-light text-accent-primary border border-accent-primary/25 flex items-center gap-1.5">
+                <span className="w-2 h-2 rounded-full bg-accent-primary animate-pulse" />
+                Live Session
+              </span>
             </div>
           </div>
 
-          {/* RIGHT COLUMN: Live Interactive IDE Console Widget (Cols 6/12) */}
-          <div className="lg:col-span-6">
-            <div className="relative rounded-2xl glass-panel border border-border-theme shadow-2xl bg-bg-secondary/90 overflow-hidden">
-              
-              {/* Window Titlebar */}
-              <div className="flex items-center justify-between px-4 py-3 border-b border-border-theme bg-bg-tertiary/60">
-                <div className="flex items-center gap-2">
-                  <span className="w-3 h-3 rounded-full bg-status-error/80 inline-block" />
-                  <span className="w-3 h-3 rounded-full bg-status-warning/80 inline-block" />
-                  <span className="w-3 h-3 rounded-full bg-status-success/80 inline-block" />
-                  <span className="ml-2 font-mono text-xs font-bold text-text-primary">
-                    sandbox-session.json
-                  </span>
-                </div>
-                <div className="flex items-center gap-2">
-                  {latencyMs !== null && (
-                    <span className="text-[10px] font-mono font-medium px-2 py-0.5 rounded bg-bg-secondary text-text-secondary border border-border-theme">
-                      ⚡ {latencyMs}ms
-                    </span>
-                  )}
-                  <span className="text-[10px] font-mono font-semibold px-2 py-0.5 rounded-md bg-status-success-bg text-status-success border border-status-success-border">
-                    ● Live Sandbox
-                  </span>
-                </div>
-              </div>
-
-              {/* 4 Interactive Test Step Buttons */}
-              <div className="p-3 border-b border-border-theme bg-bg-primary/40">
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5">
-                  <button
-                    onClick={() => handleAction('create')}
-                    disabled={loading}
-                    className={`px-2.5 py-2 rounded-lg font-mono text-xs font-bold transition-all cursor-pointer text-left border flex flex-col gap-0.5 ${
-                      activeAction === 'create'
-                        ? 'bg-accent-primary text-white border-accent-primary shadow-xs'
-                        : 'bg-bg-secondary hover:bg-bg-tertiary text-text-secondary border-border-theme'
-                    }`}
-                  >
-                    <span className="text-[9px] uppercase tracking-wider opacity-75 font-sans font-normal">1. Mutate</span>
-                    <span className="truncate">POST /posts</span>
-                  </button>
-
-                  <button
-                    onClick={() => handleAction('fetch')}
-                    disabled={loading}
-                    className={`px-2.5 py-2 rounded-lg font-mono text-xs font-bold transition-all cursor-pointer text-left border flex flex-col gap-0.5 ${
-                      activeAction === 'fetch'
-                        ? 'bg-accent-primary text-white border-accent-primary shadow-xs'
-                        : 'bg-bg-secondary hover:bg-bg-tertiary text-text-secondary border-border-theme'
-                    }`}
-                  >
-                    <span className="text-[9px] uppercase tracking-wider opacity-75 font-sans font-normal">2. Verify</span>
-                    <span className="truncate">GET /posts</span>
-                  </button>
-
-                  <button
-                    onClick={() => handleAction('delay')}
-                    disabled={loading}
-                    className={`px-2.5 py-2 rounded-lg font-mono text-xs font-bold transition-all cursor-pointer text-left border flex flex-col gap-0.5 ${
-                      activeAction === 'delay'
-                        ? 'bg-badge-patch text-white border-badge-patch shadow-xs'
-                        : 'bg-bg-secondary hover:bg-bg-tertiary text-text-secondary border-border-theme'
-                    }`}
-                  >
-                    <span className="text-[9px] uppercase tracking-wider opacity-75 font-sans font-normal">3. Latency</span>
-                    <span className="truncate">?_delay=1200</span>
-                  </button>
-
-                  <button
-                    onClick={() => handleAction('reset')}
-                    disabled={loading}
-                    className={`px-2.5 py-2 rounded-lg font-mono text-xs font-bold transition-all cursor-pointer text-left border flex flex-col gap-0.5 ${
-                      activeAction === 'reset'
-                        ? 'bg-badge-delete text-white border-badge-delete shadow-xs'
-                        : 'bg-bg-secondary hover:bg-bg-tertiary text-text-secondary border-border-theme'
-                    }`}
-                  >
-                    <span className="text-[9px] uppercase tracking-wider opacity-75 font-sans font-normal">4. Clean</span>
-                    <span className="truncate">Reset State</span>
-                  </button>
-                </div>
-              </div>
-
-              {/* Status Header Bar above Output */}
-              <div className="px-4 py-1.5 bg-bg-tertiary/40 border-b border-border-theme flex items-center justify-between text-[11px] font-mono text-text-muted">
-                <span className="flex items-center gap-1.5">
-                  <span className="w-1.5 h-1.5 rounded-full bg-accent-primary" />
-                  <span>Status: <strong className="text-accent-primary">{responseStatus}</strong></span>
-                </span>
-                <span>Format: JSON</span>
-              </div>
-
-              {/* Response Code Block Terminal */}
-              <div className="relative">
-                {loading && (
-                  <div className="absolute inset-0 bg-bg-primary/70 backdrop-blur-xs flex items-center justify-center z-10">
-                    <div className="flex items-center gap-2 text-xs font-bold text-accent-primary bg-bg-secondary px-3.5 py-2 rounded-xl border border-border-theme shadow-lg">
-                      <Icon icon="ph:spinner-bold" className="w-4 h-4 animate-spin" />
-                      <span>Executing sandbox query...</span>
-                    </div>
-                  </div>
-                )}
-                <CodeBlock
-                  code={consoleOutput}
-                  language="json"
-                  maxHeight="max-h-[19rem]"
-                  showLineNumbers={true}
-                  className="rounded-none border-0"
-                />
-              </div>
-
+          {/* Preset Endpoint Chips */}
+          <div className="p-4 border-b border-border-theme bg-bg-primary/50">
+            <div className="text-xs font-mono font-semibold text-text-muted mb-2.5 flex items-center justify-between">
+              <span>Quick Presets — click to test real endpoints:</span>
+              <span className="text-[11px] text-text-muted hidden sm:inline">All mutations persist in your session</span>
             </div>
+            <div className="flex flex-wrap items-center gap-2">
+              {PRESETS.map((preset) => {
+                const isActive = selectedPreset.id === preset.id;
+                return (
+                  <button
+                    key={preset.id}
+                    onClick={() => handleSelectPreset(preset)}
+                    className={`px-3 py-1.5 rounded-lg text-xs font-mono font-semibold transition-all cursor-pointer border flex items-center gap-1.5 ${
+                      isActive
+                        ? 'bg-accent-primary text-white border-accent-primary shadow-xs font-bold'
+                        : 'bg-bg-secondary hover:bg-bg-tertiary text-text-secondary border-border-theme'
+                    }`}
+                    title={preset.description}
+                  >
+                    <span className="text-[10px] opacity-75 font-sans">{preset.method}</span>
+                    <span>{preset.path.split('?')[0]}</span>
+                    {preset.path.includes('?') && (
+                      <span className="text-[10px] opacity-60">?{preset.path.split('?')[1]}</span>
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* URL Execution Bar */}
+          <div className="p-4 border-b border-border-theme bg-bg-secondary flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+            <div className="flex items-center gap-2 flex-1 min-w-0 bg-bg-primary rounded-xl border border-border-theme px-3.5 py-2 font-mono text-xs sm:text-sm">
+              <span className={`px-2 py-0.5 rounded text-[11px] font-bold border ${getMethodBadgeClass(method)}`}>
+                {method}
+              </span>
+              <span className="text-text-muted select-none truncate hidden md:inline">
+                {baseUrl}
+              </span>
+              <input
+                type="text"
+                value={endpointPath}
+                onChange={(e) => setEndpointPath(e.target.value)}
+                className="flex-1 bg-transparent text-text-primary focus:outline-hidden font-mono text-xs sm:text-sm"
+                placeholder="/posts"
+              />
+            </div>
+
+            <button
+              onClick={() => executeRequest()}
+              disabled={loading}
+              className="px-5 py-2.5 rounded-xl bg-accent-primary hover:bg-accent-hover text-white text-xs sm:text-sm font-bold shadow-sm transition-all hover:scale-[1.02] flex items-center justify-center gap-2 cursor-pointer shrink-0"
+            >
+              {loading ? (
+                <>
+                  <Icon icon="ph:spinner-bold" className="w-4 h-4 animate-spin" />
+                  <span>Sending...</span>
+                </>
+              ) : (
+                <>
+                  <Icon icon="ph:paper-plane-tilt-bold" className="w-4 h-4" />
+                  <span>Send Request</span>
+                </>
+              )}
+            </button>
+          </div>
+
+          {/* Request Payload (shown when POST/PUT has body) */}
+          {selectedPreset.body && method === 'POST' && (
+            <div className="p-4 border-b border-border-theme bg-bg-tertiary/20">
+              <div className="text-xs font-mono font-semibold text-text-muted mb-1.5 flex items-center gap-1.5">
+                <Icon icon="ph:arrow-fat-line-up-bold" className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
+                <span>Request Payload (JSON Body):</span>
+              </div>
+              <div className="p-3 rounded-xl bg-code-bg border border-border-theme font-mono text-xs text-text-secondary overflow-x-auto">
+                <pre>{requestBodyText}</pre>
+              </div>
+            </div>
+          )}
+
+          {/* Response Inspector Header */}
+          <div className="px-5 py-2.5 bg-bg-tertiary/40 border-b border-border-theme flex items-center justify-between text-xs font-mono text-text-secondary">
+            <div className="flex items-center gap-3">
+              <span className="flex items-center gap-1.5 font-bold">
+                <span className="w-2 h-2 rounded-full bg-accent-primary" />
+                <span>Response: <strong className="text-accent-primary">{responseStatus}</strong></span>
+              </span>
+              <span className="text-text-muted hidden sm:inline">· application/json</span>
+            </div>
+
+            <div className="flex items-center gap-3">
+              <button
+                onClick={handleCopyResponse}
+                className="text-text-muted hover:text-text-primary transition-colors flex items-center gap-1 cursor-pointer text-xs"
+                title="Copy JSON Response"
+              >
+                <Icon icon={copiedResponse ? 'ph:check-bold' : 'ph:copy-bold'} className="w-3.5 h-3.5 text-accent-primary" />
+                <span>{copiedResponse ? 'Copied' : 'Copy'}</span>
+              </button>
+            </div>
+          </div>
+
+          {/* Terminal Code Display */}
+          <div className="relative">
+            {loading && (
+              <div className="absolute inset-0 bg-bg-primary/75 backdrop-blur-xs flex items-center justify-center z-10">
+                <div className="flex items-center gap-2.5 text-sm font-bold text-accent-primary bg-bg-secondary px-4 py-2.5 rounded-xl border border-border-theme shadow-xl font-mono">
+                  <Icon icon="ph:spinner-bold" className="w-4 h-4 animate-spin" />
+                  <span>Executing live request...</span>
+                </div>
+              </div>
+            )}
+            <CodeBlock
+              code={responseOutput}
+              language="json"
+              maxHeight="max-h-[22rem]"
+              showLineNumbers={true}
+              className="rounded-none border-0 text-xs sm:text-sm"
+            />
           </div>
 
         </div>
+
       </div>
     </section>
   );
 }
 
+export default HeroSection;

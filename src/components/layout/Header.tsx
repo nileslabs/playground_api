@@ -267,7 +267,7 @@ function ThemeSelector() {
     };
   }, [isOpen]);
 
-  const activeTheme = mounted ? theme : 'dark';
+  const activeTheme = mounted ? theme : 'light';
 
   return (
     <div className="relative" ref={dropdownRef} suppressHydrationWarning>

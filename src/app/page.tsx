@@ -1,32 +1,30 @@
 import type { Metadata } from 'next';
 import React from 'react';
 import { HeroSection } from '@/components/landing/HeroSection';
-import { ProblemSolution } from '@/components/landing/ProblemSolution';
-import { HowItWorksSteps } from '@/components/landing/HowItWorksSteps';
+import { WhyPlaygroundSection } from '@/components/landing/WhyPlaygroundSection';
+import { QuickstartSection } from '@/components/landing/QuickstartSection';
+import { CapabilitiesSection } from '@/components/landing/CapabilitiesSection';
+import { ApiExplorerSection } from '@/components/landing/ApiExplorerSection';
 import { UseCasesSection } from '@/components/landing/UseCasesSection';
-import { FeatureGrid } from '@/components/landing/FeatureGrid';
-import { CompareTable } from '@/components/landing/CompareTable';
-import { QuickstartTabs } from '@/components/landing/QuickstartTabs';
-import { ResourceGrid } from '@/components/landing/ResourceGrid';
+import { DeveloperToolkitSection } from '@/components/landing/DeveloperToolkitSection';
+import { FinalCtaSection } from '@/components/landing/FinalCtaSection';
 import { FAQAccordion } from '@/components/landing/FAQAccordion';
 import { siteConfig } from '@/config/site';
 import { getBreadcrumbSchema } from '@/lib/json-ld';
 
 export const metadata: Metadata = {
-  // Use `absolute` so the root layout template ("%s | Playground API") is NOT
-  // appended — the home page title already contains the full brand name.
   title: {
-    absolute: 'Playground API — Free Stateful Mock REST & GraphQL Service',
+    absolute: 'Playground API — The Mock Backend That Remembers',
   },
   description:
-    'Free, instant, stateful mock REST & GraphQL API sandbox for web & mobile development. Features persistent per-session CRUD mutation overlays, JWT auth loops, custom collections, and network latency simulation.',
+    'Free, instant, stateful mock REST & GraphQL API sandbox for web & mobile development. Persistent per-session mutations, JWT auth loops, custom collections, and network latency simulation.',
   alternates: {
     canonical: siteConfig.url,
   },
   openGraph: {
-    title: 'Playground API — Free Stateful Mock REST & GraphQL Service',
+    title: 'Playground API — The Mock Backend That Remembers',
     description:
-      'The modern JSONPlaceholder alternative where mutations actually persist in an isolated, zero-login per-visitor sandbox overlay.',
+      'Build realistic frontend applications with a stateful REST & GraphQL API — without building a backend first.',
     url: siteConfig.url,
     siteName: 'Playground API',
     images: [
@@ -34,21 +32,20 @@ export const metadata: Metadata = {
         url: '/og-image.png',
         width: 1200,
         height: 630,
-        alt: 'Playground API — Free Stateful Mock REST & GraphQL Service',
+        alt: 'Playground API — The Mock Backend That Remembers',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Playground API — Free Stateful Mock REST & GraphQL Service',
+    title: 'Playground API — The Mock Backend That Remembers',
     description:
-      'The modern JSONPlaceholder alternative where mutations actually persist in an isolated, zero-login per-visitor sandbox overlay.',
+      'Build realistic frontend applications with a stateful REST & GraphQL API — without building a backend first.',
     images: ['/og-image.png'],
   },
 };
 
 export default function LandingPage() {
-  // BreadcrumbList for the home page — helps Google display breadcrumb rich results
   const jsonLdBreadcrumbs = getBreadcrumbSchema([
     { name: 'Home', url: siteConfig.url },
   ]);
@@ -60,16 +57,33 @@ export default function LandingPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdBreadcrumbs) }}
       />
+      
+      {/* 1. Hero & Live API Demonstration */}
       <HeroSection />
-      <ProblemSolution />
-      <HowItWorksSteps />
+
+      {/* 2. Why Playground API (Side-by-Side Comparison) */}
+      <WhyPlaygroundSection />
+
+      {/* 3. 30-Second Quickstart */}
+      <QuickstartSection />
+
+      {/* 4. Core Capabilities (BUILD, BEHAVE, BREAK, SHIP) */}
+      <CapabilitiesSection />
+
+      {/* 5. Explore the API (Resource Cards) */}
+      <ApiExplorerSection />
+
+      {/* 6. Concise Use Cases */}
       <UseCasesSection />
-      <FeatureGrid />
-      <CompareTable />
-      <QuickstartTabs />
-      <ResourceGrid />
+
+      {/* 7. Developer Toolkit (GraphQL, OpenAPI, Postman, SDK, Snapshots, Webhooks) */}
+      <DeveloperToolkitSection />
+
+      {/* 8. FAQ & Rich Snippets */}
       <FAQAccordion />
+
+      {/* 9. Final Developer Call to Action */}
+      <FinalCtaSection />
     </div>
   );
 }
-

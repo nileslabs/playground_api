@@ -2,79 +2,7 @@
 @import "tailwindcss";
 
 @layer base {
-  :root, [data-theme="dark"] {
-    --bg-primary: #12141a;
-    --bg-secondary: #181b24;
-    --bg-tertiary: #202430;
-    --bg-overlay: rgba(18, 20, 26, 0.85);
-
-    --text-primary: #f8fafc;
-    --text-secondary: #94a3b8;
-    --text-muted: #64748b;
-    --text-accent: #34d399;
-
-    --border-theme: rgba(255, 255, 255, 0.08);
-    --border-hover: rgba(255, 255, 255, 0.16);
-    --border-focus: rgba(16, 185, 129, 0.5);
-
-    --accent-primary: #10b981;
-    --accent-hover: #059669;
-    --accent-light: rgba(16, 185, 129, 0.12);
-    --accent-muted: rgba(16, 185, 129, 0.25);
-
-    --brand-primary: #10b981;
-    --brand-secondary: #059669;
-    --brand-teal: #0d9488;
-    --brand-cyan: #06b6d4;
-    --brand-glow: rgba(16, 185, 129, 0.35);
-
-    --card-bg: #181b24;
-    --card-border: rgba(255, 255, 255, 0.06);
-
-    --code-bg: #0f1219;
-    --code-header-bg: #151922;
-    --code-border: #1f2937;
-    --code-gutter: #4b5563;
-    --code-active-line: rgba(16, 185, 129, 0.12);
-
-    --badge-get: #10b981;
-    --badge-get-bg: rgba(16, 185, 129, 0.15);
-    --badge-get-border: rgba(16, 185, 129, 0.3);
-
-    --badge-post: #3b82f6;
-    --badge-post-bg: rgba(59, 130, 246, 0.15);
-    --badge-post-border: rgba(59, 130, 246, 0.3);
-
-    --badge-put: #f59e0b;
-    --badge-put-bg: rgba(245, 158, 11, 0.15);
-    --badge-put-border: rgba(245, 158, 11, 0.3);
-
-    --badge-patch: #8b5cf6;
-    --badge-patch-bg: rgba(139, 92, 246, 0.15);
-    --badge-patch-border: rgba(139, 92, 246, 0.3);
-
-    --badge-delete: #ef4444;
-    --badge-delete-bg: rgba(239, 68, 68, 0.15);
-    --badge-delete-border: rgba(239, 68, 68, 0.3);
-
-    --status-success: #10b981;
-    --status-success-bg: rgba(16, 185, 129, 0.12);
-    --status-success-border: rgba(16, 185, 129, 0.25);
-
-    --status-warning: #f59e0b;
-    --status-warning-bg: rgba(245, 158, 11, 0.12);
-    --status-warning-border: rgba(245, 158, 11, 0.25);
-
-    --status-error: #ef4444;
-    --status-error-bg: rgba(239, 68, 68, 0.12);
-    --status-error-border: rgba(239, 68, 68, 0.25);
-
-    --status-info: #3b82f6;
-    --status-info-bg: rgba(59, 130, 246, 0.12);
-    --status-info-border: rgba(59, 130, 246, 0.25);
-  }
-
-  [data-theme="light"] {
+  :root, [data-theme="light"] {
     --bg-primary: #ffffff;
     --bg-secondary: #f8fafc;
     --bg-tertiary: #f1f5f9;
@@ -144,6 +72,78 @@
     --status-info: #2563eb;
     --status-info-bg: #eff6ff;
     --status-info-border: #bfdbfe;
+  }
+
+  [data-theme="dark"] {
+    --bg-primary: #12141a;
+    --bg-secondary: #181b24;
+    --bg-tertiary: #202430;
+    --bg-overlay: rgba(18, 20, 26, 0.85);
+
+    --text-primary: #f8fafc;
+    --text-secondary: #94a3b8;
+    --text-muted: #64748b;
+    --text-accent: #34d399;
+
+    --border-theme: rgba(255, 255, 255, 0.08);
+    --border-hover: rgba(255, 255, 255, 0.16);
+    --border-focus: rgba(16, 185, 129, 0.5);
+
+    --accent-primary: #10b981;
+    --accent-hover: #059669;
+    --accent-light: rgba(16, 185, 129, 0.12);
+    --accent-muted: rgba(16, 185, 129, 0.25);
+
+    --brand-primary: #10b981;
+    --brand-secondary: #059669;
+    --brand-teal: #0d9488;
+    --brand-cyan: #06b6d4;
+    --brand-glow: rgba(16, 185, 129, 0.35);
+
+    --card-bg: #181b24;
+    --card-border: rgba(255, 255, 255, 0.06);
+
+    --code-bg: #0f1219;
+    --code-header-bg: #151922;
+    --code-border: #1f2937;
+    --code-gutter: #4b5563;
+    --code-active-line: rgba(16, 185, 129, 0.12);
+
+    --badge-get: #10b981;
+    --badge-get-bg: rgba(16, 185, 129, 0.15);
+    --badge-get-border: rgba(16, 185, 129, 0.3);
+
+    --badge-post: #3b82f6;
+    --badge-post-bg: rgba(59, 130, 246, 0.15);
+    --badge-post-border: rgba(59, 130, 246, 0.3);
+
+    --badge-put: #f59e0b;
+    --badge-put-bg: rgba(245, 158, 11, 0.15);
+    --badge-put-border: rgba(245, 158, 11, 0.3);
+
+    --badge-patch: #8b5cf6;
+    --badge-patch-bg: rgba(139, 92, 246, 0.15);
+    --badge-patch-border: rgba(139, 92, 246, 0.3);
+
+    --badge-delete: #ef4444;
+    --badge-delete-bg: rgba(239, 68, 68, 0.15);
+    --badge-delete-border: rgba(239, 68, 68, 0.3);
+
+    --status-success: #10b981;
+    --status-success-bg: rgba(16, 185, 129, 0.12);
+    --status-success-border: rgba(16, 185, 129, 0.25);
+
+    --status-warning: #f59e0b;
+    --status-warning-bg: rgba(245, 158, 11, 0.12);
+    --status-warning-border: rgba(245, 158, 11, 0.25);
+
+    --status-error: #ef4444;
+    --status-error-bg: rgba(239, 68, 68, 0.12);
+    --status-error-border: rgba(239, 68, 68, 0.25);
+
+    --status-info: #3b82f6;
+    --status-info-bg: rgba(59, 130, 246, 0.12);
+    --status-info-border: rgba(59, 130, 246, 0.25);
   }
 }
 
@@ -227,6 +227,7 @@ body {
   font-family: 'Comic Neue', 'Comic Sans MS', 'Comic Sans', cursive, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  font-size: 17px;
   line-height: 1.65;
   transition: background-color 0.2s ease, color 0.2s ease;
   min-height: 100vh;
@@ -239,7 +240,7 @@ body {
 }
 
 .glass-header {
-  background: rgba(18, 20, 26, 0.95);
+  background: var(--bg-overlay);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   border-bottom: 1px solid var(--border-theme);
