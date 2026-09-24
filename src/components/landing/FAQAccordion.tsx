@@ -52,18 +52,18 @@ export function FAQAccordion() {
   const faqLd = getFaqSchema(faqs);
 
   return (
-    <section className="py-20 bg-bg-primary border-b border-border-theme">
+    <section className="py-20 lg:py-28 bg-bg-surface/50 border-b border-border-default">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }}
       />
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
         <div className="text-center space-y-4">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-accent-light text-accent-primary text-xs sm:text-sm font-bold">
-            <Icon icon="ph:question-bold" className="w-4 h-4" />
-            10 Common Questions
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-brand-primary/10 border border-brand-primary/20 text-brand-primary text-xs font-semibold tracking-wide">
+            <Icon icon="ph:question-bold" className="w-3.5 h-3.5" />
+            <span>Developer FAQ</span>
           </div>
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-text-primary tracking-tight">
+          <h2 className="text-3xl sm:text-5xl font-extrabold text-text-primary tracking-tight">
             Frequently Asked Questions
           </h2>
           <p className="text-sm sm:text-base text-text-secondary">
@@ -78,23 +78,23 @@ export function FAQAccordion() {
             return (
               <div
                 key={faq.question}
-                className="rounded-2xl glass-panel overflow-hidden transition-all border border-border-theme"
+                className="rounded-2xl bg-bg-surface/80 border border-border-default overflow-hidden transition-all shadow-xs"
               >
                 <button
                   onClick={() => setOpenIndex(isOpen ? null : idx)}
-                  className="w-full flex items-center justify-between p-5 text-left text-sm sm:text-base font-bold text-text-primary hover:bg-bg-tertiary transition-colors cursor-pointer"
+                  className="w-full flex items-center justify-between p-5 text-left text-sm sm:text-base font-bold text-text-primary hover:bg-bg-elevated transition-colors cursor-pointer"
                 >
                   <span>{faq.question}</span>
                   <Icon
                     icon="ph:caret-down-bold"
-                    className={`w-4 h-4 text-accent-primary transition-transform duration-200 shrink-0 ml-2 ${
+                    className={`w-4 h-4 text-brand-primary transition-transform duration-200 shrink-0 ml-3 ${
                       isOpen ? 'rotate-180' : 'rotate-0'
                     }`}
                   />
                 </button>
 
                 {isOpen && (
-                  <div className="p-5 pt-0 text-sm sm:text-base text-text-secondary leading-relaxed border-t border-border-theme/50 bg-bg-secondary/50">
+                  <div className="p-5 pt-0 text-sm sm:text-base text-text-secondary leading-relaxed border-t border-border-subtle bg-bg-elevated/40">
                     {faq.answer}
                   </div>
                 )}
@@ -106,3 +106,5 @@ export function FAQAccordion() {
     </section>
   );
 }
+
+export default FAQAccordion;

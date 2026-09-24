@@ -73,17 +73,17 @@ export function UseCasesSection() {
   ];
 
   return (
-    <section className="py-20 bg-bg-secondary border-b border-border-theme relative overflow-hidden">
+    <section className="py-20 lg:py-28 bg-bg-surface/50 border-b border-border-default relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
         
         {/* Section Heading */}
         <div className="text-center space-y-4 max-w-3xl mx-auto">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-accent-light text-accent-primary text-xs sm:text-sm font-bold font-mono">
-            <Icon icon="ph:users-three-bold" className="w-4 h-4" />
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-brand-primary/10 border border-brand-primary/20 text-brand-primary text-xs font-semibold font-mono tracking-wide">
+            <Icon icon="ph:users-three-bold" className="w-3.5 h-3.5" />
             <span>Target Use Cases</span>
           </div>
-          <h2 className="text-3xl sm:text-5xl font-black text-text-primary tracking-tight">
-            Built for Every Stage of Frontend Development
+          <h2 className="text-3xl sm:text-5xl font-extrabold text-text-primary tracking-tight">
+            Built for Every Stage of Frontend Prototyping
           </h2>
           <p className="text-sm sm:text-base text-text-secondary leading-relaxed max-w-2xl mx-auto">
             From single-page portfolio projects to automated CI/CD pipelines and interactive programming classrooms.
@@ -95,11 +95,11 @@ export function UseCasesSection() {
           {useCases.map((uc) => (
             <div
               key={uc.title}
-              className="p-7 sm:p-8 rounded-3xl glass-panel border border-border-theme/80 hover:border-accent-primary/40 transition-all flex flex-col justify-between space-y-6 group shadow-sm hover:shadow-xl relative bg-bg-primary/50"
+              className="p-7 sm:p-8 rounded-3xl bg-bg-surface/70 border border-border-default hover:border-brand-primary/40 transition-all flex flex-col justify-between space-y-6 group shadow-sm hover:shadow-xl relative"
             >
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
-                  <div className={`w-12 h-12 rounded-2xl bg-bg-tertiary flex items-center justify-center ${uc.accentColor} group-hover:scale-110 transition-transform shadow-xs`}>
+                  <div className={`w-12 h-12 rounded-2xl bg-bg-elevated flex items-center justify-center ${uc.accentColor} group-hover:scale-110 transition-transform shadow-xs`}>
                     <Icon icon={uc.icon} className="w-6 h-6" />
                   </div>
                   <span className={`text-[11px] font-mono font-semibold px-2.5 py-0.5 rounded-full border ${uc.badgeBg}`}>
@@ -108,7 +108,7 @@ export function UseCasesSection() {
                 </div>
 
                 <div className="space-y-2">
-                  <h3 className="text-xl font-bold text-text-primary group-hover:text-accent-primary transition-colors">
+                  <h3 className="text-xl font-bold text-text-primary group-hover:text-brand-primary transition-colors">
                     {uc.title}
                   </h3>
                   <p className="text-xs sm:text-sm text-text-secondary leading-relaxed">
@@ -120,7 +120,7 @@ export function UseCasesSection() {
                 <ul className="space-y-2 pt-2 text-xs sm:text-sm text-text-muted">
                   {uc.bullets.map((b) => (
                     <li key={b} className="flex items-center gap-2">
-                      <Icon icon="ph:check-bold" className="w-3.5 h-3.5 text-accent-primary shrink-0" />
+                      <Icon icon="ph:check-bold" className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
                       <span className="text-text-secondary">{b}</span>
                     </li>
                   ))}
@@ -128,10 +128,10 @@ export function UseCasesSection() {
               </div>
 
               {/* Link CTA */}
-              <div className="pt-4 border-t border-border-theme">
+              <div className="pt-4 border-t border-border-subtle">
                 <Link
                   href={uc.link}
-                  className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold text-accent-primary hover:underline"
+                  className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold text-brand-primary hover:text-brand-hover hover:underline"
                 >
                   <span>{uc.linkText}</span>
                   <Icon icon="ph:arrow-right-bold" className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
@@ -145,4 +145,5 @@ export function UseCasesSection() {
     </section>
   );
 }
+
 export default UseCasesSection;

@@ -44,7 +44,6 @@ export function SandboxPill({ onOpenShare }: SandboxPillProps = {}) {
           }
         })
         .catch(() => {
-          // Fallback to active state if backend request fails
           setDisplayId('Active');
         });
     }
@@ -60,32 +59,36 @@ export function SandboxPill({ onOpenShare }: SandboxPillProps = {}) {
   return (
     <div
       suppressHydrationWarning
-      className="flex items-center gap-2 bg-bg-secondary border border-border-theme px-3 py-1.5 rounded-full text-xs sm:text-sm font-mono text-text-secondary shadow-xs"
+      className="flex items-center gap-2 bg-bg-surface-elevated/80 hover:bg-bg-surface-elevated border border-border-default hover:border-brand-primary/40 px-3 py-1.5 rounded-full text-xs font-mono text-text-secondary shadow-xs transition-all"
     >
       <span className="relative flex h-2 w-2">
         <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
         <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
       </span>
-      <span className="font-medium text-text-primary hidden sm:inline">Sandbox Active:</span>
-      <span className="text-accent-primary font-semibold" title={fullToken || displayId} suppressHydrationWarning>
+      <span className="font-sans font-medium text-text-muted hidden sm:inline text-[11px] uppercase tracking-wider">
+        Sandbox
+      </span>
+      <span className="text-text-primary font-semibold truncate max-w-[120px]" title={fullToken || displayId} suppressHydrationWarning>
         {mounted ? displayId : 'Active'}
       </span>
       {fullToken && (
-        <div className="flex items-center gap-1 ml-1">
+        <div className="flex items-center gap-1.5 ml-0.5 border-l border-border-subtle pl-1.5">
           <button
             onClick={handleCopy}
-            title="Copy Signed Identity Token"
-            className="text-text-muted hover:text-text-primary transition-colors cursor-pointer"
+            title="Copy Session Identity Token"
+            aria-label="Copy Session Identity Token"
+            className="text-text-muted hover:text-brand-primary transition-colors cursor-pointer"
           >
-            <Icon icon={copied ? 'ph:check-bold' : 'ph:copy-bold'} className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+            <Icon icon={copied ? 'ph:check-bold' : 'ph:copy-bold'} className={`w-3.5 h-3.5 ${copied ? 'text-emerald-400' : ''}`} />
           </button>
           {onOpenShare && (
             <button
               onClick={onOpenShare}
               title="Share Sandbox URL & QR Code"
-              className="text-text-muted hover:text-emerald-400 transition-colors cursor-pointer"
+              aria-label="Share Sandbox URL & QR Code"
+              className="text-text-muted hover:text-brand-primary transition-colors cursor-pointer"
             >
-              <Icon icon="ph:qr-code-bold" className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+              <Icon icon="ph:qr-code-bold" className="w-3.5 h-3.5" />
             </button>
           )}
         </div>
@@ -93,4 +96,3 @@ export function SandboxPill({ onOpenShare }: SandboxPillProps = {}) {
     </div>
   );
 }
-

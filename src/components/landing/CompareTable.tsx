@@ -3,112 +3,137 @@ import { Icon } from '@iconify/react';
 
 export function CompareTable() {
   return (
-    <section className="py-20 bg-bg-secondary border-b border-border-theme">
+    <section className="py-20 lg:py-28 bg-bg-canvas border-b border-border-default">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
         <div className="text-center space-y-4 max-w-3xl mx-auto">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent-light text-accent-primary text-xs sm:text-sm font-bold">
-            Comprehensive Platform Matrix
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-primary/10 border border-brand-primary/20 text-brand-primary text-xs font-semibold tracking-wide">
+            <Icon icon="ph:table-bold" className="w-3.5 h-3.5" />
+            <span>Comprehensive Platform Matrix</span>
           </div>
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-text-primary tracking-tight">
-            How Playground API Compares to Alternatives
+          <h2 className="text-3xl sm:text-5xl font-extrabold text-text-primary tracking-tight">
+            How Playground API Compares
           </h2>
-          <p className="text-sm sm:text-base text-text-secondary">
-            See why developers choose Playground API over legacy mock APIs for real-world prototyping.
+          <p className="text-sm sm:text-base text-text-secondary leading-relaxed">
+            See why developers choose Playground API over legacy mock APIs for real-world frontend prototypes.
           </p>
         </div>
 
-        <div className="overflow-x-auto rounded-2xl border border-border-theme glass-panel shadow-xl">
+        <div className="overflow-x-auto rounded-3xl border border-border-default bg-bg-surface/80 shadow-2xl backdrop-blur-md">
           <table className="w-full text-left border-collapse text-xs sm:text-sm">
             <thead>
-              <tr className="bg-bg-tertiary border-b border-border-theme font-bold text-text-primary">
-                <th className="p-4">Feature / Capability</th>
-                <th className="p-4 text-accent-primary font-extrabold text-xs sm:text-sm">Playground API</th>
-                <th className="p-4 text-text-secondary">JSONPlaceholder</th>
-                <th className="p-4 text-text-secondary">Platzi Fake API</th>
-                <th className="p-4 text-text-secondary">DummyJSON</th>
+              <tr className="bg-bg-elevated/80 border-b border-border-default text-text-secondary font-mono text-xs">
+                <th className="p-4 sm:p-5 font-semibold">Feature / Capability</th>
+                <th className="p-4 sm:p-5 text-brand-primary font-bold text-sm bg-brand-primary/10 border-x border-brand-primary/20">
+                  <div className="flex items-center gap-1.5">
+                    <span className="w-2 h-2 rounded-full bg-emerald-400" />
+                    <span>Playground API</span>
+                  </div>
+                </th>
+                <th className="p-4 sm:p-5">JSONPlaceholder</th>
+                <th className="p-4 sm:p-5">Platzi Fake API</th>
+                <th className="p-4 sm:p-5">DummyJSON</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-border-theme text-text-secondary">
-              <tr>
-                <td className="p-4 font-semibold text-text-primary">Persistent Per-Session Mutation Overlays</td>
-                <td className="p-4 font-bold text-emerald-400 flex items-center gap-1">
-                  <Icon icon="ph:check-circle-fill" className="w-4 h-4" /> Real Virtual State
+            <tbody className="divide-y divide-border-subtle text-text-secondary">
+              <tr className="hover:bg-bg-elevated/40 transition-colors">
+                <td className="p-4 sm:p-5 font-semibold text-text-primary">Persistent Per-Session Mutation Overlays</td>
+                <td className="p-4 sm:p-5 font-bold text-emerald-400 bg-brand-primary/5 border-x border-brand-primary/20 flex items-center gap-1.5">
+                  <Icon icon="ph:check-circle-fill" className="w-4 h-4 shrink-0" />
+                  <span>Real Virtual State</span>
                 </td>
-                <td className="p-4 text-rose-400">❌ Fake Payload Echo</td>
-                <td className="p-4 text-rose-400">❌ Fake Payload Echo</td>
-                <td className="p-4 text-rose-400">❌ Fake Payload Echo</td>
+                <td className="p-4 sm:p-5 text-rose-400">❌ Fake Payload Echo</td>
+                <td className="p-4 sm:p-5 text-rose-400">❌ Fake Payload Echo</td>
+                <td className="p-4 sm:p-5 text-rose-400">❌ Fake Payload Echo</td>
               </tr>
-              <tr>
-                <td className="p-4 font-semibold text-text-primary">GraphQL Gateway Support</td>
-                <td className="p-4 font-bold text-emerald-400 flex items-center gap-1">
-                  <Icon icon="ph:check-circle-fill" className="w-4 h-4" /> Yes (/graphql)
+              <tr className="hover:bg-bg-elevated/40 transition-colors">
+                <td className="p-4 sm:p-5 font-semibold text-text-primary">Stripe-Parity 3DS Payment Gateway</td>
+                <td className="p-4 sm:p-5 font-bold text-emerald-400 bg-brand-primary/5 border-x border-brand-primary/20 flex items-center gap-1.5">
+                  <Icon icon="ph:check-circle-fill" className="w-4 h-4 shrink-0" />
+                  <span>Full 3DS Modal & Intents</span>
                 </td>
-                <td className="p-4 text-rose-400">❌ No</td>
-                <td className="p-4 text-emerald-400">✅ Yes</td>
-                <td className="p-4 text-rose-400">❌ No</td>
+                <td className="p-4 sm:p-5 text-rose-400">❌ No</td>
+                <td className="p-4 sm:p-5 text-rose-400">❌ No</td>
+                <td className="p-4 sm:p-5 text-rose-400">❌ No</td>
               </tr>
-              <tr>
-                <td className="p-4 font-semibold text-text-primary">Fake JWT Auth Simulation</td>
-                <td className="p-4 font-bold text-emerald-400 flex items-center gap-1">
-                  <Icon icon="ph:check-circle-fill" className="w-4 h-4" /> Full Bearer Auth
+              <tr className="hover:bg-bg-elevated/40 transition-colors">
+                <td className="p-4 sm:p-5 font-semibold text-text-primary">Virtual Email & SMS Web Inbox</td>
+                <td className="p-4 sm:p-5 font-bold text-emerald-400 bg-brand-primary/5 border-x border-brand-primary/20 flex items-center gap-1.5">
+                  <Icon icon="ph:check-circle-fill" className="w-4 h-4 shrink-0" />
+                  <span>Real-Time SSE & OTP Extractor</span>
                 </td>
-                <td className="p-4 text-rose-400">❌ No</td>
-                <td className="p-4 text-emerald-400">✅ Yes</td>
-                <td className="p-4 text-emerald-400">✅ Yes</td>
+                <td className="p-4 sm:p-5 text-rose-400">❌ No</td>
+                <td className="p-4 sm:p-5 text-rose-400">❌ No</td>
+                <td className="p-4 sm:p-5 text-rose-400">❌ No</td>
               </tr>
-              <tr>
-                <td className="p-4 font-semibold text-text-primary">Dynamic Custom Collections</td>
-                <td className="p-4 font-bold text-emerald-400 flex items-center gap-1">
-                  <Icon icon="ph:check-circle-fill" className="w-4 h-4" /> Yes (/custom/*)
+              <tr className="hover:bg-bg-elevated/40 transition-colors">
+                <td className="p-4 sm:p-5 font-semibold text-text-primary">Multipart File Uploads & Cloud CDN</td>
+                <td className="p-4 sm:p-5 font-bold text-emerald-400 bg-brand-primary/5 border-x border-brand-primary/20 flex items-center gap-1.5">
+                  <Icon icon="ph:check-circle-fill" className="w-4 h-4 shrink-0" />
+                  <span>Cloudinary CDN Preview</span>
                 </td>
-                <td className="p-4 text-rose-400">❌ No</td>
-                <td className="p-4 text-rose-400">❌ No</td>
-                <td className="p-4 text-rose-400">❌ No</td>
+                <td className="p-4 sm:p-5 text-rose-400">❌ No</td>
+                <td className="p-4 sm:p-5 text-rose-400">❌ No</td>
+                <td className="p-4 sm:p-5 text-rose-400">❌ No</td>
               </tr>
-              <tr>
-                <td className="p-4 font-semibold text-text-primary">Network Delay & Error Headers</td>
-                <td className="p-4 font-bold text-emerald-400 flex items-center gap-1">
-                  <Icon icon="ph:check-circle-fill" className="w-4 h-4" /> Headers & Params
+              <tr className="hover:bg-bg-elevated/40 transition-colors">
+                <td className="p-4 sm:p-5 font-semibold text-text-primary">Unified GraphQL Gateway</td>
+                <td className="p-4 sm:p-5 font-bold text-emerald-400 bg-brand-primary/5 border-x border-brand-primary/20 flex items-center gap-1.5">
+                  <Icon icon="ph:check-circle-fill" className="w-4 h-4 shrink-0" />
+                  <span>Yes (/graphql)</span>
                 </td>
-                <td className="p-4 text-rose-400">❌ No</td>
-                <td className="p-4 text-rose-400">❌ No</td>
-                <td className="p-4 text-amber-400">⚠️ Limited</td>
+                <td className="p-4 sm:p-5 text-rose-400">❌ No</td>
+                <td className="p-4 sm:p-5 text-emerald-400">✅ Yes</td>
+                <td className="p-4 sm:p-5 text-rose-400">❌ No</td>
               </tr>
-              <tr>
-                <td className="p-4 font-semibold text-text-primary">Session Snapshot Export / Import</td>
-                <td className="p-4 font-bold text-emerald-400 flex items-center gap-1">
-                  <Icon icon="ph:check-circle-fill" className="w-4 h-4" /> Portable JSON
+              <tr className="hover:bg-bg-elevated/40 transition-colors">
+                <td className="p-4 sm:p-5 font-semibold text-text-primary">Fake JWT Auth & RBAC Roles</td>
+                <td className="p-4 sm:p-5 font-bold text-emerald-400 bg-brand-primary/5 border-x border-brand-primary/20 flex items-center gap-1.5">
+                  <Icon icon="ph:check-circle-fill" className="w-4 h-4 shrink-0" />
+                  <span>4 Personas & Bearer Auth</span>
                 </td>
-                <td className="p-4 text-rose-400">❌ No</td>
-                <td className="p-4 text-rose-400">❌ No</td>
-                <td className="p-4 text-rose-400">❌ No</td>
+                <td className="p-4 sm:p-5 text-rose-400">❌ No</td>
+                <td className="p-4 sm:p-5 text-emerald-400">✅ Basic</td>
+                <td className="p-4 sm:p-5 text-emerald-400">✅ Basic</td>
               </tr>
-              <tr>
-                <td className="p-4 font-semibold text-text-primary">Relational Sub-Resource Filtering</td>
-                <td className="p-4 font-bold text-emerald-400 flex items-center gap-1">
-                  <Icon icon="ph:check-circle-fill" className="w-4 h-4" /> Full Support
+              <tr className="hover:bg-bg-elevated/40 transition-colors">
+                <td className="p-4 sm:p-5 font-semibold text-text-primary">Network Chaos & Fault Injection</td>
+                <td className="p-4 sm:p-5 font-bold text-emerald-400 bg-brand-primary/5 border-x border-brand-primary/20 flex items-center gap-1.5">
+                  <Icon icon="ph:check-circle-fill" className="w-4 h-4 shrink-0" />
+                  <span>Headers & URL Params</span>
                 </td>
-                <td className="p-4 text-emerald-400">✅ Basic</td>
-                <td className="p-4 text-rose-400">❌ No</td>
-                <td className="p-4 text-emerald-400">✅ Basic</td>
+                <td className="p-4 sm:p-5 text-rose-400">❌ No</td>
+                <td className="p-4 sm:p-5 text-rose-400">❌ No</td>
+                <td className="p-4 sm:p-5 text-amber-400">⚠️ Limited delay only</td>
               </tr>
-              <tr>
-                <td className="p-4 font-semibold text-text-primary">AI Readable (/llms.txt) Specification</td>
-                <td className="p-4 font-bold text-emerald-400 flex items-center gap-1">
-                  <Icon icon="ph:check-circle-fill" className="w-4 h-4" /> Yes
+              <tr className="hover:bg-bg-elevated/40 transition-colors">
+                <td className="p-4 sm:p-5 font-semibold text-text-primary">Dynamic Custom Collections</td>
+                <td className="p-4 sm:p-5 font-bold text-emerald-400 bg-brand-primary/5 border-x border-brand-primary/20 flex items-center gap-1.5">
+                  <Icon icon="ph:check-circle-fill" className="w-4 h-4 shrink-0" />
+                  <span>Yes (/custom/*)</span>
                 </td>
-                <td className="p-4 text-rose-400">❌ No</td>
-                <td className="p-4 text-rose-400">❌ No</td>
-                <td className="p-4 text-rose-400">❌ No</td>
+                <td className="p-4 sm:p-5 text-rose-400">❌ No</td>
+                <td className="p-4 sm:p-5 text-rose-400">❌ No</td>
+                <td className="p-4 sm:p-5 text-rose-400">❌ No</td>
               </tr>
-              <tr>
-                <td className="p-4 font-semibold text-text-primary">One-Click Multi-Format Spec Downloads</td>
-                <td className="p-4 font-bold text-emerald-400 flex items-center gap-1">
-                  <Icon icon="ph:check-circle-fill" className="w-4 h-4" /> 5+ Formats
+              <tr className="hover:bg-bg-elevated/40 transition-colors">
+                <td className="p-4 sm:p-5 font-semibold text-text-primary">Snapshot Export / Import</td>
+                <td className="p-4 sm:p-5 font-bold text-emerald-400 bg-brand-primary/5 border-x border-brand-primary/20 flex items-center gap-1.5">
+                  <Icon icon="ph:check-circle-fill" className="w-4 h-4 shrink-0" />
+                  <span>Portable JSON State</span>
                 </td>
-                <td className="p-4 text-rose-400">❌ No</td>
-                <td className="p-4 text-rose-400">❌ No</td>
-                <td className="p-4 text-rose-400">❌ No</td>
+                <td className="p-4 sm:p-5 text-rose-400">❌ No</td>
+                <td className="p-4 sm:p-5 text-rose-400">❌ No</td>
+                <td className="p-4 sm:p-5 text-rose-400">❌ No</td>
+              </tr>
+              <tr className="hover:bg-bg-elevated/40 transition-colors">
+                <td className="p-4 sm:p-5 font-semibold text-text-primary">AI / LLM Ready Spec (/llms.txt)</td>
+                <td className="p-4 sm:p-5 font-bold text-emerald-400 bg-brand-primary/5 border-x border-brand-primary/20 flex items-center gap-1.5">
+                  <Icon icon="ph:check-circle-fill" className="w-4 h-4 shrink-0" />
+                  <span>Structured Markdown</span>
+                </td>
+                <td className="p-4 sm:p-5 text-rose-400">❌ No</td>
+                <td className="p-4 sm:p-5 text-rose-400">❌ No</td>
+                <td className="p-4 sm:p-5 text-rose-400">❌ No</td>
               </tr>
             </tbody>
           </table>
@@ -117,3 +142,5 @@ export function CompareTable() {
     </section>
   );
 }
+
+export default CompareTable;

@@ -5,21 +5,23 @@ import { Icon } from '@iconify/react';
 
 export function ProblemSolution() {
   return (
-    <section className="py-20 bg-bg-secondary border-b border-border-theme relative overflow-hidden">
+    <section className="py-20 lg:py-28 bg-bg-surface/50 border-b border-border-default relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
         
         {/* Section Heading */}
         <div className="text-center space-y-4 max-w-3xl mx-auto">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-accent-light text-accent-primary text-xs sm:text-sm font-bold font-mono">
-            <Icon icon="ph:scales-bold" className="w-4 h-4" />
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-brand-primary/10 border border-brand-primary/20 text-brand-primary text-xs font-semibold font-mono tracking-wide">
+            <Icon icon="ph:scales-bold" className="w-3.5 h-3.5" />
             <span>The Statefulness Problem</span>
           </div>
-          <h2 className="text-3xl sm:text-5xl font-black text-text-primary tracking-tight">
+          <h2 className="text-3xl sm:text-5xl font-extrabold text-text-primary tracking-tight">
             Traditional Mock APIs Fake It.{' '}
-            <span className="text-accent-primary">Playground API Saves It.</span>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-primary to-cyan-400">
+              Playground API Saves It.
+            </span>
           </h2>
           <p className="text-sm sm:text-base text-text-secondary leading-relaxed max-w-2xl mx-auto">
-            Why building realistic frontend prototypes with legacy mock backends always falls short — and how our per-visitor sandbox fixes it.
+            Why building realistic frontend prototypes with legacy mock backends always falls short — and how our per-visitor sandbox overlay solves it forever.
           </p>
         </div>
 
@@ -27,9 +29,9 @@ export function ProblemSolution() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch">
           
           {/* LEFT: Legacy Mock APIs (The Problem) */}
-          <div className="rounded-3xl border border-rose-500/30 bg-bg-primary/80 p-6 sm:p-8 space-y-6 flex flex-col justify-between shadow-lg relative">
+          <div className="rounded-3xl border border-rose-500/20 bg-bg-surface/60 backdrop-blur-sm p-6 sm:p-8 space-y-6 flex flex-col justify-between shadow-xl relative group">
             <div className="space-y-4">
-              <div className="flex items-center justify-between pb-3 border-b border-border-theme">
+              <div className="flex items-center justify-between pb-3 border-b border-border-subtle">
                 <div className="flex items-center gap-2 text-rose-400 font-bold text-sm sm:text-base">
                   <Icon icon="ph:x-circle-bold" className="w-5 h-5 text-rose-500" />
                   <span>Legacy Mock APIs (JSONPlaceholder, etc.)</span>
@@ -42,13 +44,13 @@ export function ProblemSolution() {
               {/* Code Flow Demonstration */}
               <div className="space-y-3 font-mono text-xs">
                 {/* Step 1 */}
-                <div className="p-3.5 rounded-xl bg-bg-secondary border border-border-theme space-y-1.5">
+                <div className="p-3.5 rounded-xl bg-bg-elevated/70 border border-border-subtle space-y-1.5">
                   <div className="flex items-center justify-between text-text-muted">
                     <span className="text-rose-400 font-bold">1. POST /posts</span>
-                    <span className="text-emerald-400">201 Created</span>
+                    <span className="text-emerald-400 font-semibold">201 Created</span>
                   </div>
                   <p className="text-text-secondary font-sans text-xs">
-                    Returns fake object: <code className="text-text-primary">{"{ id: 101, title: 'New Post' }"}</code>
+                    Returns fake echo object: <code className="text-text-primary bg-bg-terminal/60 px-1 py-0.5 rounded">{"{ id: 101, title: 'New Post' }"}</code>
                   </p>
                 </div>
 
@@ -56,46 +58,46 @@ export function ProblemSolution() {
                 <div className="p-3.5 rounded-xl bg-rose-500/10 border border-rose-500/30 space-y-1.5">
                   <div className="flex items-center justify-between text-rose-400 font-bold">
                     <span>2. GET /posts</span>
-                    <span className="text-rose-400">❌ Missing!</span>
+                    <span className="text-rose-400">❌ Missing from Array!</span>
                   </div>
                   <p className="text-rose-300 font-sans text-xs">
-                    Your newly created post is nowhere to be found. The server never stored it.
+                    Your newly created post is nowhere to be found. The server discarded the mutation.
                   </p>
                 </div>
               </div>
 
               {/* Drawback Checklist */}
               <ul className="space-y-2.5 pt-2 text-xs sm:text-sm text-text-secondary">
-                <li className="flex items-start gap-2">
+                <li className="flex items-start gap-2.5">
                   <Icon icon="ph:x-bold" className="w-4 h-4 text-rose-500 shrink-0 mt-0.5" />
-                  <span>Mutations vanish on subsequent requests and page reloads.</span>
+                  <span>Mutations vanish on subsequent requests, component transitions, and reloads.</span>
                 </li>
-                <li className="flex items-start gap-2">
+                <li className="flex items-start gap-2.5">
                   <Icon icon="ph:x-bold" className="w-4 h-4 text-rose-500 shrink-0 mt-0.5" />
-                  <span>Cannot test real CRUD interfaces, shopping carts, or task lists.</span>
+                  <span>Cannot demo real CRUD interfaces, carts, or task managers to stakeholders.</span>
                 </li>
-                <li className="flex items-start gap-2">
+                <li className="flex items-start gap-2.5">
                   <Icon icon="ph:x-bold" className="w-4 h-4 text-rose-500 shrink-0 mt-0.5" />
-                  <span>No working JWT auth loops or protected endpoints.</span>
+                  <span>No working JWT auth loops, 3DS payments, or webhook delivery.</span>
                 </li>
               </ul>
             </div>
 
-            <div className="pt-4 border-t border-border-theme text-xs font-medium text-rose-400/90 flex items-center gap-1.5">
+            <div className="pt-4 border-t border-border-subtle text-xs font-medium text-rose-400/90 flex items-center gap-1.5">
               <Icon icon="ph:warning-circle-bold" className="w-4 h-4 shrink-0" />
-              <span>Breaks realistic testing and interviewer demonstrations</span>
+              <span>Breaks realistic testing and client / recruiter demos</span>
             </div>
           </div>
 
           {/* RIGHT: Playground API (The Solution) */}
-          <div className="rounded-3xl border border-accent-primary/40 bg-linear-to-b from-accent-light/30 via-bg-primary to-bg-primary p-6 sm:p-8 space-y-6 flex flex-col justify-between shadow-xl relative ring-1 ring-accent-primary/20">
+          <div className="rounded-3xl border border-brand-primary/40 bg-gradient-to-b from-brand-primary/10 via-bg-surface to-bg-surface p-6 sm:p-8 space-y-6 flex flex-col justify-between shadow-2xl relative ring-1 ring-brand-primary/20">
             <div className="space-y-4">
-              <div className="flex items-center justify-between pb-3 border-b border-border-theme">
-                <div className="flex items-center gap-2 text-accent-primary font-bold text-sm sm:text-base">
-                  <Icon icon="ph:check-circle-bold" className="w-5 h-5 text-accent-primary" />
+              <div className="flex items-center justify-between pb-3 border-b border-border-subtle">
+                <div className="flex items-center gap-2 text-brand-primary font-bold text-sm sm:text-base">
+                  <Icon icon="ph:check-circle-bold" className="w-5 h-5 text-brand-primary" />
                   <span>Playground API</span>
                 </div>
-                <span className="text-[11px] font-mono font-semibold px-2.5 py-0.5 rounded-full bg-accent-light text-accent-primary border border-accent-primary/30">
+                <span className="text-[11px] font-mono font-semibold px-2.5 py-0.5 rounded-full bg-brand-primary/15 text-brand-primary border border-brand-primary/30">
                   Virtual State Sandbox
                 </span>
               </div>
@@ -103,19 +105,19 @@ export function ProblemSolution() {
               {/* Code Flow Demonstration */}
               <div className="space-y-3 font-mono text-xs">
                 {/* Step 1 */}
-                <div className="p-3.5 rounded-xl bg-bg-secondary border border-border-theme space-y-1.5">
+                <div className="p-3.5 rounded-xl bg-bg-elevated/70 border border-border-subtle space-y-1.5">
                   <div className="flex items-center justify-between text-text-muted">
-                    <span className="text-accent-primary font-bold">1. POST /posts</span>
-                    <span className="text-accent-primary">201 Created</span>
+                    <span className="text-brand-primary font-bold">1. POST /posts</span>
+                    <span className="text-emerald-400 font-semibold">201 Created</span>
                   </div>
                   <p className="text-text-secondary font-sans text-xs">
-                    Persists into your private session overlay: <code className="text-accent-primary">{"{ id: 101, ... }"}</code>
+                    Persists into your private session overlay: <code className="text-brand-primary bg-bg-terminal/60 px-1 py-0.5 rounded">{"{ id: 101, ... }"}</code>
                   </p>
                 </div>
 
                 {/* Step 2 (Success) */}
-                <div className="p-3.5 rounded-xl bg-accent-light/40 border border-accent-primary/30 space-y-1.5">
-                  <div className="flex items-center justify-between text-accent-primary font-bold">
+                <div className="p-3.5 rounded-xl bg-emerald-500/10 border border-emerald-500/30 space-y-1.5">
+                  <div className="flex items-center justify-between text-emerald-400 font-bold">
                     <span>2. GET /posts</span>
                     <span className="text-emerald-400">✅ Post Persisted!</span>
                   </div>
@@ -127,24 +129,24 @@ export function ProblemSolution() {
 
               {/* Advantage Checklist */}
               <ul className="space-y-2.5 pt-2 text-xs sm:text-sm text-text-primary">
-                <li className="flex items-start gap-2">
-                  <Icon icon="ph:check-bold" className="w-4 h-4 text-accent-primary shrink-0 mt-0.5" />
+                <li className="flex items-start gap-2.5">
+                  <Icon icon="ph:check-bold" className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
                   <span>Full CRUD persistence (POST, PUT, PATCH, DELETE) in your private session.</span>
                 </li>
-                <li className="flex items-start gap-2">
-                  <Icon icon="ph:check-bold" className="w-4 h-4 text-accent-primary shrink-0 mt-0.5" />
+                <li className="flex items-start gap-2.5">
+                  <Icon icon="ph:check-bold" className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
                   <span>Zero sign-up or database setup — automatic browser session isolation.</span>
                 </li>
-                <li className="flex items-start gap-2">
-                  <Icon icon="ph:check-bold" className="w-4 h-4 text-accent-primary shrink-0 mt-0.5" />
+                <li className="flex items-start gap-2.5">
+                  <Icon icon="ph:check-bold" className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
                   <span>Full JWT auth, custom collections, network delay headers, and snapshot exports.</span>
                 </li>
               </ul>
             </div>
 
-            <div className="pt-4 border-t border-border-theme text-xs font-semibold text-accent-primary flex items-center gap-1.5">
-              <Icon icon="ph:sparkle-bold" className="w-4 h-4 shrink-0" />
-              <span>Behaves exactly like a real backend for frontend apps</span>
+            <div className="pt-4 border-t border-border-subtle text-xs font-semibold text-brand-primary flex items-center gap-1.5">
+              <Icon icon="ph:sparkle-bold" className="w-4 h-4 shrink-0 text-cyan-400" />
+              <span>Behaves exactly like a real production backend</span>
             </div>
           </div>
 
@@ -154,4 +156,5 @@ export function ProblemSolution() {
     </section>
   );
 }
+
 export default ProblemSolution;

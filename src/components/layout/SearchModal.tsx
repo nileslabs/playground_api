@@ -134,7 +134,6 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
   // Handle item navigation & saving to recent searches
   const handleSelect = useCallback(
     (item: SearchIndexItem) => {
-      // Save to recent searches
       try {
         const updated = [item, ...recentItems.filter((r) => r.id !== item.id)].slice(0, MAX_RECENT_SEARCHES);
         setRecentItems(updated);
@@ -208,20 +207,21 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
     });
   }
 
-  // Method badge color helper
+  // Method badge color helper matching DESIGN.md tokens
   const getMethodBadgeClass = (method?: string) => {
     switch (method) {
       case 'GET':
-        return 'bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border-emerald-500/30';
+        return 'bg-emerald-500/12 text-emerald-400 border-emerald-500/28';
       case 'POST':
-        return 'bg-blue-500/15 text-blue-600 dark:text-blue-400 border-blue-500/30';
+        return 'bg-indigo-500/12 text-indigo-400 border-indigo-500/28';
       case 'PUT':
+        return 'bg-amber-500/12 text-amber-400 border-amber-500/28';
       case 'PATCH':
-        return 'bg-amber-500/15 text-amber-600 dark:text-amber-400 border-amber-500/30';
+        return 'bg-purple-500/12 text-purple-400 border-purple-500/28';
       case 'DELETE':
-        return 'bg-rose-500/15 text-rose-600 dark:text-rose-400 border-rose-500/30';
+        return 'bg-rose-500/12 text-rose-400 border-rose-500/28';
       default:
-        return 'bg-accent-light text-accent-primary border-accent-primary/20';
+        return 'bg-brand-primary/10 text-brand-primary border-brand-primary/20';
     }
   };
 
@@ -230,21 +230,21 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
   return (
     <div
       onClick={handleBackdropClick}
-      className="fixed inset-0 z-50 flex items-start justify-center p-3 sm:p-4 md:p-6 pt-12 sm:pt-16 md:pt-20 bg-black/65 backdrop-blur-md animate-fade-in"
+      className="fixed inset-0 z-50 flex items-start justify-center p-3 sm:p-4 md:p-6 pt-12 sm:pt-16 md:pt-20 bg-black/75 backdrop-blur-md animate-fade-in"
     >
       <div
         onKeyDown={handleKeyDown}
-        className="w-full max-w-2xl bg-bg-primary rounded-2xl border border-border-theme shadow-2xl overflow-hidden flex flex-col max-h-[82vh] transition-all transform animate-scale-in"
+        className="w-full max-w-2xl bg-bg-surface rounded-2xl border border-border-default shadow-2xl overflow-hidden flex flex-col max-h-[82vh] transition-all transform animate-scale-in"
       >
         {/* Top Search Input Bar */}
-        <div className="relative flex items-center px-4 py-3.5 border-b border-border-theme bg-bg-secondary/70">
-          <Icon icon="ph:magnifying-glass-bold" className="w-5 h-5 text-accent-primary shrink-0 mr-3" />
+        <div className="relative flex items-center px-4 py-3.5 border-b border-border-subtle bg-bg-surface-elevated/70">
+          <Icon icon="ph:magnifying-glass-bold" className="w-5 h-5 text-brand-primary shrink-0 mr-3" />
           <input
             ref={inputRef}
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search docs, endpoints (e.g. GET /posts), JWT auth, simulations..."
+            placeholder="Search docs, endpoints (e.g. GET /posts), JWT auth, simulation..."
             className="w-full bg-transparent text-sm sm:text-base text-text-primary placeholder:text-text-muted focus:outline-none"
             aria-label="Search documentation and endpoints"
           />
@@ -254,19 +254,19 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
                 setQuery('');
                 inputRef.current?.focus();
               }}
-              className="p-1 rounded-lg hover:bg-bg-tertiary text-text-muted hover:text-text-primary transition-colors cursor-pointer mr-1.5"
+              className="p-1 rounded-lg hover:bg-bg-surface-subtle text-text-muted hover:text-text-primary transition-colors cursor-pointer mr-1.5"
               aria-label="Clear search input"
             >
               <Icon icon="ph:x-circle-fill" className="w-4 h-4" />
             </button>
           ) : null}
-          <kbd className="hidden sm:inline-flex items-center px-2 py-0.5 text-[11px] font-bold text-text-muted bg-bg-tertiary border border-border-theme rounded-md select-none">
+          <kbd className="hidden sm:inline-flex items-center px-2 py-0.5 text-[11px] font-bold text-text-muted bg-bg-surface-subtle border border-border-default rounded-md select-none font-mono">
             ESC
           </kbd>
         </div>
 
         {/* Scrollable Results Container */}
-        <div ref={listRef} className="flex-1 overflow-y-auto p-3 space-y-4 custom-scrollbar max-h-[58vh]">
+        <div ref={listRef} className="flex-1 overflow-y-auto p-3 space-y-4 max-h-[58vh]">
           {/* 1. Results Mode (Query entered) */}
           {query.trim() ? (
             searchResults.length > 0 ? (
@@ -274,7 +274,7 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
                 <div key={category} className="space-y-1.5">
                   <div className="flex items-center gap-2 px-2.5 py-1 text-xs font-bold uppercase tracking-wider text-text-muted">
                     <span>{category}</span>
-                    <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-bg-tertiary border border-border-theme">
+                    <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-bg-surface-subtle border border-border-default font-mono">
                       {items.length}
                     </span>
                   </div>
@@ -293,15 +293,15 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
                           onMouseEnter={() => setSelectedIndex(currentIndex)}
                           className={`group flex items-start gap-3 p-2.5 sm:p-3 rounded-xl cursor-pointer transition-all border ${
                             isSelected
-                              ? 'bg-accent-light border-accent-primary/40 shadow-xs'
-                              : 'bg-bg-secondary/40 hover:bg-bg-secondary border-transparent'
+                              ? 'bg-brand-primary/10 border-brand-primary/40 shadow-xs'
+                              : 'bg-bg-surface-elevated/40 hover:bg-bg-surface-elevated border-transparent'
                           }`}
                         >
                           {/* Item Icon or Method Badge */}
                           <div className="shrink-0 mt-0.5">
                             {item.method ? (
                               <span
-                                className={`text-[10px] sm:text-xs font-mono font-black px-1.5 py-0.5 rounded-md border ${getMethodBadgeClass(
+                                className={`text-[10px] sm:text-xs font-mono font-bold px-1.5 py-0.5 rounded-md border ${getMethodBadgeClass(
                                   item.method
                                 )}`}
                               >
@@ -310,7 +310,7 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
                             ) : (
                               <div
                                 className={`w-7 h-7 rounded-lg flex items-center justify-center ${
-                                  isSelected ? 'bg-accent-primary text-white' : 'bg-bg-tertiary text-text-secondary'
+                                  isSelected ? 'bg-brand-primary text-white' : 'bg-bg-surface-subtle text-text-secondary'
                                 }`}
                               >
                                 <Icon icon={item.icon} className="w-4 h-4" />
@@ -323,7 +323,7 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
                             <div className="flex items-center gap-2 flex-wrap">
                               <span
                                 className={`text-xs sm:text-sm font-bold truncate ${
-                                  isSelected ? 'text-accent-primary' : 'text-text-primary'
+                                  isSelected ? 'text-brand-primary' : 'text-text-primary'
                                 }`}
                               >
                                 <HighlightMatch text={item.title} query={query} />
@@ -334,7 +334,7 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
                                 </span>
                               )}
                               {item.badge && !item.method && (
-                                <span className="text-[10px] px-1.5 py-0.5 rounded font-semibold bg-bg-tertiary text-text-muted border border-border-theme">
+                                <span className="text-[10px] px-1.5 py-0.5 rounded font-mono font-semibold bg-bg-surface-subtle text-text-muted border border-border-default">
                                   {item.badge}
                                 </span>
                               )}
@@ -349,7 +349,7 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
                             <Icon
                               icon="ph:arrow-elbow-down-right-bold"
                               className={`w-3.5 h-3.5 transition-transform ${
-                                isSelected ? 'text-accent-primary translate-x-0.5' : 'text-text-muted/40 opacity-0 group-hover:opacity-100'
+                                isSelected ? 'text-brand-primary translate-x-0.5' : 'text-text-muted/40 opacity-0 group-hover:opacity-100'
                               }`}
                             />
                           </div>
@@ -362,15 +362,15 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
             ) : (
               /* No Search Results Found */
               <div className="py-10 text-center space-y-3">
-                <div className="w-12 h-12 rounded-2xl bg-bg-secondary border border-border-theme mx-auto flex items-center justify-center text-text-muted">
-                  <Icon icon="ph:magnifying-glass-slash-bold" className="w-6 h-6 text-accent-primary/60" />
+                <div className="w-12 h-12 rounded-2xl bg-bg-surface-elevated border border-border-default mx-auto flex items-center justify-center text-text-muted">
+                  <Icon icon="ph:magnifying-glass-slash-bold" className="w-6 h-6 text-brand-primary/60" />
                 </div>
                 <div className="space-y-1">
                   <h3 className="text-sm sm:text-base font-bold text-text-primary">
-                    No results for &ldquo;<span className="text-accent-primary">{query}</span>&rdquo;
+                    No results for &ldquo;<span className="text-brand-primary">{query}</span>&rdquo;
                   </h3>
                   <p className="text-xs text-text-muted max-w-sm mx-auto">
-                    Try searching for common terms like <button onClick={() => setQuery('posts')} className="underline hover:text-accent-primary cursor-pointer">posts</button>, <button onClick={() => setQuery('auth')} className="underline hover:text-accent-primary cursor-pointer">auth</button>, <button onClick={() => setQuery('delay')} className="underline hover:text-accent-primary cursor-pointer">slow down</button>, <button onClick={() => setQuery('graphql')} className="underline hover:text-accent-primary cursor-pointer">graphql</button>, or <button onClick={() => setQuery('reset')} className="underline hover:text-accent-primary cursor-pointer">reset</button>.
+                    Try searching for common terms like <button onClick={() => setQuery('posts')} className="underline hover:text-brand-primary cursor-pointer">posts</button>, <button onClick={() => setQuery('auth')} className="underline hover:text-brand-primary cursor-pointer">auth</button>, <button onClick={() => setQuery('delay')} className="underline hover:text-brand-primary cursor-pointer">delay</button>, <button onClick={() => setQuery('graphql')} className="underline hover:text-brand-primary cursor-pointer">graphql</button>, or <button onClick={() => setQuery('reset')} className="underline hover:text-brand-primary cursor-pointer">reset</button>.
                   </p>
                 </div>
               </div>
@@ -383,7 +383,7 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
                 <div className="space-y-1.5">
                   <div className="flex items-center justify-between px-2.5 py-1">
                     <span className="text-xs font-bold uppercase tracking-wider text-text-muted flex items-center gap-1.5">
-                      <Icon icon="ph:clock-counter-clockwise-bold" className="w-3.5 h-3.5 text-accent-primary" />
+                      <Icon icon="ph:clock-counter-clockwise-bold" className="w-3.5 h-3.5 text-brand-primary" />
                       Recent Searches
                     </span>
                     <button
@@ -408,12 +408,12 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
                           onMouseEnter={() => setSelectedIndex(currentIndex)}
                           className={`group flex items-center justify-between gap-3 p-2.5 rounded-xl cursor-pointer transition-all border ${
                             isSelected
-                              ? 'bg-accent-light border-accent-primary/40 shadow-xs'
-                              : 'bg-bg-secondary/40 hover:bg-bg-secondary border-transparent'
+                              ? 'bg-brand-primary/10 border-brand-primary/40 shadow-xs'
+                              : 'bg-bg-surface-elevated/40 hover:bg-bg-surface-elevated border-transparent'
                           }`}
                         >
                           <div className="flex items-center gap-3 min-w-0">
-                            <div className="w-6 h-6 rounded-lg bg-bg-tertiary flex items-center justify-center text-text-secondary shrink-0">
+                            <div className="w-6 h-6 rounded-lg bg-bg-surface-subtle flex items-center justify-center text-text-secondary shrink-0">
                               <Icon icon={item.icon || 'ph:clock-bold'} className="w-3.5 h-3.5" />
                             </div>
                             <span className="text-xs sm:text-sm font-semibold text-text-primary truncate">
@@ -425,7 +425,7 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
                               </span>
                             )}
                           </div>
-                          <Icon icon="ph:arrow-right-bold" className="w-3.5 h-3.5 text-text-muted group-hover:text-accent-primary shrink-0" />
+                          <Icon icon="ph:arrow-right-bold" className="w-3.5 h-3.5 text-text-muted group-hover:text-brand-primary shrink-0" />
                         </div>
                       );
                     })}
@@ -436,7 +436,7 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
               {/* Popular & Suggested Quick Links */}
               <div className="space-y-1.5">
                 <div className="px-2.5 py-1 text-xs font-bold uppercase tracking-wider text-text-muted flex items-center gap-1.5">
-                  <Icon icon="ph:sparkle-bold" className="w-3.5 h-3.5 text-accent-primary" />
+                  <Icon icon="ph:sparkle-bold" className="w-3.5 h-3.5 text-brand-primary" />
                   Popular Quick Links
                 </div>
 
@@ -454,13 +454,13 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
                         onMouseEnter={() => setSelectedIndex(currentIndex)}
                         className={`group flex items-start gap-3 p-2.5 sm:p-3 rounded-xl cursor-pointer transition-all border ${
                           isSelected
-                            ? 'bg-accent-light border-accent-primary/40 shadow-xs'
-                            : 'bg-bg-secondary/40 hover:bg-bg-secondary border-transparent'
+                            ? 'bg-brand-primary/10 border-brand-primary/40 shadow-xs'
+                            : 'bg-bg-surface-elevated/40 hover:bg-bg-surface-elevated border-transparent'
                         }`}
                       >
                         <div
                           className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 mt-0.5 ${
-                            isSelected ? 'bg-accent-primary text-white' : 'bg-bg-tertiary text-text-secondary'
+                            isSelected ? 'bg-brand-primary text-white' : 'bg-bg-surface-subtle text-text-secondary'
                           }`}
                         >
                           <Icon icon={item.icon} className="w-4 h-4" />
@@ -470,13 +470,13 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
                           <div className="flex items-center gap-2">
                             <span
                               className={`text-xs sm:text-sm font-bold truncate ${
-                                isSelected ? 'text-accent-primary' : 'text-text-primary'
+                                isSelected ? 'text-brand-primary' : 'text-text-primary'
                               }`}
                             >
                               {item.title}
                             </span>
                             {item.badge && (
-                              <span className="text-[10px] px-1.5 py-0.5 rounded font-semibold bg-bg-tertiary text-text-muted border border-border-theme">
+                              <span className="text-[10px] px-1.5 py-0.5 rounded font-mono font-semibold bg-bg-surface-subtle text-text-muted border border-border-default">
                                 {item.badge}
                               </span>
                             )}
@@ -487,7 +487,7 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
                         <Icon
                           icon="ph:arrow-elbow-down-right-bold"
                           className={`w-3.5 h-3.5 shrink-0 mt-1 ${
-                            isSelected ? 'text-accent-primary' : 'text-text-muted/40 opacity-0 group-hover:opacity-100'
+                            isSelected ? 'text-brand-primary' : 'text-text-muted/40 opacity-0 group-hover:opacity-100'
                           }`}
                         />
                       </div>
@@ -500,25 +500,25 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
         </div>
 
         {/* Bottom Action Footer Bar */}
-        <div className="px-4 py-2.5 border-t border-border-theme bg-bg-secondary/60 flex items-center justify-between text-[11px] text-text-muted">
+        <div className="px-4 py-2.5 border-t border-border-subtle bg-bg-surface-elevated/60 flex items-center justify-between text-[11px] text-text-muted">
           <div className="flex items-center gap-3">
             <span className="flex items-center gap-1">
-              <kbd className="px-1.5 py-0.5 rounded bg-bg-tertiary border border-border-theme font-mono text-[10px]">↑↓</kbd>
+              <kbd className="px-1.5 py-0.5 rounded bg-bg-surface-subtle border border-border-default font-mono text-[10px]">↑↓</kbd>
               <span className="hidden xs:inline">Navigate</span>
             </span>
             <span className="flex items-center gap-1">
-              <kbd className="px-1.5 py-0.5 rounded bg-bg-tertiary border border-border-theme font-mono text-[10px]">↵</kbd>
+              <kbd className="px-1.5 py-0.5 rounded bg-bg-surface-subtle border border-border-default font-mono text-[10px]">↵</kbd>
               <span className="hidden xs:inline">Select</span>
             </span>
             <span className="flex items-center gap-1">
-              <kbd className="px-1.5 py-0.5 rounded bg-bg-tertiary border border-border-theme font-mono text-[10px]">ESC</kbd>
+              <kbd className="px-1.5 py-0.5 rounded bg-bg-surface-subtle border border-border-default font-mono text-[10px]">ESC</kbd>
               <span className="hidden xs:inline">Close</span>
             </span>
           </div>
 
-          <div className="flex items-center gap-1 text-[11px] font-semibold text-accent-primary">
+          <div className="flex items-center gap-1 text-[11px] font-semibold text-brand-primary">
             <Icon icon="ph:sparkle-fill" className="w-3.5 h-3.5" />
-            <span>Instant Spotlight</span>
+            <span>Command Palette</span>
           </div>
         </div>
       </div>

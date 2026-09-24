@@ -3,6 +3,8 @@
 import React, { useState, useEffect } from 'react';
 import { EndpointDef } from '@/config/api-catalog';
 import { EndpointCard } from '@/components/docs/EndpointCard';
+import { RelationalSubResourcesCard } from '@/components/docs/RelationalSubResourcesCard';
+import { Icon } from '@iconify/react';
 import config from '@/config/env';
 
 interface ResourceClientProps {
@@ -47,19 +49,34 @@ export function ResourceClient({
   }, [resource, initialEndpoints]);
 
   return (
-    <div className="space-y-10 w-full max-w-none text-text-primary">
-      {/* 1. Resource Clean Header */}
-      <div id="overview" className="space-y-2 scroll-mt-20">
-        <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-text-primary">
+    <div className="space-y-12 w-full max-w-none text-text-primary">
+      {/* 1. Resource Clean Header with Category Tag and Session Isolation Note */}
+      <div id="overview" className="space-y-3.5 pb-6 border-b border-border-default scroll-mt-24">
+        <div className="flex items-center gap-2">
+          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-brand-primary/10 text-brand-primary border border-brand-primary/20">
+            <Icon icon="ph:database-bold" className="w-3.5 h-3.5" />
+            <span>REST API Collection</span>
+          </span>
+          <span className="inline-flex items-center gap-1 text-[11px] text-text-muted font-mono bg-bg-surface px-2 py-0.5 rounded border border-border-subtle">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+            <span>Isolated Overlay State</span>
+          </span>
+        </div>
+
+        <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-text-primary">
           {name}
         </h1>
-        <p className="text-base text-text-secondary leading-relaxed">
-          {description} All mutations persist in your isolated session overlay.
+
+        <p className="text-base text-text-secondary leading-relaxed max-w-3xl">
+          {description} All CRUD mutations are automatically captured in your private session overlay without requiring an account.
         </p>
       </div>
 
-      {/* 2. Endpoints List */}
-      <div className="space-y-10">
+      {/* 2. Relational Sub-Resources Callout (Users -> Posts -> Comments) */}
+      <RelationalSubResourcesCard resource={resource} />
+
+      {/* 3. Endpoints List with ample spacing */}
+      <div className="space-y-12">
         {endpoints.map((ep) => (
           <EndpointCard key={ep.id} endpoint={ep} />
         ))}

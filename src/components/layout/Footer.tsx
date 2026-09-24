@@ -8,14 +8,14 @@ import { LogoIcon } from '@/components/ui/LogoIcon';
 
 export function Footer() {
   return (
-    <footer className="w-full border-t border-border-theme bg-bg-secondary text-text-primary transition-colors py-8 mt-auto">
+    <footer className="w-full border-t border-border-subtle bg-bg-surface/50 text-text-primary transition-colors py-12 mt-auto">
       <div className="mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
-        {/* Main 4-Column Grid */}
+        {/* Main 5-Column Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10">
-          {/* Col 1 & 2: Brand Information */}
+          {/* Col 1: Brand Information */}
           <div className="space-y-4 lg:col-span-2">
             <div className="flex items-center gap-3">
-              <LogoIcon size={36} className="w-9 h-9 shrink-0" />
+              <LogoIcon size={34} className="w-8.5 h-8.5 shrink-0" />
               <div>
                 <span className="font-extrabold text-xl sm:text-2xl tracking-tight text-text-primary block leading-tight">
                   Playground API
@@ -25,7 +25,7 @@ export function Footer() {
             </div>
 
             <p className="text-sm text-text-secondary leading-relaxed max-w-sm">
-              Free, instant mock REST and GraphQL backend for web & mobile prototyping. Features isolated per-user state persistence, JWT authentication, and network latency simulation.
+              Free, instant mock REST and GraphQL backend for web & mobile prototyping. Features isolated per-user state persistence, JWT authentication, and network simulation.
             </p>
 
             <div className="flex flex-wrap items-center gap-3 pt-2">
@@ -33,7 +33,7 @@ export function Footer() {
                 href={siteConfig.githubUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-bg-tertiary hover:bg-border-hover text-text-secondary hover:text-text-primary text-xs font-semibold border border-border-theme transition-colors"
+                className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-bg-surface-elevated hover:bg-bg-surface-subtle text-text-secondary hover:text-text-primary text-xs font-semibold border border-border-default transition-colors"
                 title="View GitHub Repository"
               >
                 <Icon icon="simple-icons:github" className="w-4 h-4" />
@@ -44,10 +44,10 @@ export function Footer() {
                 href={siteConfig.author.website}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-bg-tertiary hover:bg-border-hover text-text-secondary hover:text-text-primary text-xs font-semibold border border-border-theme transition-colors"
+                className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-bg-surface-elevated hover:bg-bg-surface-subtle text-text-secondary hover:text-text-primary text-xs font-semibold border border-border-default transition-colors"
                 title="Developer Website"
               >
-                <Icon icon="ph:globe-bold" className="w-4 h-4 text-accent-primary" />
+                <Icon icon="ph:globe-bold" className="w-4 h-4 text-brand-primary" />
                 <span>By {siteConfig.author.name}</span>
               </a>
             </div>
@@ -60,28 +60,28 @@ export function Footer() {
             </h4>
             <ul className="space-y-2.5 text-xs sm:text-sm text-text-secondary">
               <li>
-                <Link href="/docs/introduction" className="hover:text-accent-primary transition-colors">
+                <Link href="/docs/introduction" className="hover:text-brand-primary transition-colors">
                   Overview & Features
                 </Link>
               </li>
               <li>
-                <Link href="/docs/quickstart" className="hover:text-accent-primary transition-colors">
+                <Link href="/docs/quickstart" className="hover:text-brand-primary transition-colors">
                   30-Second Quickstart
                 </Link>
               </li>
               <li>
-                <Link href="/docs/how-it-works" className="hover:text-accent-primary transition-colors">
+                <Link href="/docs/how-it-works" className="hover:text-brand-primary transition-colors">
                   How Sandboxing Works
                 </Link>
               </li>
               <li>
-                <Link href="/docs/recipes" className="hover:text-accent-primary transition-colors">
+                <Link href="/docs/recipes" className="hover:text-brand-primary transition-colors">
                   Framework Recipes
                 </Link>
               </li>
               <li>
-                <Link href="/docs/showcase" className="hover:text-accent-primary transition-colors">
-                  Project Showcase
+                <Link href="/docs/comparisons" className="hover:text-brand-primary transition-colors">
+                  Alternatives Comparison
                 </Link>
               </li>
             </ul>
@@ -94,32 +94,32 @@ export function Footer() {
             </h4>
             <ul className="space-y-2.5 text-xs sm:text-sm text-text-secondary">
               <li>
-                <Link href="/docs/posts" className="hover:text-accent-primary transition-colors">
+                <Link href="/docs/posts" className="hover:text-brand-primary transition-colors">
                   Posts Collection (100)
                 </Link>
               </li>
               <li>
-                <Link href="/docs/comments" className="hover:text-accent-primary transition-colors">
+                <Link href="/docs/comments" className="hover:text-brand-primary transition-colors">
                   Comments Collection (300)
                 </Link>
               </li>
               <li>
-                <Link href="/docs/users" className="hover:text-accent-primary transition-colors">
+                <Link href="/docs/users" className="hover:text-brand-primary transition-colors">
                   Users & Avatars (25)
                 </Link>
               </li>
               <li>
-                <Link href="/docs/todos" className="hover:text-accent-primary transition-colors">
+                <Link href="/docs/todos" className="hover:text-brand-primary transition-colors">
                   Todos Collection (125)
                 </Link>
               </li>
               <li>
-                <Link href="/docs/auth" className="hover:text-accent-primary transition-colors">
+                <Link href="/docs/auth" className="hover:text-brand-primary transition-colors">
                   JWT Authentication
                 </Link>
               </li>
               <li>
-                <Link href="/docs/custom" className="hover:text-accent-primary transition-colors">
+                <Link href="/docs/custom" className="hover:text-brand-primary transition-colors">
                   Custom Dynamic APIs
                 </Link>
               </li>
@@ -133,33 +133,33 @@ export function Footer() {
             </h4>
             <ul className="space-y-2.5 text-xs sm:text-sm text-text-secondary">
               <li>
-                <Link href="/docs/studio" className="hover:text-accent-primary transition-colors">
+                <Link href="/docs/studio" className="hover:text-brand-primary transition-colors">
                   Interactive API Studio
                 </Link>
               </li>
               <li>
-                <Link href="/docs/simulation" className="hover:text-accent-primary transition-colors">
-                  Network & Chaos Simulation
+                <Link href="/docs/simulation" className="hover:text-brand-primary transition-colors">
+                  Network & Chaos Sim
                 </Link>
               </li>
               <li>
-                <Link href="/docs/graphql" className="hover:text-accent-primary transition-colors">
-                  GraphQL Gateway (GraphiQL)
+                <Link href="/docs/graphql" className="hover:text-brand-primary transition-colors">
+                  GraphQL Gateway
                 </Link>
               </li>
               <li>
-                <Link href="/docs/collections/openapi" className="hover:text-accent-primary transition-colors">
+                <Link href="/docs/collections/openapi" className="hover:text-brand-primary transition-colors">
                   OpenAPI 3.0 Specification
                 </Link>
               </li>
               <li>
-                <Link href="/docs/collections/postman" className="hover:text-accent-primary transition-colors">
+                <Link href="/docs/collections/postman" className="hover:text-brand-primary transition-colors">
                   Postman Collection
                 </Link>
               </li>
               <li>
-                <Link href="/docs/collections/typescript" className="hover:text-accent-primary transition-colors">
-                  TypeScript SDK (.d.ts)
+                <Link href="/docs/sdk" className="hover:text-brand-primary transition-colors">
+                  TypeScript SDK
                 </Link>
               </li>
             </ul>
@@ -167,14 +167,14 @@ export function Footer() {
         </div>
 
         {/* Bottom Bar */}
-        <div className="pt-8 border-t border-border-theme flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-text-muted">
+        <div className="pt-8 border-t border-border-subtle flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-text-muted">
           <div className="flex items-center gap-2 flex-wrap text-center sm:text-left">
-            <span>© {new Date().getFullYear()} Playground API. Released under MIT License. Built with ❤️ by</span>
+            <span>© {new Date().getFullYear()} Playground API. Released under MIT License. Built by</span>
             <a
               href={siteConfig.author.website}
               target="_blank"
               rel="noopener noreferrer"
-              className="font-bold text-text-primary hover:text-accent-primary transition-colors underline"
+              className="font-bold text-text-primary hover:text-brand-primary transition-colors underline"
             >
               {siteConfig.author.name}
             </a>
@@ -185,13 +185,13 @@ export function Footer() {
               href={siteConfig.healthUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-status-success-bg border border-status-success-border text-status-success text-xs font-mono font-semibold hover:bg-accent-light transition-colors"
+              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-mono font-semibold hover:bg-emerald-500/15 transition-colors"
             >
-              <span className="w-2 h-2 rounded-full bg-status-success animate-pulse" />
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
               API: Operational
             </a>
 
-            <span className="inline-flex items-center px-2.5 py-1 rounded-lg bg-bg-tertiary text-xs font-mono text-text-secondary border border-border-theme">
+            <span className="inline-flex items-center px-2.5 py-1 rounded-lg bg-bg-surface-elevated text-xs font-mono text-text-secondary border border-border-default">
               {siteConfig.apiVersion}
             </span>
           </div>

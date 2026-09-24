@@ -142,14 +142,17 @@ export default function RootLayout({
         <link rel="manifest" href="/site.webmanifest" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:ital,wght@0,300;0,400;0,700;1,400;1,700&display=swap" rel="stylesheet" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,600;1,700&display=swap"
+          rel="stylesheet"
+        />
         <link rel="alternate" type="text/plain" href="/llms.txt" title="LLM Documentation" />
         <link rel="alternate" type="text/plain" href="/llms-full.txt" title="Full LLM Reference Specification" />
         <link rel="alternate" type="application/json" href="/product.json" title="Product Manifest" />
       </head>
       <body
         suppressHydrationWarning
-        className="flex flex-col min-h-screen antialiased selection:bg-accent-primary selection:text-white font-comic"
+        className="flex flex-col min-h-screen antialiased selection:bg-brand-primary selection:text-white font-sans bg-bg-canvas text-text-primary"
       >
         <Script
           id="json-ld"

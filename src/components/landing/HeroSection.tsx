@@ -121,47 +121,52 @@ export function HeroSection() {
   };
 
   return (
-    <section className="relative overflow-hidden py-12 lg:py-20 lg:pt-10 border-b border-border-theme bg-linear-to-b from-bg-primary via-bg-secondary/40 to-bg-primary">
-      {/* Subtle Background Glows */}
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-150 h-87.5 bg-accent-primary/10 rounded-full blur-3xl pointer-events-none -z-10" />
-      <div className="absolute top-1/3 right-10 w-75 h-75 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none -z-10" />
+    <section className="relative overflow-hidden py-14 lg:py-24 border-b border-border-default bg-bg-canvas">
+      {/* Background Radial Glow Mesh */}
+      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[350px] bg-brand-primary/10 rounded-full blur-[100px] pointer-events-none -z-10" />
+      <div className="absolute top-1/3 right-10 w-[300px] h-[300px] bg-indigo-500/10 rounded-full blur-[90px] pointer-events-none -z-10" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
           
           {/* LEFT COLUMN: Value Proposition & Developer CTAs (Cols 6/12) */}
-          <div className="lg:col-span-6 space-y-6 text-left">
+          <div className="lg:col-span-6 space-y-7 text-left">
+            {/* Category Pill */}
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-primary/10 border border-brand-primary/20 text-brand-primary text-xs font-semibold tracking-wide">
+              <Icon icon="ph:terminal-window-bold" className="w-3.5 h-3.5" />
+              <span>Stateful REST & GraphQL Mock Cloud</span>
+            </div>
 
             {/* Headline */}
-            <div className="space-y-3">
-              <h1 className="text-3xl sm:text-5xl lg:text-5xl font-black tracking-tight text-text-primary leading-[1.15]">
-                Free, Stateful Mock REST & GraphQL Backend for{' '}
-                <span className="text-accent-primary underline decoration-accent-primary/30 decoration-wavy underline-offset-4">
+            <div className="space-y-4">
+              <h1 className="text-3xl sm:text-5xl lg:text-5xl font-extrabold tracking-tight text-text-primary leading-[1.12]">
+                Zero-Config Stateful Mock API for{' '}
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-primary via-indigo-400 to-cyan-400">
                   Frontend Prototypes
                 </span>
               </h1>
               <p className="text-sm sm:text-base text-text-secondary leading-relaxed max-w-xl">
-                Build real CRUD applications with working JWT authentication, dynamic custom tables, and network latency simulation — with zero database or server configuration.
+                Build real CRUD applications with persistent private session overlays, JWT auth token loops, 3DS payment gateways, and network chaos injection — zero database required.
               </p>
             </div>
 
             {/* Feature Highlights Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 py-1 text-xs text-text-secondary">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 py-1 text-xs text-text-secondary font-medium">
               <div className="flex items-center gap-2">
-                <Icon icon="ph:check-circle-fill" className="w-4 h-4 text-accent-primary shrink-0" />
+                <Icon icon="ph:check-circle-fill" className="w-4 h-4 text-emerald-400 shrink-0" />
                 <span>Real CRUD State Persistence</span>
               </div>
               <div className="flex items-center gap-2">
-                <Icon icon="ph:check-circle-fill" className="w-4 h-4 text-accent-primary shrink-0" />
-                <span>REST & GraphQL Unified</span>
+                <Icon icon="ph:check-circle-fill" className="w-4 h-4 text-cyan-400 shrink-0" />
+                <span>Unified REST & GraphQL</span>
               </div>
               <div className="flex items-center gap-2">
-                <Icon icon="ph:check-circle-fill" className="w-4 h-4 text-accent-primary shrink-0" />
-                <span>Fake JWT Auth & Bearer Loops</span>
+                <Icon icon="ph:check-circle-fill" className="w-4 h-4 text-amber-400 shrink-0" />
+                <span>JWT Auth & Bearer Loops</span>
               </div>
               <div className="flex items-center gap-2">
-                <Icon icon="ph:check-circle-fill" className="w-4 h-4 text-accent-primary shrink-0" />
-                <span>Zero Database / API Key Setup</span>
+                <Icon icon="ph:check-circle-fill" className="w-4 h-4 text-indigo-400 shrink-0" />
+                <span>Zero DB or API Key Setup</span>
               </div>
             </div>
 
@@ -169,141 +174,144 @@ export function HeroSection() {
             <div className="flex flex-wrap items-center gap-3 pt-2">
               <Link
                 href="/docs/introduction"
-                className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-accent-primary hover:bg-accent-hover text-white text-sm font-bold shadow-md shadow-accent-primary/20 transition-all hover:scale-[1.02]"
+                className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-brand-primary hover:bg-brand-hover text-white text-sm font-bold shadow-lg shadow-brand-primary/20 transition-all hover:scale-[1.02] active:scale-98 cursor-pointer"
               >
                 <Icon icon="ph:book-open-text-bold" className="w-4 h-4" />
                 <span>Explore Docs</span>
               </Link>
               <Link
                 href="/docs/studio"
-                className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-bg-secondary hover:bg-bg-tertiary border border-border-theme text-text-primary text-sm font-bold transition-all hover:scale-[1.02]"
+                className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-bg-surface hover:bg-bg-elevated border border-border-default text-text-primary text-sm font-bold transition-all hover:scale-[1.02] active:scale-98 cursor-pointer"
               >
-                <Icon icon="ph:play-circle-bold" className="w-4 h-4 text-accent-primary" />
-                <span>API Studio</span>
+                <Icon icon="ph:play-circle-bold" className="w-4 h-4 text-brand-primary" />
+                <span>Interactive Studio</span>
               </Link>
               <Link
                 href="/docs/showcase"
-                className="inline-flex items-center gap-2 px-4 py-3 rounded-xl bg-bg-secondary hover:bg-bg-tertiary border border-border-theme text-text-secondary hover:text-text-primary text-sm font-medium transition-all"
+                className="inline-flex items-center gap-2 px-4 py-3 rounded-xl bg-bg-surface hover:bg-bg-elevated border border-border-default text-text-secondary hover:text-text-primary text-sm font-medium transition-all"
               >
                 <Icon icon="ph:rocket-launch-bold" className="w-4 h-4 text-emerald-400" />
-                <span>React Demo</span>
+                <span>React Showcase</span>
               </Link>
             </div>
 
             {/* Quick cURL Bar */}
-            <div className="flex items-center justify-between gap-2 p-2.5 rounded-xl bg-bg-secondary border border-border-theme max-w-lg font-mono text-xs text-text-secondary">
+            <div className="flex items-center justify-between gap-2 p-2.5 rounded-xl bg-bg-surface border border-border-default max-w-lg font-mono text-xs text-text-secondary shadow-sm">
               <div className="flex items-center gap-2 truncate">
-                <span className="text-accent-primary font-bold select-none">$</span>
+                <span className="text-brand-primary font-bold select-none">$</span>
                 <span className="truncate text-text-primary">curl {baseUrl}/posts</span>
               </div>
               <button
                 onClick={handleCopyCurl}
-                className="px-2.5 py-1 rounded-md bg-bg-tertiary hover:bg-border-theme text-[11px] font-sans font-semibold text-text-primary transition-colors cursor-pointer shrink-0 flex items-center gap-1"
+                className="px-2.5 py-1 rounded-lg bg-bg-elevated hover:bg-border-default text-[11px] font-sans font-semibold text-text-primary transition-colors cursor-pointer shrink-0 flex items-center gap-1.5"
                 title="Copy cURL Command"
               >
-                <Icon icon={copiedCurl ? 'ph:check-bold' : 'ph:copy-bold'} className="w-3.5 h-3.5 text-accent-primary" />
+                <Icon icon={copiedCurl ? 'ph:check-bold' : 'ph:copy-bold'} className="w-3.5 h-3.5 text-brand-primary" />
                 <span>{copiedCurl ? 'Copied' : 'Copy'}</span>
               </button>
             </div>
 
             {/* Social / Baseline Badges */}
-            <div className="flex items-center gap-4 text-xs text-text-muted pt-1">
-              <span>🚀 100+ Baseline Records</span>
+            <div className="flex items-center gap-3 text-xs text-text-muted pt-1 font-mono">
+              <span className="flex items-center gap-1 text-text-secondary">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                100+ Baseline Records
+              </span>
               <span>•</span>
-              <span>🔒 Zero Auth Required</span>
+              <span>Zero Auth Required</span>
               <span>•</span>
-              <span>⚡ 100% Free</span>
+              <span className="text-brand-primary font-semibold">100% Free</span>
             </div>
           </div>
 
           {/* RIGHT COLUMN: Live Interactive IDE Console Widget (Cols 6/12) */}
           <div className="lg:col-span-6">
-            <div className="relative rounded-2xl glass-panel border border-border-theme shadow-2xl bg-bg-secondary/90 overflow-hidden">
+            <div className="relative rounded-2xl border border-border-default shadow-2xl bg-bg-surface/90 backdrop-blur-md overflow-hidden">
               
               {/* Window Titlebar */}
-              <div className="flex items-center justify-between px-4 py-3 border-b border-border-theme bg-bg-tertiary/60">
+              <div className="flex items-center justify-between px-4 py-3 border-b border-border-subtle bg-bg-elevated/70">
                 <div className="flex items-center gap-2">
-                  <span className="w-3 h-3 rounded-full bg-status-error/80 inline-block" />
-                  <span className="w-3 h-3 rounded-full bg-status-warning/80 inline-block" />
-                  <span className="w-3 h-3 rounded-full bg-status-success/80 inline-block" />
-                  <span className="ml-2 font-mono text-xs font-bold text-text-primary">
+                  <span className="w-2.5 h-2.5 rounded-full bg-rose-500/80 inline-block" />
+                  <span className="w-2.5 h-2.5 rounded-full bg-amber-500/80 inline-block" />
+                  <span className="w-2.5 h-2.5 rounded-full bg-emerald-500/80 inline-block" />
+                  <span className="ml-2 font-mono text-xs font-semibold text-text-secondary">
                     sandbox-session.json
                   </span>
                 </div>
                 <div className="flex items-center gap-2">
                   {latencyMs !== null && (
-                    <span className="text-[10px] font-mono font-medium px-2 py-0.5 rounded bg-bg-secondary text-text-secondary border border-border-theme">
+                    <span className="text-[10px] font-mono font-medium px-2 py-0.5 rounded-md bg-bg-surface text-text-secondary border border-border-subtle">
                       ⚡ {latencyMs}ms
                     </span>
                   )}
-                  <span className="text-[10px] font-mono font-semibold px-2 py-0.5 rounded-md bg-status-success-bg text-status-success border border-status-success-border">
+                  <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-md bg-emerald-500/15 text-emerald-400 border border-emerald-500/20">
                     ● Live Sandbox
                   </span>
                 </div>
               </div>
 
               {/* 4 Interactive Test Step Buttons */}
-              <div className="p-3 border-b border-border-theme bg-bg-primary/40">
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5">
+              <div className="p-3 border-b border-border-subtle bg-bg-terminal/40">
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                   <button
                     onClick={() => handleAction('create')}
                     disabled={loading}
-                    className={`px-2.5 py-2 rounded-lg font-mono text-xs font-bold transition-all cursor-pointer text-left border flex flex-col gap-0.5 ${
+                    className={`px-3 py-2 rounded-xl font-mono text-xs font-bold transition-all cursor-pointer text-left border flex flex-col gap-0.5 active:scale-95 ${
                       activeAction === 'create'
-                        ? 'bg-accent-primary text-white border-accent-primary shadow-xs'
-                        : 'bg-bg-secondary hover:bg-bg-tertiary text-text-secondary border-border-theme'
+                        ? 'bg-brand-primary text-white border-brand-primary shadow-sm'
+                        : 'bg-bg-surface hover:bg-bg-elevated text-text-secondary border-border-default hover:text-text-primary'
                     }`}
                   >
-                    <span className="text-[9px] uppercase tracking-wider opacity-75 font-sans font-normal">1. Mutate</span>
+                    <span className="text-[9px] uppercase tracking-wider opacity-75 font-sans font-medium">1. Mutate</span>
                     <span className="truncate">POST /posts</span>
                   </button>
 
                   <button
                     onClick={() => handleAction('fetch')}
                     disabled={loading}
-                    className={`px-2.5 py-2 rounded-lg font-mono text-xs font-bold transition-all cursor-pointer text-left border flex flex-col gap-0.5 ${
+                    className={`px-3 py-2 rounded-xl font-mono text-xs font-bold transition-all cursor-pointer text-left border flex flex-col gap-0.5 active:scale-95 ${
                       activeAction === 'fetch'
-                        ? 'bg-accent-primary text-white border-accent-primary shadow-xs'
-                        : 'bg-bg-secondary hover:bg-bg-tertiary text-text-secondary border-border-theme'
+                        ? 'bg-brand-primary text-white border-brand-primary shadow-sm'
+                        : 'bg-bg-surface hover:bg-bg-elevated text-text-secondary border-border-default hover:text-text-primary'
                     }`}
                   >
-                    <span className="text-[9px] uppercase tracking-wider opacity-75 font-sans font-normal">2. Verify</span>
+                    <span className="text-[9px] uppercase tracking-wider opacity-75 font-sans font-medium">2. Verify</span>
                     <span className="truncate">GET /posts</span>
                   </button>
 
                   <button
                     onClick={() => handleAction('delay')}
                     disabled={loading}
-                    className={`px-2.5 py-2 rounded-lg font-mono text-xs font-bold transition-all cursor-pointer text-left border flex flex-col gap-0.5 ${
+                    className={`px-3 py-2 rounded-xl font-mono text-xs font-bold transition-all cursor-pointer text-left border flex flex-col gap-0.5 active:scale-95 ${
                       activeAction === 'delay'
-                        ? 'bg-badge-patch text-white border-badge-patch shadow-xs'
-                        : 'bg-bg-secondary hover:bg-bg-tertiary text-text-secondary border-border-theme'
+                        ? 'bg-amber-500 text-white border-amber-500 shadow-sm'
+                        : 'bg-bg-surface hover:bg-bg-elevated text-text-secondary border-border-default hover:text-text-primary'
                     }`}
                   >
-                    <span className="text-[9px] uppercase tracking-wider opacity-75 font-sans font-normal">3. Latency</span>
+                    <span className="text-[9px] uppercase tracking-wider opacity-75 font-sans font-medium">3. Latency</span>
                     <span className="truncate">?_delay=1200</span>
                   </button>
 
                   <button
                     onClick={() => handleAction('reset')}
                     disabled={loading}
-                    className={`px-2.5 py-2 rounded-lg font-mono text-xs font-bold transition-all cursor-pointer text-left border flex flex-col gap-0.5 ${
+                    className={`px-3 py-2 rounded-xl font-mono text-xs font-bold transition-all cursor-pointer text-left border flex flex-col gap-0.5 active:scale-95 ${
                       activeAction === 'reset'
-                        ? 'bg-badge-delete text-white border-badge-delete shadow-xs'
-                        : 'bg-bg-secondary hover:bg-bg-tertiary text-text-secondary border-border-theme'
+                        ? 'bg-rose-500 text-white border-rose-500 shadow-sm'
+                        : 'bg-bg-surface hover:bg-bg-elevated text-text-secondary border-border-default hover:text-text-primary'
                     }`}
                   >
-                    <span className="text-[9px] uppercase tracking-wider opacity-75 font-sans font-normal">4. Clean</span>
+                    <span className="text-[9px] uppercase tracking-wider opacity-75 font-sans font-medium">4. Purge</span>
                     <span className="truncate">Reset State</span>
                   </button>
                 </div>
               </div>
 
               {/* Status Header Bar above Output */}
-              <div className="px-4 py-1.5 bg-bg-tertiary/40 border-b border-border-theme flex items-center justify-between text-[11px] font-mono text-text-muted">
+              <div className="px-4 py-2 bg-bg-surface/50 border-b border-border-subtle flex items-center justify-between text-[11px] font-mono text-text-muted">
                 <span className="flex items-center gap-1.5">
-                  <span className="w-1.5 h-1.5 rounded-full bg-accent-primary" />
-                  <span>Status: <strong className="text-accent-primary">{responseStatus}</strong></span>
+                  <span className="w-1.5 h-1.5 rounded-full bg-brand-primary" />
+                  <span>Status: <strong className="text-text-primary">{responseStatus}</strong></span>
                 </span>
                 <span>Format: JSON</span>
               </div>
@@ -311,8 +319,8 @@ export function HeroSection() {
               {/* Response Code Block Terminal */}
               <div className="relative">
                 {loading && (
-                  <div className="absolute inset-0 bg-bg-primary/70 backdrop-blur-xs flex items-center justify-center z-10">
-                    <div className="flex items-center gap-2 text-xs font-bold text-accent-primary bg-bg-secondary px-3.5 py-2 rounded-xl border border-border-theme shadow-lg">
+                  <div className="absolute inset-0 bg-bg-canvas/80 backdrop-blur-xs flex items-center justify-center z-10">
+                    <div className="flex items-center gap-2 text-xs font-bold text-brand-primary bg-bg-surface px-4 py-2.5 rounded-xl border border-border-default shadow-xl">
                       <Icon icon="ph:spinner-bold" className="w-4 h-4 animate-spin" />
                       <span>Executing sandbox query...</span>
                     </div>

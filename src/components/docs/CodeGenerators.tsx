@@ -27,34 +27,66 @@ export function CodeGenerators({ endpoint }: CodeGeneratorsProps) {
   const bodyStr = hasBody ? JSON.stringify(endpoint.requestBody, null, 2) : '';
 
   const snippets: Record<string, string> = {
-    javascript: `fetch('${fullUrl}', {
+    curl: `curl -X ${endpoint.method} "${fullUrl}" \\
+  -H "Content-Type: application/json" \\
+  -H "X-Playground-Identity: local-visitor"${
+    hasBody ? ` \\\n  -d '${JSON.stringify(endpoint.requestBody)}'` : ''
+  }`,
+
+    typescript: `import { PlaygroundClient } from '@playground-api/sdk';
+
+// Initialize the client with isolated session identity
+const client = new PlaygroundClient({
+  baseUrl: '${baseUrl}',
+  identity: 'local-visitor', // Injected from browser cookie or localStorage
+});
+
+async function main() {
+  const data = await client.${endpoint.method.toLowerCase()}('${endpoint.path}'${
+    hasBody ? `, ${bodyStr}` : ''
+  });
+  console.log(data);
+}
+
+main().catch(console.error);`,
+
+    javascript: `// Modern Fetch with isolated session tracking
+fetch('${fullUrl}', {
   method: '${endpoint.method}',
-  headers: { 'Content-Type': 'application/json' }${
-    hasBody ? `,\n  body: JSON.stringify(${bodyStr})` : ''
-  }
+  headers: {
+    'Content-Type': 'application/json',
+    'X-Playground-Identity': 'local-visitor'
+  }${hasBody ? `,\n  body: JSON.stringify(${bodyStr})` : ''}
 })
   .then(res => res.json())
-  .then(data => console.log(data));`,
+  .then(data => console.log(data))
+  .catch(err => console.error(err));`,
 
     axios: `import axios from 'axios';
 
 axios.${endpoint.method.toLowerCase()}('${fullUrl}'${
       hasBody ? `, ${bodyStr}` : ''
-    })
+    }, {
+  headers: {
+    'Content-Type': 'application/json',
+    'X-Playground-Identity': 'local-visitor'
+  }
+})
   .then(response => console.log(response.data))
   .catch(error => console.error(error));`,
-
-    curl: `curl -X ${endpoint.method} "${fullUrl}" \\
-  -H "Content-Type: application/json"${
-    hasBody ? ` \\\n  -d '${JSON.stringify(endpoint.requestBody)}'` : ''
-  }`,
 
     python: `import requests
 
 url = "${fullUrl}"
-response = requests.${endpoint.method.toLowerCase()}(url${
-      hasBody ? `, json=${JSON.stringify(endpoint.requestBody)}` : ''
-    })
+headers = {
+    "Content-Type": "application/json",
+    "X-Playground-Identity": "local-visitor"
+}
+
+response = requests.${endpoint.method.toLowerCase()}(
+    url,
+    headers=headers${hasBody ? `, json=${JSON.stringify(endpoint.requestBody)}` : ''}
+)
 print(response.json())`,
 
     go: `package main
@@ -66,15 +98,22 @@ import (
 )
 
 func main() {
-\treq, _ := http.NewRequest("${endpoint.method}", "${fullUrl}", ${
+\treq, err := http.NewRequest("${endpoint.method}", "${fullUrl}", ${
       hasBody ? `strings.NewReader(\`${bodyStr}\`)` : 'nil'
     })
+\tif err != nil {
+\t\tpanic(err)
+\t}
+
 \treq.Header.Set("Content-Type", "application/json")
+\treq.Header.Set("X-Playground-Identity", "local-visitor")
+
 \tresp, err := http.DefaultClient.Do(req)
 \tif err != nil {
 \t\tpanic(err)
 \t}
 \tdefer resp.Body.Close()
+
 \tbody, _ := io.ReadAll(resp.Body)
 \tfmt.Println(string(body))
 }`,
@@ -83,11 +122,13 @@ func main() {
 
 var request = URLRequest(url: URL(string: "${fullUrl}")!)
 request.httpMethod = "${endpoint.method}"
-request.setValue("application/json", forHTTPHeaderField: "Content-Type")${
+request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+request.setValue("local-visitor", forHTTPHeaderField: "X-Playground-Identity")${
       hasBody
         ? `\nrequest.httpBody = """\n${bodyStr}\n""".data(using: .utf8)`
         : ''
     }
+
 let task = URLSession.shared.dataTask(with: request) { data, response, error in
     if let data = data, let str = String(data: data, encoding: .utf8) {
         print(str)
@@ -95,35 +136,21 @@ let task = URLSession.shared.dataTask(with: request) { data, response, error in
 }
 task.resume()`,
 
-    kotlin: `import okhttp3.*
-
-val client = OkHttpClient()
-val request = Request.Builder()
-    .url("${fullUrl}")
-    .method("${endpoint.method}", ${
-      hasBody
-        ? `RequestBody.create(MediaType.parse("application/json"), """${bodyStr}""")`
-        : `null`
-    })
-    .build()
-
-client.newCall(request).execute().use { response ->
-    println(response.body()?.string())
-}`,
-
     rust: `use reqwest;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let client = reqwest::Client::new();
     let res = client.${endpoint.method.toLowerCase()}("${fullUrl}")
-        .header("Content-Type", "application/json")${
+        .header("Content-Type", "application/json")
+        .header("X-Playground-Identity", "local-visitor")${
           hasBody ? `\n        .body(r#"${bodyStr}"#)` : ''
         }
         .send()
         .await?
         .text()
         .await?;
+
     println!("{}", res);
     Ok(())
 }`,
@@ -133,15 +160,19 @@ $ch = curl_init();
 curl_setopt($ch, CURLOPT_URL, "${fullUrl}");
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "${endpoint.method}");
-curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);${
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    'Content-Type: application/json',
+    'X-Playground-Identity: local-visitor'
+]);${
       hasBody
         ? `\ncurl_setopt($ch, CURLOPT_POSTFIELDS, '${JSON.stringify(endpoint.requestBody)}');`
         : ''
     }
+
 $response = curl_exec($ch);
 curl_close($ch);
 echo $response;`,
   };
 
-  return <CodeBlock snippets={snippets} defaultTab="javascript" maxHeight="max-h-72" />;
+  return <CodeBlock snippets={snippets} defaultTab="curl" maxHeight="max-h-72" />;
 }

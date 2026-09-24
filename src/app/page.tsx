@@ -1,13 +1,14 @@
 import type { Metadata } from 'next';
 import React from 'react';
 import { HeroSection } from '@/components/landing/HeroSection';
+import { TryItConsole } from '@/components/landing/TryItConsole';
+import { RoutesTable } from '@/components/landing/RoutesTable';
+import { StatefulnessProof } from '@/components/landing/StatefulnessProof';
+import { SchemaRelationsVisualizer } from '@/components/landing/SchemaRelationsVisualizer';
+import { FeatureGrid } from '@/components/landing/FeatureGrid';
 import { ProblemSolution } from '@/components/landing/ProblemSolution';
 import { HowItWorksSteps } from '@/components/landing/HowItWorksSteps';
-import { UseCasesSection } from '@/components/landing/UseCasesSection';
-import { FeatureGrid } from '@/components/landing/FeatureGrid';
 import { CompareTable } from '@/components/landing/CompareTable';
-import { QuickstartTabs } from '@/components/landing/QuickstartTabs';
-import { ResourceGrid } from '@/components/landing/ResourceGrid';
 import { FAQAccordion } from '@/components/landing/FAQAccordion';
 import { siteConfig } from '@/config/site';
 import { getBreadcrumbSchema } from '@/lib/json-ld';
@@ -60,16 +61,37 @@ export default function LandingPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdBreadcrumbs) }}
       />
+      {/* 1. Hero Section: Headline, CTA & Value Proposition */}
       <HeroSection />
-      <ProblemSolution />
-      <HowItWorksSteps />
-      <UseCasesSection />
+
+      {/* 2. Interactive Live Script Console (JSONPlaceholder + DummyJSON style) */}
+      <TryItConsole />
+
+      {/* 3. Live Routes & Resources Table with direct JSON links and live counts */}
+      <RoutesTable />
+
+      {/* 4. Statefulness Proof: Persistent Session Overlay vs Fake Echo Mock APIs */}
+      <StatefulnessProof />
+
+      {/* 5. Relational Resource Schema Visualizer (MockAPI style) */}
+      <SchemaRelationsVisualizer />
+
+      {/* 6. Feature Capabilities Grid */}
       <FeatureGrid />
+
+      {/* 7. Problem & Solution Context */}
+      <ProblemSolution />
+
+      {/* 8. How It Works 3-Step Flow */}
+      <HowItWorksSteps />
+
+      {/* 9. Feature Comparison Matrix */}
       <CompareTable />
-      <QuickstartTabs />
-      <ResourceGrid />
+
+      {/* 10. Frequently Asked Questions & FAQPage Schema */}
       <FAQAccordion />
     </div>
   );
 }
+
 

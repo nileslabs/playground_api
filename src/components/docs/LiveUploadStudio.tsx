@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { Icon } from '@iconify/react';
-import Link from 'next/link';
 
 interface UploadedFileItem {
   id: string;
@@ -163,7 +162,6 @@ export function LiveUploadStudio() {
               });
             }
           } else {
-            // Bulk upload response
             if (response.results) {
               setLastResults(response);
               const { successful, failed } = response.summary || { successful: 0, failed: 0 };
@@ -230,46 +228,49 @@ export function LiveUploadStudio() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 text-text-primary">
       {/* Top Banner Navigation Tabs */}
-      <div className="flex flex-wrap items-center justify-between gap-3 p-1.5 bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl">
+      <div className="flex flex-wrap items-center justify-between gap-3 p-1.5 bg-bg-terminal border border-border-default rounded-xl">
         <div className="flex flex-wrap items-center gap-1.5">
           <button
+            type="button"
             onClick={() => setActiveTab('upload')}
-            className={`flex items-center gap-2 px-3.5 py-2 rounded-lg text-xs font-semibold transition-all ${
+            className={`flex items-center gap-2 px-3.5 py-2 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
               activeTab === 'upload'
-                ? 'bg-white dark:bg-zinc-800 text-brand-600 dark:text-brand-400 shadow-sm border border-zinc-200/80 dark:border-zinc-700/80'
-                : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200'
+                ? 'bg-bg-surface text-brand-primary shadow-xs border border-border-default font-bold'
+                : 'text-text-muted hover:text-text-primary'
             }`}
           >
             <Icon icon="lucide:cloud-upload" className="w-4 h-4" />
             File Uploader & Dropzone
           </button>
           <button
+            type="button"
             onClick={() => {
               setActiveTab('gallery');
               fetchGallery();
             }}
-            className={`flex items-center gap-2 px-3.5 py-2 rounded-lg text-xs font-semibold transition-all ${
+            className={`flex items-center gap-2 px-3.5 py-2 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
               activeTab === 'gallery'
-                ? 'bg-white dark:bg-zinc-800 text-brand-600 dark:text-brand-400 shadow-sm border border-zinc-200/80 dark:border-zinc-700/80'
-                : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200'
+                ? 'bg-bg-surface text-brand-primary shadow-xs border border-border-default font-bold'
+                : 'text-text-muted hover:text-text-primary'
             }`}
           >
             <Icon icon="lucide:image" className="w-4 h-4" />
             Sandbox Files Gallery
             {galleryFiles.length > 0 && (
-              <span className="px-1.5 py-0.5 rounded-full text-[10px] bg-brand-500/10 text-brand-600 dark:text-brand-400 font-bold">
+              <span className="px-1.5 py-0.5 rounded-full text-[10px] bg-brand-primary/10 text-brand-primary font-bold border border-brand-primary/20">
                 {galleryFiles.length}
               </span>
             )}
           </button>
           <button
+            type="button"
             onClick={() => setActiveTab('security')}
-            className={`flex items-center gap-2 px-3.5 py-2 rounded-lg text-xs font-semibold transition-all ${
+            className={`flex items-center gap-2 px-3.5 py-2 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
               activeTab === 'security'
-                ? 'bg-white dark:bg-zinc-800 text-brand-600 dark:text-brand-400 shadow-sm border border-zinc-200/80 dark:border-zinc-700/80'
-                : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200'
+                ? 'bg-bg-surface text-brand-primary shadow-xs border border-border-default font-bold'
+                : 'text-text-muted hover:text-text-primary'
             }`}
           >
             <Icon icon="lucide:shield-check" className="w-4 h-4" />
@@ -277,7 +278,7 @@ export function LiveUploadStudio() {
           </button>
         </div>
 
-        <div className="flex items-center gap-3 pr-2 text-xs text-zinc-500">
+        <div className="flex items-center gap-3 pr-2 text-xs text-text-muted">
           <span className="flex items-center gap-1 font-mono text-[11px]">
             <Icon icon="lucide:hard-drive" className="w-3.5 h-3.5" />
             Max 5MB / File • 15 Files Quota
@@ -290,19 +291,20 @@ export function LiveUploadStudio() {
         <div
           className={`flex items-start gap-3 p-4 rounded-xl border text-xs font-medium transition-all ${
             statusAlert.type === 'success'
-              ? 'bg-emerald-50 dark:bg-emerald-950/30 border-emerald-500/30 text-emerald-800 dark:text-emerald-300'
+              ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-300'
               : statusAlert.type === 'error'
-              ? 'bg-rose-50 dark:bg-rose-950/30 border-rose-500/30 text-rose-800 dark:text-rose-300'
-              : 'bg-blue-50 dark:bg-blue-950/30 border-blue-500/30 text-blue-800 dark:text-blue-300'
+              ? 'bg-rose-500/10 border-rose-500/30 text-rose-300'
+              : 'bg-brand-primary/10 border-brand-primary/30 text-brand-primary'
           }`}
         >
-          {statusAlert.type === 'success' && <Icon icon="lucide:check-circle-2" className="w-4 h-4 text-emerald-600 mt-0.5 shrink-0" />}
-          {statusAlert.type === 'error' && <Icon icon="lucide:x-circle" className="w-4 h-4 text-rose-600 mt-0.5 shrink-0" />}
-          {statusAlert.type === 'info' && <Icon icon="lucide:info" className="w-4 h-4 text-blue-600 mt-0.5 shrink-0" />}
+          {statusAlert.type === 'success' && <Icon icon="lucide:check-circle-2" className="w-4 h-4 text-emerald-400 mt-0.5 shrink-0" />}
+          {statusAlert.type === 'error' && <Icon icon="lucide:x-circle" className="w-4 h-4 text-rose-400 mt-0.5 shrink-0" />}
+          {statusAlert.type === 'info' && <Icon icon="lucide:info" className="w-4 h-4 text-brand-primary mt-0.5 shrink-0" />}
           <div className="flex-1">{statusAlert.message}</div>
           <button
+            type="button"
             onClick={() => setStatusAlert(null)}
-            className="text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200"
+            className="text-text-muted hover:text-text-primary cursor-pointer text-xs"
           >
             ✕
           </button>
@@ -313,9 +315,9 @@ export function LiveUploadStudio() {
       {activeTab === 'upload' && (
         <div className="space-y-6">
           {/* Controls Bar: Category & Throttle Simulation */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-4 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-4 bg-bg-surface border border-border-default rounded-2xl">
             <div>
-              <label className="block text-[11px] font-semibold text-zinc-600 dark:text-zinc-400 mb-1.5">
+              <label className="block text-[11px] font-semibold text-text-secondary mb-1.5">
                 Target Category (Folder Partitioning)
               </label>
               <div className="flex flex-wrap gap-1.5">
@@ -324,10 +326,10 @@ export function LiveUploadStudio() {
                     key={cat}
                     type="button"
                     onClick={() => setSelectedCategory(cat)}
-                    className={`px-2.5 py-1 rounded-lg text-xs font-semibold capitalize transition-all ${
+                    className={`px-2.5 py-1 rounded-lg text-xs font-semibold capitalize transition-all cursor-pointer ${
                       selectedCategory === cat
-                        ? 'bg-brand-600 text-white shadow-sm'
-                        : 'bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:text-zinc-900'
+                        ? 'bg-brand-primary text-white shadow-xs font-bold'
+                        : 'bg-bg-terminal border border-border-default text-text-secondary hover:text-text-primary'
                     }`}
                   >
                     {cat}
@@ -337,13 +339,13 @@ export function LiveUploadStudio() {
             </div>
 
             <div>
-              <label className="block text-[11px] font-semibold text-zinc-600 dark:text-zinc-400 mb-1.5">
+              <label className="block text-[11px] font-semibold text-text-secondary mb-1.5">
                 Upload Latency Simulation (`X-Simulate-Delay`)
               </label>
               <select
                 value={simulationDelay}
                 onChange={e => setSimulationDelay(parseInt(e.target.value, 10))}
-                className="w-full px-3 py-1.5 bg-zinc-50 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-lg text-xs font-medium focus:outline-none focus:ring-2 focus:ring-brand-500"
+                className="w-full px-3 py-1.5 bg-bg-terminal border border-border-default rounded-lg text-xs font-medium text-text-primary focus:outline-none focus:border-brand-primary cursor-pointer"
               >
                 <option value={0}>Fast 4G / Local (0ms)</option>
                 <option value={1000}>1000ms (1s Network Delay)</option>
@@ -353,13 +355,13 @@ export function LiveUploadStudio() {
             </div>
 
             <div>
-              <label className="block text-[11px] font-semibold text-zinc-600 dark:text-zinc-400 mb-1.5">
+              <label className="block text-[11px] font-semibold text-text-secondary mb-1.5">
                 Error Simulation (`X-Simulate-Status`)
               </label>
               <select
                 value={simulateStatus || ''}
                 onChange={e => setSimulateStatus(e.target.value ? parseInt(e.target.value, 10) : null)}
-                className="w-full px-3 py-1.5 bg-zinc-50 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-lg text-xs font-medium focus:outline-none focus:ring-2 focus:ring-brand-500"
+                className="w-full px-3 py-1.5 bg-bg-terminal border border-border-default rounded-lg text-xs font-medium text-text-primary focus:outline-none focus:border-brand-primary cursor-pointer"
               >
                 <option value="">None (Standard 201/200 OK)</option>
                 <option value={413}>413 (Payload Too Large Error)</option>
@@ -384,8 +386,8 @@ export function LiveUploadStudio() {
             onClick={() => fileInputRef.current?.click()}
             className={`p-8 border-2 border-dashed rounded-2xl cursor-pointer transition-all flex flex-col items-center justify-center text-center space-y-3 ${
               isDragging
-                ? 'border-brand-500 bg-brand-500/10'
-                : 'border-zinc-300 dark:border-zinc-700 hover:border-brand-500 dark:hover:border-brand-500 bg-zinc-50/50 dark:bg-zinc-900/30'
+                ? 'border-brand-primary bg-brand-primary/10'
+                : 'border-border-default hover:border-brand-primary bg-bg-surface/50'
             }`}
           >
             <input
@@ -395,14 +397,14 @@ export function LiveUploadStudio() {
               className="hidden"
               onChange={e => handleFileSelect(e.target.files)}
             />
-            <div className="w-12 h-12 rounded-2xl bg-brand-500/10 text-brand-600 dark:text-brand-400 flex items-center justify-center">
+            <div className="w-12 h-12 rounded-2xl bg-brand-primary/10 text-brand-primary flex items-center justify-center border border-brand-primary/20">
               <Icon icon="lucide:upload-cloud" className="w-6 h-6" />
             </div>
             <div className="space-y-1">
-              <p className="text-sm font-bold text-zinc-900 dark:text-zinc-100">
-                Click to browse or drag & drop files here
+              <p className="text-sm font-bold text-text-primary">
+                Click to browse or drag &amp; drop files here
               </p>
-              <p className="text-xs text-zinc-500 dark:text-zinc-400 max-w-sm">
+              <p className="text-xs text-text-secondary max-w-sm">
                 Supports single or multi-file uploads (Images, PDFs, CSV, JSON, TXT). Single file limit: 5 MB.
               </p>
             </div>
@@ -410,36 +412,36 @@ export function LiveUploadStudio() {
 
           {/* Queued Files Preview List */}
           {queuedFiles.length > 0 && (
-            <div className="p-5 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl space-y-4 shadow-sm">
-              <div className="flex items-center justify-between border-b border-zinc-100 dark:border-zinc-800 pb-3">
-                <span className="text-xs font-bold text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
-                  <Icon icon="lucide:files" className="w-4 h-4 text-brand-500" />
-                  Files Queued for Upload ({queuedFiles.length})
+            <div className="p-5 bg-bg-surface border border-border-default rounded-2xl space-y-4 shadow-sm">
+              <div className="flex items-center justify-between border-b border-border-default pb-3">
+                <span className="text-xs font-bold text-text-primary flex items-center gap-2">
+                  <Icon icon="lucide:files" className="w-4 h-4 text-brand-primary" />
+                  <span>Files Queued for Upload ({queuedFiles.length})</span>
                 </span>
                 <button
                   type="button"
                   onClick={() => setQueuedFiles([])}
-                  className="text-[11px] text-zinc-400 hover:text-rose-500 transition-colors"
+                  className="text-[11px] text-text-muted hover:text-rose-400 transition-colors cursor-pointer"
                 >
                   Clear All
                 </button>
               </div>
 
-              <div className="divide-y divide-zinc-100 dark:divide-zinc-800 max-h-56 overflow-y-auto">
+              <div className="divide-y divide-border-subtle max-h-56 overflow-y-auto">
                 {queuedFiles.map((f, idx) => (
                   <div key={idx} className="py-2.5 flex items-center justify-between text-xs">
                     <div className="flex items-center gap-2.5 truncate max-w-md">
                       <Icon
                         icon={f.type.startsWith('image/') ? 'lucide:image' : 'lucide:file-text'}
-                        className="w-4 h-4 text-zinc-400 shrink-0"
+                        className="w-4 h-4 text-text-muted shrink-0"
                       />
-                      <span className="font-medium text-zinc-800 dark:text-zinc-200 truncate">{f.name}</span>
-                      <span className="text-[11px] font-mono text-zinc-400 shrink-0">({formatBytes(f.size)})</span>
+                      <span className="font-medium text-text-primary truncate">{f.name}</span>
+                      <span className="text-[11px] font-mono text-text-muted shrink-0">({formatBytes(f.size)})</span>
                     </div>
                     <button
                       type="button"
                       onClick={() => removeQueuedFile(idx)}
-                      className="text-zinc-400 hover:text-rose-500 p-1"
+                      className="text-text-muted hover:text-rose-400 p-1 cursor-pointer"
                     >
                       ✕
                     </button>
@@ -450,13 +452,13 @@ export function LiveUploadStudio() {
               {/* Progress Bar */}
               {isUploading && (
                 <div className="space-y-1.5 pt-2">
-                  <div className="flex justify-between text-[11px] font-medium text-zinc-600 dark:text-zinc-400">
-                    <span>Uploading & streaming to Cloudinary CDN...</span>
+                  <div className="flex justify-between text-[11px] font-medium text-text-secondary">
+                    <span>Uploading &amp; streaming to Cloudinary CDN...</span>
                     <span>{uploadProgress}%</span>
                   </div>
-                  <div className="w-full h-2 bg-zinc-100 dark:bg-zinc-800 rounded-full overflow-hidden">
+                  <div className="w-full h-2 bg-bg-terminal rounded-full overflow-hidden border border-border-default">
                     <div
-                      className="h-full bg-brand-600 rounded-full transition-all duration-300"
+                      className="h-full bg-brand-primary rounded-full transition-all duration-300"
                       style={{ width: `${uploadProgress}%` }}
                     />
                   </div>
@@ -468,17 +470,17 @@ export function LiveUploadStudio() {
                 type="button"
                 onClick={handleUploadSubmit}
                 disabled={isUploading}
-                className="w-full py-2.5 px-4 bg-brand-600 hover:bg-brand-500 text-white rounded-xl text-xs font-semibold shadow-md shadow-brand-500/20 flex items-center justify-center gap-2 transition-all disabled:opacity-50"
+                className="w-full py-2.5 px-4 bg-brand-primary hover:bg-brand-primary/90 text-white rounded-xl text-xs font-semibold shadow-md shadow-brand-primary/20 flex items-center justify-center gap-2 transition-all disabled:opacity-50 cursor-pointer"
               >
                 {isUploading ? (
                   <>
                     <Icon icon="lucide:refresh-cw" className="w-4 h-4 animate-spin" />
-                    Processing Upload...
+                    <span>Processing Upload...</span>
                   </>
                 ) : (
                   <>
                     <Icon icon="lucide:cloud-upload" className="w-4 h-4" />
-                    Upload {queuedFiles.length} {queuedFiles.length === 1 ? 'File' : 'Files'} (`POST {queuedFiles.length === 1 ? '/uploads' : '/uploads/bulk'}`)
+                    <span>Upload {queuedFiles.length} {queuedFiles.length === 1 ? 'File' : 'Files'} (`POST {queuedFiles.length === 1 ? '/uploads' : '/uploads/bulk'}`)</span>
                   </>
                 )}
               </button>
@@ -489,17 +491,17 @@ export function LiveUploadStudio() {
           {lastResults && (
             <div className="space-y-4">
               <div className="flex items-center justify-between">
-                <h3 className="text-sm font-bold text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
-                  <Icon icon="lucide:list-checks" className="w-4 h-4 text-emerald-500" />
-                  Itemized Upload Results Breakdown
+                <h3 className="text-sm font-bold text-text-primary flex items-center gap-2">
+                  <Icon icon="lucide:list-checks" className="w-4 h-4 text-emerald-400" />
+                  <span>Itemized Upload Results Breakdown</span>
                 </h3>
                 {lastResults.summary && (
                   <div className="flex items-center gap-2 text-xs font-semibold">
-                    <span className="px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
+                    <span className="px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">
                       {lastResults.summary.successful} Succeeded
                     </span>
                     {lastResults.summary.failed > 0 && (
-                      <span className="px-2 py-0.5 rounded-full bg-rose-500/10 text-rose-600 dark:text-rose-400 border border-rose-500/20">
+                      <span className="px-2 py-0.5 rounded-full bg-rose-500/10 text-rose-400 border border-rose-500/30">
                         {lastResults.summary.failed} Rejected
                       </span>
                     )}
@@ -513,8 +515,8 @@ export function LiveUploadStudio() {
                     key={idx}
                     className={`p-4 rounded-xl border space-y-2.5 transition-all ${
                       item.status === 'success'
-                        ? 'bg-emerald-50/50 dark:bg-emerald-950/20 border-emerald-500/30'
-                        : 'bg-rose-50/50 dark:bg-rose-950/20 border-rose-500/30'
+                        ? 'bg-emerald-500/10 border-emerald-500/30'
+                        : 'bg-rose-500/10 border-rose-500/30'
                     }`}
                   >
                     <div className="flex items-start justify-between gap-2">
@@ -522,18 +524,18 @@ export function LiveUploadStudio() {
                         <Icon
                           icon={item.status === 'success' ? 'lucide:check-circle-2' : 'lucide:alert-octagon'}
                           className={`w-4 h-4 shrink-0 ${
-                            item.status === 'success' ? 'text-emerald-600' : 'text-rose-600'
+                            item.status === 'success' ? 'text-emerald-400' : 'text-rose-400'
                           }`}
                         />
-                        <span className="font-semibold text-xs text-zinc-900 dark:text-zinc-100 truncate">
+                        <span className="font-semibold text-xs text-text-primary truncate">
                           {item.filename}
                         </span>
                       </div>
                       <span
-                        className={`px-2 py-0.5 rounded text-[10px] font-mono font-bold shrink-0 ${
+                        className={`px-2 py-0.5 rounded text-[10px] font-mono font-bold shrink-0 border ${
                           item.status === 'success'
-                            ? 'bg-emerald-500/20 text-emerald-700 dark:text-emerald-300'
-                            : 'bg-rose-500/20 text-rose-700 dark:text-rose-300'
+                            ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40'
+                            : 'bg-rose-500/20 text-rose-300 border-rose-500/40'
                         }`}
                       >
                         {item.status === 'success' ? 'SAVED (201)' : item.code || 'REJECTED'}
@@ -542,12 +544,12 @@ export function LiveUploadStudio() {
 
                     {item.status === 'success' && item.file && (
                       <div className="space-y-2 text-xs">
-                        <div className="flex items-center justify-between text-zinc-500">
+                        <div className="flex items-center justify-between text-text-secondary">
                           <span>Size: {formatBytes(item.file.sizeBytes)}</span>
-                          <span>Category: <code className="font-mono">{item.file.category}</code></span>
+                          <span>Category: <code className="font-mono text-brand-primary">{item.file.category}</code></span>
                         </div>
                         {item.file.mimetype.startsWith('image/') && (
-                          <div className="relative w-full h-28 rounded-lg overflow-hidden bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 flex items-center justify-center">
+                          <div className="relative w-full h-28 rounded-lg overflow-hidden bg-bg-terminal border border-border-default flex items-center justify-center">
                             {/* eslint-disable-next-line @next/next/no-img-element */}
                             <img
                               src={item.file.secure_url}
@@ -561,16 +563,16 @@ export function LiveUploadStudio() {
                             type="text"
                             readOnly
                             value={item.file.secure_url}
-                            className="w-full px-2.5 py-1 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded font-mono text-[10px] truncate"
+                            className="w-full px-2.5 py-1 bg-bg-terminal border border-border-default rounded font-mono text-[10px] text-text-primary truncate"
                           />
                           <button
                             type="button"
                             onClick={() => handleCopy(item.file!.secure_url, item.file!.id)}
-                            className="p-1.5 bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 rounded text-zinc-600 dark:text-zinc-300"
+                            className="p-1.5 bg-bg-surface hover:bg-bg-elevated border border-border-default rounded text-text-muted hover:text-text-primary cursor-pointer"
                             title="Copy Cloudinary CDN URL"
                           >
                             {copiedId === item.file.id ? (
-                              <Icon icon="lucide:check" className="w-3.5 h-3.5 text-emerald-500" />
+                              <Icon icon="lucide:check" className="w-3.5 h-3.5 text-emerald-400" />
                             ) : (
                               <Icon icon="lucide:copy" className="w-3.5 h-3.5" />
                             )}
@@ -580,7 +582,7 @@ export function LiveUploadStudio() {
                     )}
 
                     {item.status === 'rejected' && (
-                      <div className="text-xs text-rose-700 dark:text-rose-300 space-y-1">
+                      <div className="text-xs text-rose-300 space-y-1">
                         <p>{item.error}</p>
                       </div>
                     )}
@@ -600,11 +602,12 @@ export function LiveUploadStudio() {
               {['all', 'avatars', 'documents', 'products', 'general'].map(cat => (
                 <button
                   key={cat}
+                  type="button"
                   onClick={() => setGalleryCategory(cat)}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold capitalize transition-all ${
+                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold capitalize transition-all cursor-pointer ${
                     galleryCategory === cat
-                      ? 'bg-brand-600 text-white shadow-sm'
-                      : 'bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:text-zinc-900'
+                      ? 'bg-brand-primary text-white shadow-xs font-bold'
+                      : 'bg-bg-terminal border border-border-default text-text-secondary hover:text-text-primary'
                   }`}
                 >
                   {cat}
@@ -613,8 +616,9 @@ export function LiveUploadStudio() {
             </div>
 
             <button
+              type="button"
               onClick={fetchGallery}
-              className="flex items-center gap-1 text-xs text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200"
+              className="flex items-center gap-1 text-xs text-text-muted hover:text-text-primary cursor-pointer"
             >
               <Icon icon="lucide:refresh-cw" className="w-3.5 h-3.5" />
               Refresh
@@ -622,8 +626,8 @@ export function LiveUploadStudio() {
           </div>
 
           {galleryFiles.length === 0 ? (
-            <div className="p-8 border border-zinc-200 dark:border-zinc-800 rounded-2xl text-center text-zinc-400 text-xs space-y-2">
-              <Icon icon="lucide:image" className="w-8 h-8 mx-auto text-zinc-300 dark:text-zinc-700" />
+            <div className="p-8 border border-border-default rounded-2xl text-center text-text-muted text-xs space-y-2 bg-bg-surface">
+              <Icon icon="lucide:image" className="w-8 h-8 mx-auto text-text-muted" />
               <p>No files uploaded in sandbox yet under category &quot;{galleryCategory}&quot;.</p>
             </div>
           ) : (
@@ -631,20 +635,20 @@ export function LiveUploadStudio() {
               {galleryFiles.map(file => (
                 <div
                   key={file.id}
-                  className="p-4 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl space-y-3 shadow-sm flex flex-col justify-between"
+                  className="p-4 bg-bg-surface border border-border-default rounded-2xl space-y-3 shadow-sm flex flex-col justify-between"
                 >
                   <div className="space-y-2">
                     <div className="flex items-center justify-between">
-                      <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-brand-600 dark:text-brand-400 bg-brand-500/10 px-2 py-0.5 rounded">
+                      <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-brand-primary bg-brand-primary/10 border border-brand-primary/20 px-2 py-0.5 rounded">
                         {file.category}
                       </span>
-                      <span className="text-[10px] text-zinc-400 font-mono">
+                      <span className="text-[10px] text-text-muted font-mono">
                         {formatBytes(file.sizeBytes)}
                       </span>
                     </div>
 
                     {file.mimetype.startsWith('image/') ? (
-                      <div className="relative w-full h-36 rounded-xl overflow-hidden bg-zinc-900/40 border border-zinc-100 dark:border-zinc-800 flex items-center justify-center group">
+                      <div className="relative w-full h-36 rounded-xl overflow-hidden bg-bg-terminal border border-border-default flex items-center justify-center group">
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img
                           src={file.secure_url}
@@ -653,35 +657,35 @@ export function LiveUploadStudio() {
                         />
                       </div>
                     ) : (
-                      <div className="w-full h-36 rounded-xl bg-zinc-50 dark:bg-zinc-800/60 border border-zinc-100 dark:border-zinc-800 flex flex-col items-center justify-center text-zinc-400 space-y-2">
-                        <Icon icon="lucide:file-text" className="w-10 h-10 text-brand-500" />
+                      <div className="w-full h-36 rounded-xl bg-bg-terminal border border-border-default flex flex-col items-center justify-center text-text-muted space-y-2">
+                        <Icon icon="lucide:file-text" className="w-10 h-10 text-brand-primary" />
                         <span className="text-[11px] font-mono uppercase">{file.format || 'DOC'}</span>
                       </div>
                     )}
 
                     <div>
-                      <div className="font-semibold text-xs text-zinc-900 dark:text-zinc-100 truncate">
+                      <div className="font-semibold text-xs text-text-primary truncate">
                         {file.filename}
                       </div>
-                      <div className="font-mono text-[10px] text-zinc-400 truncate">
+                      <div className="font-mono text-[10px] text-text-muted truncate">
                         ID: {file.id}
                       </div>
                     </div>
                   </div>
 
-                  <div className="flex items-center justify-between pt-2 border-t border-zinc-100 dark:border-zinc-800">
+                  <div className="flex items-center justify-between pt-2 border-t border-border-default">
                     <button
                       type="button"
                       onClick={() => handleCopy(file.secure_url, file.id)}
-                      className="text-xs text-brand-600 dark:text-brand-400 hover:underline flex items-center gap-1 font-medium"
+                      className="text-xs text-brand-primary hover:underline flex items-center gap-1 font-medium cursor-pointer"
                     >
-                      {copiedId === file.id ? <Icon icon="lucide:check" className="w-3.5 h-3.5 text-emerald-500" /> : <Icon icon="lucide:copy" className="w-3.5 h-3.5" />}
+                      {copiedId === file.id ? <Icon icon="lucide:check" className="w-3.5 h-3.5 text-emerald-400" /> : <Icon icon="lucide:copy" className="w-3.5 h-3.5" />}
                       Copy CDN URL
                     </button>
                     <button
                       type="button"
                       onClick={() => handleDeleteFile(file.id)}
-                      className="text-xs text-rose-500 hover:text-rose-700 flex items-center gap-1 font-medium"
+                      className="text-xs text-rose-400 hover:text-rose-300 flex items-center gap-1 font-medium cursor-pointer"
                     >
                       <Icon icon="lucide:trash-2" className="w-3.5 h-3.5" />
                       Delete
@@ -698,48 +702,48 @@ export function LiveUploadStudio() {
       {activeTab === 'security' && (
         <div className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="p-5 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl space-y-3">
+            <div className="p-5 bg-bg-surface border border-border-default rounded-2xl space-y-3">
               <div className="flex items-center gap-2">
-                <Icon icon="lucide:shield-alert" className="w-5 h-5 text-rose-500" />
-                <h4 className="text-sm font-bold text-zinc-900 dark:text-zinc-100">
+                <Icon icon="lucide:shield-alert" className="w-5 h-5 text-rose-400" />
+                <h4 className="text-sm font-bold text-text-primary">
                   Strict Prohibited File Types
                 </h4>
               </div>
-              <p className="text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed">
+              <p className="text-xs text-text-secondary leading-relaxed">
                 To prevent remote code execution and data extraction, all executable and script formats are banned and blocked at the magic byte layer:
               </p>
               <div className="flex flex-wrap gap-1.5 font-mono text-[11px]">
                 {['.exe', '.sh', '.bat', '.cmd', '.php', '.js', '.ts', '.py', '.rb', '.jsp', '.asp', '.dll', '.so', '.wasm'].map(ext => (
-                  <span key={ext} className="px-2 py-0.5 rounded bg-rose-500/10 text-rose-600 dark:text-rose-400 border border-rose-500/20">
+                  <span key={ext} className="px-2 py-0.5 rounded bg-rose-500/10 text-rose-400 border border-rose-500/20">
                     {ext}
                   </span>
                 ))}
               </div>
             </div>
 
-            <div className="p-5 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl space-y-3">
+            <div className="p-5 bg-bg-surface border border-border-default rounded-2xl space-y-3">
               <div className="flex items-center gap-2">
-                <Icon icon="lucide:check-circle-2" className="w-5 h-5 text-emerald-500" />
-                <h4 className="text-sm font-bold text-zinc-900 dark:text-zinc-100">
-                  Allowed Safe Formats & Limits
+                <Icon icon="lucide:check-circle-2" className="w-5 h-5 text-emerald-400" />
+                <h4 className="text-sm font-bold text-text-primary">
+                  Allowed Safe Formats &amp; Limits
                 </h4>
               </div>
-              <div className="space-y-2 text-xs text-zinc-600 dark:text-zinc-400">
+              <div className="space-y-2 text-xs text-text-secondary">
                 <div className="flex justify-between">
                   <span>Single File Limit:</span>
-                  <span className="font-bold text-zinc-900 dark:text-zinc-100 font-mono">5 MB max</span>
+                  <span className="font-bold text-text-primary font-mono">5 MB max</span>
                 </div>
                 <div className="flex justify-between">
                   <span>Bulk Batch Limit:</span>
-                  <span className="font-bold text-zinc-900 dark:text-zinc-100 font-mono">25 MB / 10 files</span>
+                  <span className="font-bold text-text-primary font-mono">25 MB / 10 files</span>
                 </div>
                 <div className="flex justify-between">
                   <span>Sandbox Identity Quota:</span>
-                  <span className="font-bold text-zinc-900 dark:text-zinc-100 font-mono">15 active files max</span>
+                  <span className="font-bold text-text-primary font-mono">15 active files max</span>
                 </div>
                 <div className="flex justify-between">
                   <span>Cloudinary Partitioning:</span>
-                  <span className="font-mono text-[11px]">playground_api/uploads/&lt;cat&gt;/&lt;id&gt;</span>
+                  <span className="font-mono text-[11px] text-brand-primary">playground_api/uploads/&lt;cat&gt;/&lt;id&gt;</span>
                 </div>
               </div>
             </div>

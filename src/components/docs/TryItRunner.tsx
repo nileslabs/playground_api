@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo, useEffect, useCallback, useRef } from 'react';
 import { Icon } from '@iconify/react';
 import { EndpointDef, QueryParamDef } from '@/config/api-catalog';
 import { CodeBlock } from '@/components/ui/CodeBlock';
@@ -37,7 +37,11 @@ export function TryItRunner({ endpoint, defaultExpanded = false }: TryItRunnerPr
   const { refreshCounts } = useLiveCounts();
   const [isOpen, setIsOpen] = useState(defaultExpanded);
   const [loading, setLoading] = useState(false);
-  const [copied, setCopied] = useState(false);
+  const [copiedUrl, setCopiedUrl] = useState(false);
+  const [copiedResponse, setCopiedResponse] = useState(false);
+  const [responseTab, setResponseTab] = useState<'body' | 'headers' | 'preview'>('body');
+
+  const containerRef = useRef<HTMLDivElement>(null);
 
   // Extract path parameters (e.g. :id, :userId, :postId, :collection, :seed)
   const pathParamsList = useMemo(() => {
@@ -48,19 +52,12 @@ export function TryItRunner({ endpoint, defaultExpanded = false }: TryItRunnerPr
 
   // Effective query parameters list
   const activeQueryParams = useMemo(() => {
-    // If the endpoint explicitly defines its own query params, use those
     if (endpoint.queryParams && endpoint.queryParams.length > 0) {
       return endpoint.queryParams.filter((qp) => !pathParamsList.includes(qp.name));
     }
-    // noListParams: true means this is a single-resource GET (e.g. /auth/me, /session/export)
-    // that intentionally has no collection-style query params
     if (endpoint.noListParams) {
       return [];
     }
-    // Only inject default collection params for true list GETs:
-    // - method is GET
-    // - no dynamic path segments (not a /resource/:id style endpoint)
-    // - not an auth or session single-resource endpoint
     const isSingleResourcePath =
       endpoint.path.startsWith('/auth/') ||
       endpoint.path.startsWith('/session/');
@@ -130,6 +127,7 @@ export function TryItRunner({ endpoint, defaultExpanded = false }: TryItRunnerPr
     data: unknown;
     isSvg?: boolean;
     isPersistedMutation?: boolean;
+    identityId?: string;
   } | null>(null);
 
   // Compute constructed URL dynamically
@@ -163,7 +161,6 @@ export function TryItRunner({ endpoint, defaultExpanded = false }: TryItRunnerPr
   const validateForm = (): boolean => {
     const errors: Record<string, string> = {};
 
-    // 1. Validate Path Parameters
     pathParamsList.forEach((param) => {
       const val = (pathValues[param] ?? '').trim();
       if (!val) {
@@ -171,10 +168,9 @@ export function TryItRunner({ endpoint, defaultExpanded = false }: TryItRunnerPr
       }
     });
 
-    // 2. Validate Query Parameters
     Object.entries(queryValues).forEach(([key, rawVal]) => {
       const val = (rawVal || '').trim();
-      if (!val) return; // Optional when empty
+      if (!val) return;
 
       if (key === 'page') {
         if (!/^\d+$/.test(val) || parseInt(val, 10) < 1) {
@@ -201,7 +197,6 @@ export function TryItRunner({ endpoint, defaultExpanded = false }: TryItRunnerPr
       }
     });
 
-    // 3. Validate JSON payload on POST/PUT/PATCH
     if (['POST', 'PUT', 'PATCH'].includes(endpoint.method) && requestBody.trim()) {
       try {
         JSON.parse(requestBody);
@@ -214,7 +209,7 @@ export function TryItRunner({ endpoint, defaultExpanded = false }: TryItRunnerPr
     return Object.keys(errors).length === 0;
   };
 
-  const handleExecute = async () => {
+  const handleExecute = useCallback(async () => {
     if (!validateForm()) {
       return;
     }
@@ -295,7 +290,6 @@ export function TryItRunner({ endpoint, defaultExpanded = false }: TryItRunnerPr
         }
       }
 
-      // If auth token was returned, save it
       if (data && typeof data === 'object') {
         const anyData = data as Record<string, any>;
         if (anyData.accessToken) {
@@ -315,6 +309,8 @@ export function TryItRunner({ endpoint, defaultExpanded = false }: TryItRunnerPr
       const isPersistedMutation =
         res.ok && ['POST', 'PUT', 'PATCH', 'DELETE'].includes(endpoint.method);
 
+      const activeIdentity = returnedToken || token || 'local-session';
+
       setResponse({
         status: res.status,
         statusText: res.statusText,
@@ -323,7 +319,14 @@ export function TryItRunner({ endpoint, defaultExpanded = false }: TryItRunnerPr
         data,
         isSvg,
         isPersistedMutation,
+        identityId: activeIdentity,
       });
+
+      if (isSvg) {
+        setResponseTab('preview');
+      } else {
+        setResponseTab('body');
+      }
 
       if (isPersistedMutation) {
         refreshCounts();
@@ -345,74 +348,167 @@ export function TryItRunner({ endpoint, defaultExpanded = false }: TryItRunnerPr
     } finally {
       setLoading(false);
     }
+  }, [
+    computedUrl,
+    endpoint.method,
+    endpoint.path,
+    requestBody,
+    authToken,
+    simulateDelay,
+    simulateStatus,
+    refreshCounts,
+    pathParamsList,
+    pathValues,
+    queryValues,
+  ]);
+
+  // Global Ctrl+Enter shortcut handler inside container
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+        if (isOpen) {
+          e.preventDefault();
+          handleExecute();
+        }
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, handleExecute]);
+
+  const handleCopyUrl = () => {
+    navigator.clipboard.writeText(computedUrl);
+    setCopiedUrl(true);
+    setTimeout(() => setCopiedUrl(false), 2000);
   };
 
   const handleCopyResponse = () => {
     if (!response) return;
     const textToCopy = typeof response.data === 'string' ? response.data : JSON.stringify(response.data, null, 2);
     navigator.clipboard.writeText(textToCopy);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+    setCopiedResponse(true);
+    setTimeout(() => setCopiedResponse(false), 2000);
+  };
+
+  const responseSize = useMemo(() => {
+    if (!response || response.data === null || response.data === undefined) return '0 B';
+    const raw = typeof response.data === 'string' ? response.data : JSON.stringify(response.data);
+    const bytes = new Blob([raw]).size;
+    if (bytes < 1024) return `${bytes} B`;
+    return `${(bytes / 1024).toFixed(1)} KB`;
+  }, [response]);
+
+  const getMethodBadgeClass = (method: string) => {
+    switch (method) {
+      case 'GET':
+        return 'badge-get';
+      case 'POST':
+        return 'badge-post';
+      case 'PUT':
+        return 'badge-put';
+      case 'PATCH':
+        return 'badge-patch';
+      case 'DELETE':
+        return 'badge-delete';
+      default:
+        return 'bg-bg-tertiary text-text-secondary border border-border-default';
+    }
   };
 
   // Collapsed View
   if (!isOpen) {
     return (
       <div className="mt-2">
-        <div
+        <button
+          type="button"
           onClick={() => setIsOpen(true)}
-          className="rounded-xl border border-emerald-500/30 bg-emerald-500/5 hover:bg-emerald-500/10 hover:border-emerald-500/50 p-4 flex items-center justify-between cursor-pointer transition-all shadow-xs group"
+          className="w-full rounded-xl border border-border-default bg-bg-surface/80 hover:bg-bg-elevated hover:border-brand-primary/40 p-4 flex items-center justify-between cursor-pointer transition-all shadow-sm group text-left"
         >
-          <div className="flex items-center gap-2.5 font-bold text-xs sm:text-sm text-emerald-400">
-            <Icon icon="ph:lightning-fill" className="w-4 h-4 text-emerald-400 group-hover:scale-110 transition-transform" />
-            <span>Try it out — Test endpoint live with simulation controls</span>
+          <div className="flex items-center gap-2.5 font-bold text-xs sm:text-sm text-text-primary">
+            <div className="w-7 h-7 rounded-lg bg-brand-primary/10 border border-brand-primary/20 flex items-center justify-center text-brand-primary group-hover:scale-105 transition-transform">
+              <Icon icon="ph:lightning-fill" className="w-4 h-4" />
+            </div>
+            <div>
+              <span className="text-text-primary">Interactive Live Sandbox Console</span>
+              <p className="text-[11px] text-text-muted font-normal mt-0.5">
+                Execute live requests with custom parameters and chaos simulation
+              </p>
+            </div>
           </div>
 
-          <span className="text-emerald-400 hover:text-emerald-300 font-bold text-xs transition-colors flex items-center gap-1">
+          <div className="flex items-center gap-1.5 text-brand-primary font-semibold text-xs group-hover:translate-x-0.5 transition-transform">
             <span>Open Console</span>
-            <Icon icon="ph:caret-down-bold" className="w-3.5 h-3.5" />
-          </span>
-        </div>
+            <Icon icon="ph:arrow-right-bold" className="w-3.5 h-3.5" />
+          </div>
+        </button>
       </div>
     );
   }
 
-  // Expanded View
+  // Expanded View with Terminal Container styling
   return (
-    <div className="rounded-xl border border-border-theme bg-bg-secondary p-4 sm:p-5 space-y-4 shadow-sm animate-in fade-in duration-200">
-      {/* 1. Header & Target URL Bar */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-border-theme">
-        <div className="flex items-center gap-2 min-w-0">
-          <span className="px-2 py-0.5 rounded-md bg-emerald-500/15 text-emerald-400 text-xs font-mono font-bold">
-            {endpoint.method}
-          </span>
-          <span className="font-mono text-xs sm:text-sm text-text-primary truncate select-all">
-            {computedUrl}
-          </span>
+    <div
+      ref={containerRef}
+      className="terminal-container rounded-2xl border border-border-default bg-bg-terminal p-4 sm:p-5 space-y-4 shadow-xl text-text-primary transition-all"
+    >
+      {/* 1. Header & Live URL Bar */}
+      <div className="space-y-2.5">
+        <div className="flex items-center justify-between gap-2">
+          <div className="flex items-center gap-2">
+            <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" />
+            <span className="text-xs font-bold uppercase tracking-wider text-text-secondary">
+              Live Console Runner
+            </span>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <span className="hidden sm:inline-flex items-center gap-1 text-[10px] text-text-muted font-mono bg-bg-surface px-2 py-0.5 rounded border border-border-subtle">
+              <kbd className="font-semibold text-text-secondary">Ctrl</kbd> + <kbd className="font-semibold text-text-secondary">Enter</kbd> to run
+            </span>
+            {!defaultExpanded && (
+              <button
+                type="button"
+                onClick={() => setIsOpen(false)}
+                className="text-xs text-text-muted hover:text-text-primary cursor-pointer px-2 py-1 rounded hover:bg-bg-surface transition-colors"
+              >
+                Close
+              </button>
+            )}
+          </div>
         </div>
 
-        {!defaultExpanded && (
+        {/* URL Bar */}
+        <div className="flex items-center gap-2 p-2 rounded-xl bg-bg-surface border border-border-default">
+          <span className={cn("px-2 py-0.5 rounded-md text-[11px] font-mono font-bold shrink-0", getMethodBadgeClass(endpoint.method))}>
+            {endpoint.method}
+          </span>
+          <span className="font-mono text-xs text-text-primary truncate select-all flex-1 min-w-0" title={computedUrl}>
+            {computedUrl}
+          </span>
           <button
-            onClick={() => setIsOpen(false)}
-            className="text-xs text-text-muted hover:text-text-primary self-end sm:self-auto cursor-pointer"
+            type="button"
+            onClick={handleCopyUrl}
+            title="Copy URL"
+            className="p-1.5 rounded-lg bg-bg-elevated hover:bg-bg-tertiary text-text-muted hover:text-text-primary transition-colors cursor-pointer shrink-0"
           >
-            Collapse
+            <Icon icon={copiedUrl ? 'ph:check-bold' : 'ph:copy-bold'} className={cn("w-3.5 h-3.5", copiedUrl && "text-emerald-400")} />
           </button>
-        )}
+        </div>
       </div>
 
       {/* 2. Path Parameters */}
       {pathParamsList.length > 0 && (
-        <div className="space-y-2">
-          <label className="text-xs font-bold uppercase tracking-wider text-text-secondary">
-            Path Parameters
+        <div className="space-y-1.5">
+          <label className="text-[11px] font-bold uppercase tracking-wider text-text-secondary flex items-center gap-1.5">
+            <Icon icon="ph:brackets-curly-bold" className="w-3.5 h-3.5 text-brand-primary" />
+            <span>Path Parameters</span>
           </label>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
             {pathParamsList.map((param) => {
               const hasError = Boolean(formErrors[`path_${param}`]);
               return (
                 <div key={param} className="space-y-1">
-                  <div className="text-[11px] font-mono text-text-muted">:{param}</div>
+                  <div className="text-[10px] font-mono text-text-muted">:{param}</div>
                   <input
                     type="text"
                     value={pathValues[param] ?? ''}
@@ -426,17 +522,17 @@ export function TryItRunner({ endpoint, defaultExpanded = false }: TryItRunnerPr
                         });
                       }
                     }}
-                    placeholder={`Value for :${param}`}
+                    placeholder={`:${param}`}
                     className={cn(
-                      "w-full font-mono text-xs p-2.5 rounded-lg bg-bg-tertiary border text-text-primary focus:outline-none transition-colors",
+                      "w-full font-mono text-xs px-2.5 py-1.5 rounded-lg bg-bg-surface border text-text-primary placeholder:text-text-muted focus:outline-none transition-colors",
                       hasError
                         ? "border-rose-500/80 focus:border-rose-500 ring-1 ring-rose-500/30"
-                        : "border-border-theme focus:border-accent-primary"
+                        : "border-border-default focus:border-brand-primary"
                     )}
                   />
                   {hasError && (
-                    <div className="text-[11px] text-rose-400 flex items-center gap-1 font-sans animate-in fade-in duration-150">
-                      <Icon icon="ph:warning-circle-fill" className="w-3.5 h-3.5 shrink-0" />
+                    <div className="text-[10px] text-rose-400 flex items-center gap-1 font-sans">
+                      <Icon icon="ph:warning-circle-fill" className="w-3 h-3 shrink-0" />
                       <span>{formErrors[`path_${param}`]}</span>
                     </div>
                   )}
@@ -447,13 +543,30 @@ export function TryItRunner({ endpoint, defaultExpanded = false }: TryItRunnerPr
         </div>
       )}
 
-      {/* 3. Query Parameters */}
+      {/* 3. Query Filters */}
       {activeQueryParams.length > 0 && (
-        <div className="space-y-2">
-          <label className="text-xs font-bold uppercase tracking-wider text-text-secondary">
-            Query Filters & Options
-          </label>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+        <div className="space-y-1.5">
+          <div className="flex items-center justify-between">
+            <label className="text-[11px] font-bold uppercase tracking-wider text-text-secondary flex items-center gap-1.5">
+              <Icon icon="ph:funnel-simple-bold" className="w-3.5 h-3.5 text-accent-cyan" />
+              <span>Query Parameters</span>
+            </label>
+            <button
+              type="button"
+              onClick={() => {
+                const cleared: Record<string, string> = {};
+                activeQueryParams.forEach((qp) => {
+                  cleared[qp.name] = '';
+                });
+                setQueryValues(cleared);
+              }}
+              className="text-[10px] text-text-muted hover:text-text-secondary cursor-pointer transition-colors"
+            >
+              Reset Filters
+            </button>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
             {activeQueryParams.map((qp) => {
               const hasError = Boolean(formErrors[`query_${qp.name}`]);
               const isPageOrLimit = qp.name === 'page' || qp.name === '_page' || qp.name === 'limit' || qp.name === '_limit';
@@ -461,7 +574,6 @@ export function TryItRunner({ endpoint, defaultExpanded = false }: TryItRunnerPr
               const isOrder = qp.name === '_order';
               const isSort = qp.name === '_sort';
 
-              // Dynamic sort fields based on current resource endpoint
               const sortOptions = (() => {
                 const p = endpoint.path.toLowerCase();
                 if (p.includes('user')) return ['id', 'name', 'username', 'email'];
@@ -484,32 +596,27 @@ export function TryItRunner({ endpoint, defaultExpanded = false }: TryItRunnerPr
 
               return (
                 <div key={qp.name} className="space-y-1">
-                  <div className="text-[11px] font-mono text-text-muted">{qp.name}</div>
-                  
+                  <div className="text-[10px] font-mono text-text-muted">{qp.name}</div>
                   {isOrder ? (
                     <select
                       value={queryValues[qp.name] || ''}
                       onChange={(e) => handleValueChange(e.target.value)}
                       className={cn(
-                        "w-full font-mono text-xs p-2.5 rounded-lg bg-bg-tertiary border text-text-primary focus:outline-none transition-colors cursor-pointer",
-                        hasError
-                          ? "border-rose-500/80 focus:border-rose-500 ring-1 ring-rose-500/30"
-                          : "border-border-theme focus:border-accent-primary"
+                        "w-full font-mono text-xs px-2.5 py-1.5 rounded-lg bg-bg-surface border text-text-primary focus:outline-none transition-colors cursor-pointer",
+                        hasError ? "border-rose-500/80" : "border-border-default focus:border-brand-primary"
                       )}
                     >
                       <option value="">Default: asc</option>
-                      <option value="asc">asc (Ascending)</option>
-                      <option value="desc">desc (Descending)</option>
+                      <option value="asc">asc</option>
+                      <option value="desc">desc</option>
                     </select>
                   ) : isSort ? (
                     <select
                       value={queryValues[qp.name] || ''}
                       onChange={(e) => handleValueChange(e.target.value)}
                       className={cn(
-                        "w-full font-mono text-xs p-2.5 rounded-lg bg-bg-tertiary border text-text-primary focus:outline-none transition-colors cursor-pointer",
-                        hasError
-                          ? "border-rose-500/80 focus:border-rose-500 ring-1 ring-rose-500/30"
-                          : "border-border-theme focus:border-accent-primary"
+                        "w-full font-mono text-xs px-2.5 py-1.5 rounded-lg bg-bg-surface border text-text-primary focus:outline-none transition-colors cursor-pointer",
+                        hasError ? "border-rose-500/80" : "border-border-default focus:border-brand-primary"
                       )}
                     >
                       <option value="">Default: id</option>
@@ -524,20 +631,12 @@ export function TryItRunner({ endpoint, defaultExpanded = false }: TryItRunnerPr
                       type="number"
                       min={1}
                       max={isLimit ? 200 : undefined}
-                      step={1}
-                      onKeyDown={(e) => {
-                        if (['e', 'E', '+', '-', '.'].includes(e.key)) {
-                          e.preventDefault();
-                        }
-                      }}
                       value={queryValues[qp.name] || ''}
                       onChange={(e) => handleValueChange(e.target.value)}
                       placeholder={qp.defaultVal ? `Default: ${qp.defaultVal}` : qp.description}
                       className={cn(
-                        "w-full font-mono text-xs p-2.5 rounded-lg bg-bg-tertiary border text-text-primary focus:outline-none transition-colors [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none",
-                        hasError
-                          ? "border-rose-500/80 focus:border-rose-500 ring-1 ring-rose-500/30"
-                          : "border-border-theme focus:border-accent-primary"
+                        "w-full font-mono text-xs px-2.5 py-1.5 rounded-lg bg-bg-surface border text-text-primary placeholder:text-text-muted focus:outline-none transition-colors",
+                        hasError ? "border-rose-500/80" : "border-border-default focus:border-brand-primary"
                       )}
                     />
                   ) : (
@@ -547,17 +646,14 @@ export function TryItRunner({ endpoint, defaultExpanded = false }: TryItRunnerPr
                       onChange={(e) => handleValueChange(e.target.value)}
                       placeholder={qp.defaultVal ? `Default: ${qp.defaultVal}` : qp.description}
                       className={cn(
-                        "w-full font-mono text-xs p-2.5 rounded-lg bg-bg-tertiary border text-text-primary focus:outline-none transition-colors",
-                        hasError
-                          ? "border-rose-500/80 focus:border-rose-500 ring-1 ring-rose-500/30"
-                          : "border-border-theme focus:border-accent-primary"
+                        "w-full font-mono text-xs px-2.5 py-1.5 rounded-lg bg-bg-surface border text-text-primary placeholder:text-text-muted focus:outline-none transition-colors",
+                        hasError ? "border-rose-500/80" : "border-border-default focus:border-brand-primary"
                       )}
                     />
                   )}
-
                   {hasError && (
-                    <div className="text-[11px] text-rose-400 flex items-center gap-1 font-sans animate-in fade-in duration-150">
-                      <Icon icon="ph:warning-circle-fill" className="w-3.5 h-3.5 shrink-0" />
+                    <div className="text-[10px] text-rose-400 flex items-center gap-1 font-sans">
+                      <Icon icon="ph:warning-circle-fill" className="w-3 h-3 shrink-0" />
                       <span>{formErrors[`query_${qp.name}`]}</span>
                     </div>
                   )}
@@ -570,13 +666,13 @@ export function TryItRunner({ endpoint, defaultExpanded = false }: TryItRunnerPr
 
       {/* 4. Auth Bearer Token input if relevant */}
       {(endpoint.path.includes('/auth') || endpoint.id.includes('auth')) && (
-        <div className="space-y-1.5 p-3 rounded-xl bg-bg-tertiary/60 border border-border-theme">
+        <div className="space-y-1.5 p-3 rounded-xl bg-bg-surface border border-border-default">
           <div className="flex items-center justify-between text-xs">
             <span className="font-semibold text-text-primary flex items-center gap-1.5">
-              <Icon icon="ph:lock-key-bold" className="w-4 h-4 text-amber-400" />
-              Authorization Bearer Token (Simulated JWT):
+              <Icon icon="ph:lock-key-bold" className="w-3.5 h-3.5 text-amber-400" />
+              <span>JWT Bearer Token:</span>
             </span>
-            <span className="text-[11px] text-text-muted">Auto-captured from /auth/login</span>
+            <span className="text-[10px] text-text-muted">Auto-captured on /auth/login</span>
           </div>
           <input
             type="text"
@@ -585,8 +681,8 @@ export function TryItRunner({ endpoint, defaultExpanded = false }: TryItRunnerPr
               setAuthToken(e.target.value);
               if (typeof window !== 'undefined') localStorage.setItem('pg_access_token', e.target.value);
             }}
-            placeholder="Paste JWT Access Token or test /auth/login to auto-populate"
-            className="w-full font-mono text-xs p-2 rounded-lg bg-bg-secondary border border-border-theme text-text-primary focus:outline-none focus:border-accent-primary"
+            placeholder="Paste JWT Access Token"
+            className="w-full font-mono text-xs px-2.5 py-1.5 rounded-lg bg-bg-terminal border border-border-default text-text-primary focus:outline-none focus:border-brand-primary"
           />
         </div>
       )}
@@ -595,16 +691,17 @@ export function TryItRunner({ endpoint, defaultExpanded = false }: TryItRunnerPr
       {['POST', 'PUT', 'PATCH'].includes(endpoint.method) && (
         <div className="space-y-1.5">
           <div className="flex items-center justify-between">
-            <label className="text-xs font-bold uppercase tracking-wider text-amber-400">
-              Request Payload (Editable JSON)
+            <label className="text-[11px] font-bold uppercase tracking-wider text-amber-400 flex items-center gap-1.5">
+              <Icon icon="ph:file-code-bold" className="w-3.5 h-3.5 text-amber-400" />
+              <span>Request Payload (Editable JSON)</span>
             </label>
-            <span className="text-[11px] text-text-muted font-mono">application/json</span>
+            <span className="text-[10px] text-text-muted font-mono">application/json</span>
           </div>
           <CodeBlock
             code={requestBody}
             language="json"
             title="Request Payload"
-            maxHeight="max-h-52"
+            maxHeight="max-h-48"
             editable={true}
             onChange={(newVal) => {
               setRequestBody(newVal);
@@ -618,32 +715,32 @@ export function TryItRunner({ endpoint, defaultExpanded = false }: TryItRunnerPr
             }}
           />
           {formErrors['body'] && (
-            <div className="p-2.5 rounded-lg bg-rose-500/10 border border-rose-500/30 text-rose-400 text-xs flex items-center gap-2 font-sans animate-in fade-in duration-150">
-              <Icon icon="ph:warning-circle-fill" className="w-4 h-4 shrink-0" />
+            <div className="p-2 rounded-lg bg-rose-500/10 border border-rose-500/30 text-rose-400 text-xs flex items-center gap-1.5">
+              <Icon icon="ph:warning-circle-fill" className="w-3.5 h-3.5 shrink-0" />
               <span>{formErrors['body']}</span>
             </div>
           )}
         </div>
       )}
 
-      {/* 6. Network Latency & Status Simulation Controls */}
-      <div className="p-3.5 rounded-xl bg-bg-tertiary/40 border border-border-theme space-y-3">
+      {/* 6. Network Latency & Chaos Simulation Controls */}
+      <div className="p-3 rounded-xl bg-bg-surface border border-border-default space-y-2.5">
         <div className="flex items-center justify-between">
-          <span className="text-xs font-bold uppercase tracking-wider text-text-primary flex items-center gap-1.5">
-            <Icon icon="ph:gear-six-bold" className="w-4 h-4 text-purple-400" />
-            Network & Chaos Simulation Tools
+          <span className="text-[11px] font-bold uppercase tracking-wider text-text-secondary flex items-center gap-1.5">
+            <Icon icon="ph:gear-six-bold" className="w-3.5 h-3.5 text-brand-primary" />
+            <span>Chaos & Simulation Dock</span>
           </span>
-          <span className="text-[11px] text-text-muted font-mono">Header / Query Flag</span>
+          <span className="text-[10px] text-text-muted font-mono">X-Simulate Headers</span>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          {/* Delay selector */}
-          <div className="space-y-1.5">
-            <div className="text-xs text-text-secondary flex items-center justify-between">
+          {/* Latency Presets */}
+          <div className="space-y-1">
+            <div className="text-[11px] text-text-secondary flex items-center justify-between">
               <span>Simulated Latency:</span>
-              <span className="font-mono text-purple-400 font-bold">{simulateDelay} ms</span>
+              <span className="font-mono text-brand-primary font-bold">{simulateDelay} ms</span>
             </div>
-            <div className="grid grid-cols-4 gap-1.5">
+            <div className="grid grid-cols-4 gap-1">
               {[
                 { label: '0ms', val: '0' },
                 { label: '500ms', val: '500' },
@@ -654,11 +751,12 @@ export function TryItRunner({ endpoint, defaultExpanded = false }: TryItRunnerPr
                   key={d.val}
                   type="button"
                   onClick={() => setSimulateDelay(d.val)}
-                  className={`px-2 py-1.5 rounded-lg text-xs font-mono font-bold transition-all cursor-pointer ${
+                  className={cn(
+                    "px-1.5 py-1 rounded-md text-[11px] font-mono font-bold transition-all cursor-pointer text-center",
                     simulateDelay === d.val
-                      ? 'bg-purple-600 text-white shadow-xs'
-                      : 'bg-bg-tertiary hover:bg-border-theme text-text-secondary'
-                  }`}
+                      ? "bg-brand-primary text-white shadow-xs"
+                      : "bg-bg-terminal hover:bg-bg-elevated text-text-secondary border border-border-subtle"
+                  )}
                 >
                   {d.label}
                 </button>
@@ -666,29 +764,32 @@ export function TryItRunner({ endpoint, defaultExpanded = false }: TryItRunnerPr
             </div>
           </div>
 
-          {/* Status override */}
-          <div className="space-y-1.5">
-            <div className="text-xs text-text-secondary flex items-center justify-between">
+          {/* Status Override */}
+          <div className="space-y-1">
+            <div className="text-[11px] text-text-secondary flex items-center justify-between">
               <span>Simulated HTTP Status:</span>
               <span className="font-mono text-amber-400 font-bold">{simulateStatus}</span>
             </div>
-            <div className="grid grid-cols-5 gap-1">
+            <div className="grid grid-cols-7 gap-1">
               {[
                 { label: '200', val: '200' },
                 { label: '400', val: '400' },
                 { label: '401', val: '401' },
+                { label: '403', val: '403' },
                 { label: '404', val: '404' },
+                { label: '429', val: '429' },
                 { label: '500', val: '500' },
               ].map((s) => (
                 <button
                   key={s.val}
                   type="button"
                   onClick={() => setSimulateStatus(s.val)}
-                  className={`px-1.5 py-1.5 rounded-lg text-xs font-mono font-bold transition-all cursor-pointer text-center ${
+                  className={cn(
+                    "px-1 py-1 rounded-md text-[10px] font-mono font-bold transition-all cursor-pointer text-center",
                     simulateStatus === s.val
-                      ? 'bg-amber-600 text-white shadow-xs'
-                      : 'bg-bg-tertiary hover:bg-border-theme text-text-secondary'
-                  }`}
+                      ? "bg-amber-500 text-bg-canvas shadow-xs font-black"
+                      : "bg-bg-terminal hover:bg-bg-elevated text-text-secondary border border-border-subtle"
+                  )}
                 >
                   {s.label}
                 </button>
@@ -698,38 +799,41 @@ export function TryItRunner({ endpoint, defaultExpanded = false }: TryItRunnerPr
         </div>
       </div>
 
-      {/* 7. Action Button */}
+      {/* 7. Action Bar */}
       <div className="flex items-center justify-between pt-1">
         <button
+          type="button"
           onClick={handleExecute}
           disabled={loading}
-          className="px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 text-white font-bold text-xs sm:text-sm shadow-md transition-all cursor-pointer inline-flex items-center gap-2"
+          className="px-4 py-2 rounded-xl bg-brand-primary hover:bg-brand-primary/90 disabled:opacity-50 text-white font-bold text-xs shadow-md transition-all cursor-pointer inline-flex items-center gap-2"
         >
           <Icon
             icon={loading ? 'ph:spinner-bold' : 'ph:paper-plane-right-bold'}
-            className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`}
+            className={cn("w-4 h-4", loading && "animate-spin")}
           />
-          <span>{loading ? 'Sending Request...' : 'Send Live Request'}</span>
+          <span>{loading ? 'Sending Request...' : 'Send Request'}</span>
         </button>
 
-        <span className="text-[11px] text-text-muted font-mono">
-          Identity: Isolated Session Overlay
-        </span>
+        <div className="flex items-center gap-2 text-[11px] text-text-muted font-mono">
+          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+          <span>Isolated Session Overlay</span>
+        </div>
       </div>
 
-      {/* 8. Response Display */}
+      {/* 8. Live Response Deck */}
       {response && (
-        <div className="space-y-3 pt-3 border-t border-border-theme animate-in fade-in duration-200">
-          {/* Response Meta Header */}
-          <div className="flex items-center justify-between text-xs sm:text-sm flex-wrap gap-2">
+        <div className="space-y-3 pt-3 border-t border-border-default animate-in fade-in duration-200">
+          {/* Status Bar */}
+          <div className="flex items-center justify-between text-xs flex-wrap gap-2 bg-bg-surface p-2.5 rounded-xl border border-border-default">
             <div className="flex items-center gap-2">
-              <span className="font-semibold text-text-secondary">Status:</span>
+              <span className="font-semibold text-text-muted text-[11px]">Status:</span>
               <span
-                className={`font-mono font-bold px-2.5 py-0.5 rounded-md ${
+                className={cn(
+                  "font-mono font-bold px-2 py-0.5 rounded-md text-xs border",
                   response.status >= 200 && response.status < 300
-                    ? 'bg-emerald-500/15 text-emerald-400 border border-emerald-500/30'
-                    : 'bg-rose-500/15 text-rose-400 border border-rose-500/30'
-                }`}
+                    ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/30"
+                    : "bg-rose-500/10 text-rose-400 border-rose-500/30"
+                )}
               >
                 {response.status} {response.statusText}
               </span>
@@ -737,45 +841,110 @@ export function TryItRunner({ endpoint, defaultExpanded = false }: TryItRunnerPr
 
             <div className="flex items-center gap-3">
               <div className="flex items-center gap-1 text-text-muted font-mono text-xs">
-                <Icon icon="ph:timer-bold" className="w-3.5 h-3.5 text-accent-primary" />
+                <Icon icon="ph:timer-bold" className="w-3.5 h-3.5 text-brand-primary" />
                 <span>{response.timeMs} ms</span>
               </div>
+              <div className="flex items-center gap-1 text-text-muted font-mono text-xs">
+                <Icon icon="ph:file-bold" className="w-3.5 h-3.5 text-accent-cyan" />
+                <span>{responseSize}</span>
+              </div>
+              <button
+                type="button"
+                onClick={handleCopyResponse}
+                title="Copy Response"
+                className="px-2 py-1 rounded bg-bg-elevated hover:bg-bg-tertiary text-text-muted hover:text-text-primary text-[11px] font-medium transition-colors cursor-pointer flex items-center gap-1 border border-border-subtle"
+              >
+                <Icon icon={copiedResponse ? 'ph:check-bold' : 'ph:copy-bold'} className={cn("w-3 h-3", copiedResponse && "text-emerald-400")} />
+                <span>{copiedResponse ? 'Copied' : 'Copy'}</span>
+              </button>
             </div>
           </div>
 
-          {/* Mutation Persistence Success Notice */}
+          {/* Persisted in Session Overlay Banner */}
           {response.isPersistedMutation && (
-            <div className="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-xs text-emerald-400 flex items-center gap-2">
+            <div className="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-xs text-emerald-300 flex items-center gap-2.5">
               <Icon icon="ph:sparkle-fill" className="w-4 h-4 text-emerald-400 shrink-0" />
-              <span>
-                <strong>Mutation Persisted in Sandbox:</strong> This change is saved in your private session overlay. Fetching list endpoints will immediately reflect this item.
-              </span>
+              <div className="min-w-0">
+                <span className="font-bold">Persisted in Session Overlay:</span>{' '}
+                <span>This mutation was saved to your private visitor sandbox. Subsequent collection requests will immediately reflect this item.</span>
+              </div>
             </div>
           )}
 
-          {/* Render Live SVG Visual Preview if Response is SVG Vector */}
-          {response.isSvg && typeof response.data === 'string' && (
-            <div className="space-y-1.5">
-              <span className="text-xs font-semibold text-emerald-400">Live Rendered SVG Vector:</span>
-              <div className="p-4 rounded-xl bg-bg-tertiary border border-border-theme flex items-center justify-center min-h-36 overflow-hidden">
+          {/* Response Sub-tabs: Body vs Headers vs Live Preview */}
+          <div className="space-y-2">
+            <div className="flex items-center gap-1 border-b border-border-default pb-1">
+              <button
+                type="button"
+                onClick={() => setResponseTab('body')}
+                className={cn(
+                  "px-2.5 py-1 rounded-lg text-xs font-semibold transition-colors cursor-pointer",
+                  responseTab === 'body'
+                    ? "bg-bg-surface text-text-primary border border-border-default"
+                    : "text-text-muted hover:text-text-secondary"
+                )}
+              >
+                Response Body
+              </button>
+              <button
+                type="button"
+                onClick={() => setResponseTab('headers')}
+                className={cn(
+                  "px-2.5 py-1 rounded-lg text-xs font-semibold transition-colors cursor-pointer",
+                  responseTab === 'headers'
+                    ? "bg-bg-surface text-text-primary border border-border-default"
+                    : "text-text-muted hover:text-text-secondary"
+                )}
+              >
+                Headers ({Object.keys(response.headers).length})
+              </button>
+              {response.isSvg && (
+                <button
+                  type="button"
+                  onClick={() => setResponseTab('preview')}
+                  className={cn(
+                    "px-2.5 py-1 rounded-lg text-xs font-semibold transition-colors cursor-pointer",
+                    responseTab === 'preview'
+                      ? "bg-emerald-500/15 text-emerald-300 border border-emerald-500/30"
+                      : "text-text-muted hover:text-text-secondary"
+                  )}
+                >
+                  Live SVG Preview
+                </button>
+              )}
+            </div>
+
+            {/* Tab: Live SVG Preview */}
+            {responseTab === 'preview' && response.isSvg && typeof response.data === 'string' && (
+              <div className="p-4 rounded-xl bg-bg-surface border border-border-default flex items-center justify-center min-h-36 overflow-hidden">
                 <div
                   className="max-w-full max-h-64 flex items-center justify-center [&>svg]:max-w-full [&>svg]:h-auto [&>svg]:shadow-lg [&>svg]:rounded-xl"
                   dangerouslySetInnerHTML={{ __html: sanitizeSvg(response.data) }}
                 />
               </div>
-            </div>
-          )}
+            )}
 
-          {/* Response Payload Code Block */}
-          <div className="space-y-1">
-            <span className="text-xs font-semibold text-text-secondary">
-              {response.isSvg ? 'Raw Vector XML:' : 'Response Payload (JSON):'}
-            </span>
-            <CodeBlock
-              code={response.data}
-              language={response.isSvg ? 'xml' : 'json'}
-              maxHeight="max-h-72"
-            />
+            {/* Tab: Response Body */}
+            {responseTab === 'body' && (
+              <CodeBlock
+                code={response.data}
+                language={response.isSvg ? 'xml' : 'json'}
+                maxHeight="max-h-64"
+                showHeader={false}
+              />
+            )}
+
+            {/* Tab: Response Headers */}
+            {responseTab === 'headers' && (
+              <div className="rounded-xl border border-border-default bg-bg-surface p-3 font-mono text-xs max-h-60 overflow-y-auto divide-y divide-border-subtle">
+                {Object.entries(response.headers).map(([key, val]) => (
+                  <div key={key} className="py-1.5 flex flex-col sm:flex-row sm:items-center justify-between gap-1">
+                    <span className="text-brand-primary font-bold">{key}</span>
+                    <span className="text-text-secondary truncate select-all">{val}</span>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       )}

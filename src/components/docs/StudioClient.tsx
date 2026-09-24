@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { Icon } from '@iconify/react';
 import { CodeBlock } from '@/components/ui/CodeBlock';
+import { CustomMockStudio } from './CustomMockStudio';
 import config from '@/config/env';
 import { useLiveCounts } from '@/context/CountsContext';
 
@@ -126,6 +127,7 @@ export function StudioClient() {
   const [endpointPath, setEndpointPath] = useState('/posts?_limit=5');
   const [simDelay, setSimDelay] = useState('0');
   const [simStatus, setSimStatus] = useState('200');
+  const [studioMode, setStudioMode] = useState<'visual-builder' | 'scenarios'>('visual-builder');
   const [jsonPayload, setJsonPayload] = useState('');
   const [loading, setLoading] = useState(false);
   const [response, setResponse] = useState<{
@@ -262,15 +264,49 @@ export function StudioClient() {
           Interactive API Studio
         </h1>
         <p className="text-sm sm:text-base text-text-secondary leading-relaxed">
-          Test stateful CRUD operations, simulate network conditions, and verify your isolated session overlay in real time.
+          Test stateful CRUD operations, visually build custom schemas with faker presets, and verify your isolated session overlay in real time.
         </p>
+
+        {/* Top-Level Mode Selector Tabs */}
+        <div className="flex items-center gap-2 p-1.5 rounded-2xl bg-bg-surface border border-border-default max-w-md mt-4">
+          <button
+            type="button"
+            onClick={() => setStudioMode('visual-builder')}
+            className={`flex-1 py-2 px-3 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-2 ${
+              studioMode === 'visual-builder'
+                ? 'bg-brand-primary text-white shadow-sm'
+                : 'text-text-secondary hover:text-text-primary'
+            }`}
+          >
+            <Icon icon="ph:magic-wand-bold" className="w-4 h-4" />
+            <span>Visual Mock Builder</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setStudioMode('scenarios')}
+            className={`flex-1 py-2 px-3 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-2 ${
+              studioMode === 'scenarios'
+                ? 'bg-brand-primary text-white shadow-sm'
+                : 'text-text-secondary hover:text-text-primary'
+            }`}
+          >
+            <Icon icon="ph:play-circle-bold" className="w-4 h-4" />
+            <span>Scenario Dock</span>
+          </button>
+        </div>
       </div>
 
-      {/* 2. Guided Scenario Presets */}
-      <div id="scenario-presets" className="p-6 rounded-2xl glass-panel border border-border-theme space-y-4 shadow-xl scroll-mt-20">
-        <div className="flex items-center justify-between flex-wrap gap-2">
-          <h2 className="text-xs sm:text-sm font-bold text-text-secondary uppercase tracking-wider flex items-center gap-2">
-            <Icon icon="ph:sparkle-bold" className="w-4 h-4 text-accent-primary" />
+      {/* Mode 1: Visual Mock Schema Builder (MockAPI & Mocki Style) */}
+      {studioMode === 'visual-builder' && <CustomMockStudio />}
+
+      {/* Mode 2: Guided Scenario Presets & Lifecycle Tester */}
+      {studioMode === 'scenarios' && (
+        <>
+          <div id="scenario-presets" className="p-6 rounded-2xl glass-panel border border-border-theme space-y-4 shadow-xl scroll-mt-20">
+            <div className="flex items-center justify-between flex-wrap gap-2">
+              <h2 className="text-xs sm:text-sm font-bold text-text-secondary uppercase tracking-wider flex items-center gap-2">
+                <Icon icon="ph:sparkle-bold" className="w-4 h-4 text-accent-primary" />
             Guided Workflow Scenarios
           </h2>
           <span className="text-xs text-text-muted">1-Click presets</span>
@@ -451,6 +487,8 @@ export function StudioClient() {
             />
           </div>
         </div>
+      )}
+        </>
       )}
     </div>
   );

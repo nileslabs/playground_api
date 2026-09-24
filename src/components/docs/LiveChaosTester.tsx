@@ -111,23 +111,23 @@ export function LiveChaosTester() {
     totalFired > 0 ? Math.round(logs.reduce((acc, l) => acc + l.durationMs, 0) / totalFired) : 0;
 
   return (
-    <div className="p-6 rounded-3xl bg-code-bg border border-border-theme space-y-6 shadow-2xl">
+    <div className="terminal-container p-6 rounded-3xl bg-bg-terminal border border-border-default space-y-6 shadow-2xl text-text-primary">
       {/* Top Banner */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-4 border-b border-border-theme">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-4 border-b border-border-default">
         <div className="flex items-center gap-3">
-          <div className="p-2.5 bg-amber-500/15 text-amber-400 rounded-2xl border border-amber-500/30">
+          <div className="p-2.5 bg-amber-500/10 text-amber-400 rounded-2xl border border-amber-500/30">
             <Icon icon="ph:lightning-slash-bold" className="w-6 h-6" />
           </div>
           <div>
             <h3 className="text-lg sm:text-xl font-bold text-text-primary">Interactive Chaos Engine Runner</h3>
             <p className="text-xs sm:text-sm text-text-secondary">
-              Inject random failure probabilities & latency jitter in real-time
+              Inject random failure probabilities &amp; latency jitter in real-time
             </p>
           </div>
         </div>
 
         <div className="flex items-center gap-2">
-          <span className="text-xs font-mono font-bold px-2.5 py-1 rounded-md bg-accent-light text-accent-primary border border-accent-primary/20">
+          <span className="text-xs font-mono font-bold px-2.5 py-1 rounded-md bg-brand-primary/10 text-brand-primary border border-brand-primary/20">
             Probability: {Math.round(failureRate * 100)}%
           </span>
         </div>
@@ -155,11 +155,11 @@ export function LiveChaosTester() {
               step="0.05"
               value={failureRate}
               onChange={(e) => setFailureRate(parseFloat(e.target.value))}
-              className="w-full h-2 bg-bg-secondary rounded-lg appearance-none cursor-pointer accent-accent-primary"
+              className="w-full h-2 bg-bg-surface rounded-lg appearance-none cursor-pointer accent-brand-primary border border-border-default"
             />
 
             {/* Presets */}
-            <div className="flex items-center gap-2 pt-1">
+            <div className="flex items-center gap-2 pt-1 flex-wrap">
               {[
                 { label: '0% (Clean)', val: 0.0 },
                 { label: '25% (Mild)', val: 0.25 },
@@ -169,11 +169,12 @@ export function LiveChaosTester() {
               ].map((p) => (
                 <button
                   key={p.val}
+                  type="button"
                   onClick={() => setFailureRate(p.val)}
                   className={`px-2.5 py-1 rounded-lg text-xs font-semibold transition-all border cursor-pointer ${
                     failureRate === p.val
-                      ? 'bg-accent-primary text-white border-accent-primary shadow-xs'
-                      : 'bg-bg-secondary text-text-secondary border-border-theme hover:text-text-primary'
+                      ? 'bg-brand-primary text-white border-brand-primary shadow-xs font-bold'
+                      : 'bg-bg-surface text-text-secondary border-border-default hover:text-text-primary'
                   }`}
                 >
                   {p.label}
@@ -191,11 +192,12 @@ export function LiveChaosTester() {
               {['/posts', '/users', '/comments', '/todos'].map((ep) => (
                 <button
                   key={ep}
+                  type="button"
                   onClick={() => setSelectedEndpoint(ep)}
                   className={`px-3 py-1.5 rounded-xl text-xs font-mono font-bold transition-all border cursor-pointer ${
                     selectedEndpoint === ep
-                      ? 'bg-accent-light text-accent-primary border-accent-primary/40'
-                      : 'bg-bg-secondary text-text-secondary border-border-theme hover:text-text-primary'
+                      ? 'bg-brand-primary/15 text-brand-primary border-brand-primary/40'
+                      : 'bg-bg-surface text-text-secondary border-border-default hover:text-text-primary'
                   }`}
                 >
                   {ep}
@@ -217,16 +219,17 @@ export function LiveChaosTester() {
                 return (
                   <button
                     key={opt.code}
+                    type="button"
                     onClick={() => toggleError(opt.code)}
                     className={`flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-semibold text-left transition-all border cursor-pointer ${
                       checked
-                        ? 'bg-bg-secondary text-text-primary border-accent-primary/40'
-                        : 'bg-bg-tertiary/40 text-text-muted border-border-theme opacity-60'
+                        ? 'bg-bg-surface text-text-primary border-brand-primary/40'
+                        : 'bg-bg-surface/50 text-text-muted border-border-default opacity-60'
                     }`}
                   >
                     <Icon
                       icon={checked ? 'ph:check-square-fill' : 'ph:square-bold'}
-                      className={`w-4 h-4 ${checked ? 'text-accent-primary' : 'text-text-muted'}`}
+                      className={`w-4 h-4 ${checked ? 'text-brand-primary' : 'text-text-muted'}`}
                     />
                     <span>{opt.label}</span>
                   </button>
@@ -238,17 +241,19 @@ export function LiveChaosTester() {
           {/* Execution Buttons */}
           <div className="flex items-center gap-3 pt-2">
             <button
+              type="button"
               onClick={() => fireBatch(1)}
               disabled={loading}
-              className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-accent-primary hover:bg-accent-hover text-white font-bold text-xs sm:text-sm transition-all cursor-pointer shadow-md disabled:opacity-50"
+              className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-brand-primary hover:bg-brand-primary/90 text-white font-bold text-xs sm:text-sm transition-all cursor-pointer shadow-md disabled:opacity-50"
             >
               <Icon icon="ph:play-bold" className="w-4 h-4" />
               <span>Fire 1 Request</span>
             </button>
             <button
+              type="button"
               onClick={() => fireBatch(5)}
               disabled={loading}
-              className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs sm:text-sm transition-all cursor-pointer shadow-md disabled:opacity-50"
+              className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-bg-canvas font-bold text-xs sm:text-sm transition-all cursor-pointer shadow-md disabled:opacity-50"
             >
               <Icon icon={loading ? 'ph:spinner-bold' : 'ph:lightning-bold'} className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
               <span>Fire 5 In Parallel</span>
@@ -259,24 +264,24 @@ export function LiveChaosTester() {
 
       {/* Real-Time Metrics Counters */}
       <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 text-center">
-        <div className="p-3 rounded-xl bg-bg-secondary border border-border-theme space-y-0.5">
+        <div className="p-3 rounded-xl bg-bg-surface border border-border-default space-y-0.5">
           <div className="text-xl sm:text-2xl font-black text-text-primary">{totalFired}</div>
           <div className="text-[11px] text-text-secondary font-medium">Total Fired</div>
         </div>
-        <div className="p-3 rounded-xl bg-bg-secondary border border-border-theme space-y-0.5">
+        <div className="p-3 rounded-xl bg-bg-surface border border-border-default space-y-0.5">
           <div className="text-xl sm:text-2xl font-black text-emerald-400">{successCount}</div>
           <div className="text-[11px] text-text-secondary font-medium">200 OK (Passed)</div>
         </div>
-        <div className="p-3 rounded-xl bg-bg-secondary border border-border-theme space-y-0.5">
+        <div className="p-3 rounded-xl bg-bg-surface border border-border-default space-y-0.5">
           <div className="text-xl sm:text-2xl font-black text-rose-400">{chaosCount}</div>
           <div className="text-[11px] text-text-secondary font-medium">Chaos Injected</div>
         </div>
-        <div className="p-3 rounded-xl bg-bg-secondary border border-border-theme space-y-0.5">
+        <div className="p-3 rounded-xl bg-bg-surface border border-border-default space-y-0.5">
           <div className="text-xl sm:text-2xl font-black text-amber-400">{observedFailurePct}%</div>
           <div className="text-[11px] text-text-secondary font-medium">Observed Rate</div>
         </div>
-        <div className="p-3 rounded-xl bg-bg-secondary border border-border-theme space-y-0.5 col-span-2 sm:col-span-1">
-          <div className="text-xl sm:text-2xl font-black text-sky-400">{avgLatency}ms</div>
+        <div className="p-3 rounded-xl bg-bg-surface border border-border-default space-y-0.5 col-span-2 sm:col-span-1">
+          <div className="text-xl sm:text-2xl font-black text-accent-cyan">{avgLatency}ms</div>
           <div className="text-[11px] text-text-secondary font-medium">Avg Latency</div>
         </div>
       </div>
@@ -285,11 +290,12 @@ export function LiveChaosTester() {
       <div className="space-y-3">
         <div className="flex items-center justify-between">
           <span className="text-xs font-bold text-text-secondary uppercase tracking-wider flex items-center gap-1.5">
-            <Icon icon="ph:activity-bold" className="w-4 h-4 text-accent-primary" />
-            Live Request Stream (Latest 20)
+            <Icon icon="ph:activity-bold" className="w-4 h-4 text-brand-primary" />
+            <span>Live Request Stream (Latest 20)</span>
           </span>
           {logs.length > 0 && (
             <button
+              type="button"
               onClick={() => setLogs([])}
               className="text-xs text-text-muted hover:text-rose-400 transition-colors cursor-pointer flex items-center gap-1"
             >
@@ -300,7 +306,7 @@ export function LiveChaosTester() {
         </div>
 
         {logs.length === 0 ? (
-          <div className="p-8 text-center rounded-2xl bg-bg-secondary border border-border-theme text-text-muted text-xs font-mono space-y-1">
+          <div className="p-8 text-center rounded-2xl bg-bg-surface border border-border-default text-text-muted text-xs font-mono space-y-1">
             <Icon icon="ph:radio-bold" className="w-8 h-8 mx-auto text-text-muted/60" />
             <p>No test requests fired yet.</p>
             <p className="text-[11px] text-text-muted/80">Click &quot;Fire 1 Request&quot; or &quot;Fire 5 In Parallel&quot; above.</p>
@@ -314,20 +320,20 @@ export function LiveChaosTester() {
               return (
                 <div
                   key={log.id}
-                  className="rounded-xl bg-bg-secondary border border-border-theme overflow-hidden transition-all"
+                  className="rounded-xl bg-bg-surface border border-border-default overflow-hidden transition-all"
                 >
                   <div
                     onClick={() => setExpandedLogId(isExpanded ? null : log.id)}
-                    className="flex flex-col sm:flex-row sm:items-center justify-between p-3 gap-2 cursor-pointer hover:bg-bg-tertiary/50 transition-colors text-xs font-mono"
+                    className="flex flex-col sm:flex-row sm:items-center justify-between p-3 gap-2 cursor-pointer hover:bg-bg-elevated/50 transition-colors text-xs font-mono"
                   >
                     <div className="flex items-center gap-2.5">
                       <span
-                        className={`px-2 py-0.5 rounded-md font-bold text-[11px] ${
+                        className={`px-2 py-0.5 rounded-md font-bold text-[11px] border ${
                           isSuccess
-                            ? 'bg-emerald-500/15 text-emerald-400 border border-emerald-500/30'
+                            ? 'bg-emerald-500/15 text-emerald-400 border-emerald-500/30'
                             : log.status === 429
-                            ? 'bg-amber-500/15 text-amber-400 border border-amber-500/30'
-                            : 'bg-rose-500/15 text-rose-400 border border-rose-500/30'
+                            ? 'bg-amber-500/15 text-amber-400 border-amber-500/30'
+                            : 'bg-rose-500/15 text-rose-400 border-rose-500/30'
                         }`}
                       >
                         {log.status === 0 ? 'FAIL' : `HTTP ${log.status}`}
@@ -335,7 +341,7 @@ export function LiveChaosTester() {
 
                       <span className="text-text-primary font-semibold">GET {log.url.split(config.apiUrl)[1]}</span>
                       {log.isChaos && (
-                        <span className="text-[10px] px-1.5 py-0.2 rounded font-sans font-bold bg-amber-500/20 text-amber-400">
+                        <span className="text-[10px] px-1.5 py-0.2 rounded font-sans font-bold bg-amber-500/20 text-amber-400 border border-amber-500/30">
                           🎲 Chaos Injected
                         </span>
                       )}
@@ -343,8 +349,8 @@ export function LiveChaosTester() {
 
                     <div className="flex items-center gap-3 text-text-muted font-sans text-xs">
                       <span className="flex items-center gap-1">
-                        <Icon icon="ph:timer-bold" className="w-3.5 h-3.5" />
-                        <strong>{log.durationMs}ms</strong>
+                        <Icon icon="ph:timer-bold" className="w-3.5 h-3.5 text-brand-primary" />
+                        <strong className="text-text-primary">{log.durationMs}ms</strong>
                       </span>
                       <span>{log.timestamp}</span>
                       <Icon
@@ -355,7 +361,7 @@ export function LiveChaosTester() {
                   </div>
 
                   {isExpanded && (
-                    <div className="p-3 bg-code-bg border-t border-border-theme font-mono text-xs overflow-x-auto text-emerald-400 select-all">
+                    <div className="p-3 bg-bg-terminal border-t border-border-default font-mono text-xs overflow-x-auto text-emerald-400 select-all">
                       <pre>{JSON.stringify(log.response, null, 2)}</pre>
                     </div>
                   )}

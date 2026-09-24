@@ -140,7 +140,6 @@ export function LiveChatTester() {
         } catch (_) {}
       };
     } else {
-      // Socket.io connection state
       setConnected(true);
     }
   }, [protocol, room, username, wsBase, rawApiUrl]);
@@ -159,7 +158,6 @@ export function LiveChatTester() {
         })
       );
     } else {
-      // Fallback to REST POST
       fetch(`${rawApiUrl}/messages`, {
         method: 'POST',
         headers: {
@@ -197,9 +195,9 @@ export function LiveChatTester() {
   };
 
   return (
-    <div className="rounded-2xl border border-slate-700/60 bg-slate-900/90 shadow-2xl backdrop-blur-xl overflow-hidden my-8">
+    <div className="rounded-2xl border border-border-default bg-bg-surface shadow-2xl backdrop-blur-xl overflow-hidden my-8 text-text-primary">
       {/* Studio Header */}
-      <div className="flex flex-wrap items-center justify-between gap-4 border-b border-slate-800 bg-slate-950/60 px-6 py-4">
+      <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border-default bg-bg-terminal px-6 py-4">
         <div className="flex items-center gap-3">
           <div className="relative flex h-3 w-3">
             {connected ? (
@@ -212,27 +210,27 @@ export function LiveChatTester() {
             )}
           </div>
           <div>
-            <h3 className="text-sm font-semibold text-white flex items-center gap-2">
+            <h3 className="text-sm font-semibold text-text-primary flex items-center gap-2">
               <span>Real-Time Live Chat Studio</span>
-              <span className="text-[10px] uppercase font-mono px-2 py-0.5 rounded-full bg-cyan-500/10 text-cyan-400 border border-cyan-500/30">
+              <span className="text-[10px] uppercase font-mono px-2 py-0.5 rounded-full bg-accent-cyan/10 text-accent-cyan border border-accent-cyan/30">
                 {connected ? 'Live Connected' : 'Connecting...'}
               </span>
             </h3>
-            <p className="text-xs text-slate-400">
+            <p className="text-xs text-text-secondary">
               Cross-protocol message bus (RFC 6455 Native WS, Socket.io, &amp; SSE)
             </p>
           </div>
         </div>
 
         {/* Protocol Selector Tabs */}
-        <div className="flex items-center gap-1 rounded-xl bg-slate-900 p-1 border border-slate-800">
+        <div className="flex items-center gap-1 rounded-xl bg-bg-surface p-1 border border-border-default">
           <button
             type="button"
             onClick={() => setProtocol('ws')}
-            className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg transition-all ${
+            className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg transition-all cursor-pointer ${
               protocol === 'ws'
-                ? 'bg-cyan-500 text-slate-950 font-semibold shadow'
-                : 'text-slate-400 hover:text-white'
+                ? 'bg-brand-primary text-white font-bold shadow-xs'
+                : 'text-text-muted hover:text-text-primary'
             }`}
           >
             <Icon icon="ph:plug-bold" className="w-3.5 h-3.5" />
@@ -241,10 +239,10 @@ export function LiveChatTester() {
           <button
             type="button"
             onClick={() => setProtocol('socketio')}
-            className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg transition-all ${
+            className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg transition-all cursor-pointer ${
               protocol === 'socketio'
-                ? 'bg-cyan-500 text-slate-950 font-semibold shadow'
-                : 'text-slate-400 hover:text-white'
+                ? 'bg-brand-primary text-white font-bold shadow-xs'
+                : 'text-text-muted hover:text-text-primary'
             }`}
           >
             <Icon icon="simple-icons:socketdotio" className="w-3.5 h-3.5" />
@@ -253,10 +251,10 @@ export function LiveChatTester() {
           <button
             type="button"
             onClick={() => setProtocol('sse')}
-            className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg transition-all ${
+            className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg transition-all cursor-pointer ${
               protocol === 'sse'
-                ? 'bg-cyan-500 text-slate-950 font-semibold shadow'
-                : 'text-slate-400 hover:text-white'
+                ? 'bg-brand-primary text-white font-bold shadow-xs'
+                : 'text-text-muted hover:text-text-primary'
             }`}
           >
             <Icon icon="ph:broadcast-bold" className="w-3.5 h-3.5" />
@@ -266,19 +264,19 @@ export function LiveChatTester() {
       </div>
 
       {/* Control Bar: Room & User */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-3 p-4 bg-slate-900/50 border-b border-slate-800 text-xs">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-3 p-4 bg-bg-terminal border-b border-border-default text-xs">
         <div>
-          <label className="block text-slate-400 mb-1 font-mono">Active Room</label>
+          <label className="block text-text-muted mb-1 font-mono">Active Room</label>
           <div className="flex gap-2">
             {['support', 'general', 'random'].map((r) => (
               <button
                 key={r}
                 type="button"
                 onClick={() => setRoom(r)}
-                className={`px-2.5 py-1 rounded-md font-mono border transition-all ${
+                className={`px-2.5 py-1 rounded-md font-mono border transition-all cursor-pointer ${
                   room === r
-                    ? 'bg-indigo-500/20 text-indigo-300 border-indigo-500/40 font-bold'
-                    : 'bg-slate-800/80 text-slate-400 border-slate-700/60 hover:text-white'
+                    ? 'bg-brand-primary/10 text-brand-primary border-brand-primary/30 font-bold'
+                    : 'bg-bg-surface text-text-secondary border-border-default hover:text-text-primary'
                 }`}
               >
                 #{r}
@@ -288,29 +286,29 @@ export function LiveChatTester() {
         </div>
 
         <div>
-          <label className="block text-slate-400 mb-1 font-mono">Your Username</label>
+          <label className="block text-text-muted mb-1 font-mono">Your Username</label>
           <input
             type="text"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
-            className="w-full bg-slate-950 border border-slate-800 rounded-md px-2.5 py-1 text-slate-200 focus:outline-none focus:border-cyan-500"
+            className="w-full bg-bg-surface border border-border-default rounded-md px-2.5 py-1 text-text-primary focus:outline-none focus:border-brand-primary"
           />
         </div>
 
         <div>
-          <label className="block text-slate-400 mb-1 font-mono">Simulate Assistant</label>
+          <label className="block text-text-muted mb-1 font-mono">Simulate Assistant</label>
           <div className="flex items-center gap-2">
             <button
               type="button"
               onClick={() => {
                 setInputText('How do I simulate 429 rate limiting with Retry-After?');
               }}
-              className="text-[11px] px-2.5 py-1 rounded bg-slate-800 text-cyan-300 hover:bg-slate-700 transition"
+              className="text-[11px] px-2.5 py-1 rounded bg-bg-surface border border-border-default text-brand-primary hover:bg-bg-elevated transition cursor-pointer"
             >
               Ask Support Bot
             </button>
             {pingMs !== null && (
-              <span className="text-[10px] text-slate-500 font-mono">
+              <span className="text-[10px] text-text-muted font-mono">
                 {pingMs}ms latency
               </span>
             )}
@@ -319,9 +317,9 @@ export function LiveChatTester() {
       </div>
 
       {/* Chat Messages Feed */}
-      <div className="h-80 overflow-y-auto p-4 space-y-3 bg-slate-950/40">
+      <div className="h-80 overflow-y-auto p-4 space-y-3 bg-bg-terminal/60">
         {messages.length === 0 ? (
-          <div className="flex h-full items-center justify-center text-slate-500 text-xs font-mono">
+          <div className="flex h-full items-center justify-center text-text-muted text-xs font-mono">
             No messages yet in #{room}. Say hello or trigger Support Bot!
           </div>
         ) : (
@@ -335,33 +333,33 @@ export function LiveChatTester() {
                 key={m.id || idx}
                 className={`flex flex-col ${isMe ? 'items-end' : 'items-start'} transition-all`}
               >
-                <div className="flex items-center gap-1.5 mb-0.5 text-[10px] text-slate-400 font-mono">
-                  <span className={isBot ? 'text-amber-400 font-semibold' : isMe ? 'text-cyan-400 font-semibold' : 'text-slate-300'}>
+                <div className="flex items-center gap-1.5 mb-0.5 text-[10px] text-text-muted font-mono">
+                  <span className={isBot ? 'text-amber-400 font-semibold' : isMe ? 'text-brand-primary font-semibold' : 'text-text-primary'}>
                     {m.sender_name}
                   </span>
                   {isBot && (
-                    <span className="px-1 py-0.2 rounded bg-amber-500/20 text-amber-300 text-[9px] border border-amber-500/30">
+                    <span className="px-1 py-0.2 rounded bg-amber-500/20 text-amber-400 text-[9px] border border-amber-500/30">
                       BOT
                     </span>
                   )}
                   {m.protocol && (
-                    <span className="px-1 py-0.2 rounded bg-slate-800 text-slate-400 text-[9px]">
+                    <span className="px-1 py-0.2 rounded bg-bg-surface text-text-muted border border-border-default text-[9px]">
                       {m.protocol.toUpperCase()}
                     </span>
                   )}
-                  <span className="text-slate-500 text-[9px]">
+                  <span className="text-text-muted text-[9px]">
                     {new Date(m.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
                   </span>
                 </div>
                 <div
                   className={`max-w-[85%] rounded-xl px-3.5 py-2 text-xs leading-relaxed ${
                     isMe
-                      ? 'bg-cyan-600 text-white rounded-br-none'
+                      ? 'bg-brand-primary text-white rounded-br-none shadow-sm'
                       : isBot
-                      ? 'bg-linear-to-r from-amber-950/60 to-slate-900 border border-amber-500/30 text-slate-200 rounded-bl-none shadow'
+                      ? 'bg-bg-surface border border-amber-500/30 text-text-primary rounded-bl-none shadow'
                       : isSys
-                      ? 'bg-slate-800/80 text-cyan-200 border border-slate-700/60'
-                      : 'bg-slate-800 text-slate-200 rounded-bl-none border border-slate-700/50'
+                      ? 'bg-bg-terminal text-accent-cyan border border-border-default'
+                      : 'bg-bg-surface text-text-primary rounded-bl-none border border-border-default'
                   }`}
                 >
                   {m.text}
@@ -373,7 +371,7 @@ export function LiveChatTester() {
 
         {/* Typing indicator bubble */}
         {typingUser && (
-          <div className="flex items-center gap-2 text-xs text-amber-300 font-mono animate-pulse">
+          <div className="flex items-center gap-2 text-xs text-amber-400 font-mono animate-pulse">
             <span className="inline-block w-2 h-2 rounded-full bg-amber-400"></span>
             <span>{typingUser} is typing...</span>
           </div>
@@ -383,15 +381,15 @@ export function LiveChatTester() {
       </div>
 
       {/* Message Composer Footer */}
-      <form onSubmit={handleSendMessage} className="flex items-center gap-2 p-3 bg-slate-900 border-t border-slate-800">
+      <form onSubmit={handleSendMessage} className="flex items-center gap-2 p-3 bg-bg-terminal border-t border-border-default">
         <button
           type="button"
           onClick={handleTypingToggle}
           title="Toggle typing indicator for peers"
-          className={`p-2 rounded-lg border transition ${
+          className={`p-2 rounded-lg border transition cursor-pointer ${
             isTyping
-              ? 'bg-amber-500/20 border-amber-500 text-amber-300'
-              : 'bg-slate-800 border-slate-700 text-slate-400 hover:text-white'
+              ? 'bg-amber-500/20 border-amber-500 text-amber-400'
+              : 'bg-bg-surface border-border-default text-text-muted hover:text-text-primary'
           }`}
         >
           <Icon icon="ph:keyboard-bold" className="w-4 h-4" />
@@ -402,13 +400,13 @@ export function LiveChatTester() {
           value={inputText}
           onChange={(e) => setInputText(e.target.value)}
           placeholder={`Type a message to #${room}... (e.g. "@bot help")`}
-          className="flex-1 bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500"
+          className="flex-1 bg-bg-surface border border-border-default rounded-lg px-3 py-2 text-xs text-text-primary placeholder:text-text-muted focus:outline-none focus:border-brand-primary"
         />
 
         <button
           type="submit"
           disabled={!inputText.trim()}
-          className="flex items-center gap-1.5 px-4 py-2 rounded-lg bg-cyan-500 hover:bg-cyan-400 disabled:opacity-50 disabled:hover:bg-cyan-500 text-slate-950 font-semibold text-xs transition"
+          className="flex items-center gap-1.5 px-4 py-2 rounded-lg bg-brand-primary hover:bg-brand-primary/90 disabled:opacity-50 text-white font-semibold text-xs transition cursor-pointer"
         >
           <span>Send</span>
           <Icon icon="ph:paper-plane-right-fill" className="w-3.5 h-3.5" />
