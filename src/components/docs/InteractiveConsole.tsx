@@ -24,11 +24,14 @@ export interface InteractiveConsoleProps {
   description?: string;
 }
 
+const EMPTY_HEADERS: HeaderItem[] = [];
+const EMPTY_QUERY_PARAMS: QueryParamItem[] = [];
+
 export function InteractiveConsole({
   method,
   path,
-  initialHeaders = [],
-  initialQueryParams = [],
+  initialHeaders = EMPTY_HEADERS,
+  initialQueryParams = EMPTY_QUERY_PARAMS,
   initialBody = '',
   title = 'Live Request Console',
   description,
@@ -53,10 +56,11 @@ export function InteractiveConsole({
     setBody(initialBody);
   }, [initialBody]);
 
-  // Update headers when initialHeaders change
+  // Update headers only when serialized content changes to prevent infinite loops
+  const headersSerialized = JSON.stringify(initialHeaders);
   React.useEffect(() => {
     setHeaders(initialHeaders);
-  }, [initialHeaders]);
+  }, [headersSerialized]);
 
   const getMethodBadge = (m: string) => {
     switch (m.toUpperCase()) {

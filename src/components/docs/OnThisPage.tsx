@@ -106,25 +106,26 @@ export function OnThisPage({ className = '', contentSelector = '#docs-content' }
       }
     });
 
-    setHeadings(items);
-    if (items.length > 0 && !activeId) {
-      setActiveId(items[0].id);
+    setHeadings((prev) => {
+      if (
+        prev.length === items.length &&
+        prev.every((h, i) => h.id === items[i].id && h.title === items[i].title && h.level === items[i].level)
+      ) {
+        return prev;
+      }
+      return items;
+    });
+
+    if (items.length > 0) {
+      setActiveId((prev) => prev || items[0].id);
     }
-  }, [contentSelector, activeId]);
+  }, [contentSelector]);
 
   useEffect(() => {
-    const timer = setTimeout(parseHeadings, 150);
-    const observer = new MutationObserver(() => parseHeadings());
-    const contentNode = document.querySelector(contentSelector);
-    if (contentNode) {
-      observer.observe(contentNode, { childList: true, subtree: true });
-    }
-
-    return () => {
-      clearTimeout(timer);
-      observer.disconnect();
-    };
-  }, [pathname, parseHeadings, contentSelector]);
+    parseHeadings();
+    const timer = setTimeout(parseHeadings, 200);
+    return () => clearTimeout(timer);
+  }, [pathname, parseHeadings]);
 
   // Track active heading & scroll percentage on scroll
   useEffect(() => {
