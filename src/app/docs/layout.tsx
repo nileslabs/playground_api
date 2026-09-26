@@ -1,5 +1,5 @@
 import React from 'react';
-import { Sidebar } from '@/components/layout/Sidebar';
+import { DocsSidebar } from '@/components/layout/DocsSidebar';
 import { OnThisPage } from '@/components/docs/OnThisPage';
 import { DocPagination } from '@/components/docs/DocPagination';
 
@@ -10,8 +10,8 @@ export default function DocsLayout({
 }) {
   return (
     <div className="flex flex-col md:flex-row min-h-[calc(100vh-4rem)] w-full relative bg-slate-50/40 text-slate-900 border-t border-slate-100">
-      {/* Sticky Clean Sidebar (Left) */}
-      <Sidebar className="hidden md:block" />
+      {/* Sticky Clean Docs Sidebar (Left) */}
+      <DocsSidebar className="hidden md:block" />
 
       {/* Main Content Area - Fluid, Crisp Landing Page Aesthetic */}
       <main
