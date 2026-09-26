@@ -112,7 +112,7 @@ const features: FeatureItem[] = [
 
 export function FeaturesSection() {
   return (
-    <section id="features" className="py-20 md:py-28 bg-white border-b border-slate-200/80">
+    <section id="features" className="scroll-mt-16 sm:scroll-mt-20 py-20 md:py-28 bg-white border-b border-slate-200/80">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 space-y-12">
         {/* Section Header */}
         <div className="text-center space-y-3 max-w-2xl mx-auto">

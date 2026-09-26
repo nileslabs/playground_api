@@ -13,9 +13,19 @@ interface LandingHeaderProps {
 export function LandingHeader({ onOpenSearch }: LandingHeaderProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
+  const scrollToSection = (e: React.MouseEvent<HTMLAnchorElement>, sectionId: string) => {
+    e.preventDefault();
+    const el = document.getElementById(sectionId);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      window.history.pushState(null, '', `#${sectionId}`);
+    }
+    setMobileMenuOpen(false);
+  };
+
   return (
     <header className="sticky top-0 z-40 w-full border-b border-slate-200/80 bg-white/90 backdrop-blur-md transition-colors">
-      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8">
         {/* Brand Logo */}
         <div className="flex items-center gap-6">
           <Link href="/" className="flex items-center gap-3 group focus:outline-none">
@@ -30,38 +40,43 @@ export function LandingHeader({ onOpenSearch }: LandingHeaderProps) {
             </div>
           </Link>
 
-          {/* Desktop Anchor Navigation */}
+          {/* Desktop Anchor Navigation with Smooth Scrolling */}
           <nav className="hidden md:flex items-center gap-1">
-            <Link
+            <a
               href="#try-it"
-              className="px-3.5 py-1.5 text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100/70 rounded-md transition-colors"
+              onClick={(e) => scrollToSection(e, 'try-it')}
+              className="px-3.5 py-1.5 text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100/70 rounded-md transition-colors cursor-pointer"
             >
               Try Console
-            </Link>
-            <Link
+            </a>
+            <a
               href="#features"
-              className="px-3.5 py-1.5 text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100/70 rounded-md transition-colors"
+              onClick={(e) => scrollToSection(e, 'features')}
+              className="px-3.5 py-1.5 text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100/70 rounded-md transition-colors cursor-pointer"
             >
               Features
-            </Link>
-            <Link
+            </a>
+            <a
               href="#resources"
-              className="px-3.5 py-1.5 text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100/70 rounded-md transition-colors"
+              onClick={(e) => scrollToSection(e, 'resources')}
+              className="px-3.5 py-1.5 text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100/70 rounded-md transition-colors cursor-pointer"
             >
               Endpoints
-            </Link>
-            <Link
+            </a>
+            <a
               href="#compare"
-              className="px-3.5 py-1.5 text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100/70 rounded-md transition-colors"
+              onClick={(e) => scrollToSection(e, 'compare')}
+              className="px-3.5 py-1.5 text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100/70 rounded-md transition-colors cursor-pointer"
             >
               Why Playground
-            </Link>
-            <Link
+            </a>
+            <a
               href="#downloads"
-              className="px-3.5 py-1.5 text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100/70 rounded-md transition-colors"
+              onClick={(e) => scrollToSection(e, 'downloads')}
+              className="px-3.5 py-1.5 text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100/70 rounded-md transition-colors cursor-pointer"
             >
               SDK & Collections
-            </Link>
+            </a>
           </nav>
         </div>
 
@@ -127,41 +142,41 @@ export function LandingHeader({ onOpenSearch }: LandingHeaderProps) {
       {/* Mobile dropdown */}
       {mobileMenuOpen && (
         <div className="md:hidden border-b border-slate-200 bg-white px-4 pt-3 pb-5 space-y-2 shadow-lg animate-in fade-in slide-in-from-top-2">
-          <Link
+          <a
             href="#try-it"
-            onClick={() => setMobileMenuOpen(false)}
-            className="block px-3 py-2 text-base font-medium text-slate-700 hover:bg-slate-50 rounded-lg"
+            onClick={(e) => scrollToSection(e, 'try-it')}
+            className="block px-3 py-2 text-base font-medium text-slate-700 hover:bg-slate-50 rounded-lg cursor-pointer"
           >
             Try Console
-          </Link>
-          <Link
+          </a>
+          <a
             href="#features"
-            onClick={() => setMobileMenuOpen(false)}
-            className="block px-3 py-2 text-base font-medium text-slate-700 hover:bg-slate-50 rounded-lg"
+            onClick={(e) => scrollToSection(e, 'features')}
+            className="block px-3 py-2 text-base font-medium text-slate-700 hover:bg-slate-50 rounded-lg cursor-pointer"
           >
             Features
-          </Link>
-          <Link
+          </a>
+          <a
             href="#resources"
-            onClick={() => setMobileMenuOpen(false)}
-            className="block px-3 py-2 text-base font-medium text-slate-700 hover:bg-slate-50 rounded-lg"
+            onClick={(e) => scrollToSection(e, 'resources')}
+            className="block px-3 py-2 text-base font-medium text-slate-700 hover:bg-slate-50 rounded-lg cursor-pointer"
           >
             Endpoints
-          </Link>
-          <Link
+          </a>
+          <a
             href="#compare"
-            onClick={() => setMobileMenuOpen(false)}
-            className="block px-3 py-2 text-base font-medium text-slate-700 hover:bg-slate-50 rounded-lg"
+            onClick={(e) => scrollToSection(e, 'compare')}
+            className="block px-3 py-2 text-base font-medium text-slate-700 hover:bg-slate-50 rounded-lg cursor-pointer"
           >
             Why Playground
-          </Link>
-          <Link
+          </a>
+          <a
             href="#downloads"
-            onClick={() => setMobileMenuOpen(false)}
-            className="block px-3 py-2 text-base font-medium text-slate-700 hover:bg-slate-50 rounded-lg"
+            onClick={(e) => scrollToSection(e, 'downloads')}
+            className="block px-3 py-2 text-base font-medium text-slate-700 hover:bg-slate-50 rounded-lg cursor-pointer"
           >
             SDK & Collections
-          </Link>
+          </a>
           <div className="pt-2 border-t border-slate-100 flex flex-col gap-2">
             <Link
               href="/docs/introduction"

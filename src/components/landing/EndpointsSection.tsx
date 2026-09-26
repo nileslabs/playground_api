@@ -86,7 +86,7 @@ export function EndpointsSection() {
   };
 
   return (
-    <section id="resources" className="py-20 md:py-28 bg-slate-50/50 border-b border-slate-200/80">
+    <section id="resources" className="scroll-mt-16 sm:scroll-mt-20 py-20 md:py-28 bg-slate-50/50 border-b border-slate-200/80">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 space-y-12">
         {/* Section Header */}
         <div className="text-center space-y-3 max-w-2xl mx-auto">
