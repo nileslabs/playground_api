@@ -4,6 +4,7 @@ import React, { useEffect, useState, useCallback } from 'react';
 import { usePathname } from 'next/navigation';
 import { Icon } from '@iconify/react';
 import { cn } from '@/lib/utils';
+import siteConfig from '@/config/site';
 
 export interface TocItem {
   id: string;
@@ -21,6 +22,8 @@ export function OnThisPage({ className = '', contentSelector = '#docs-content' }
   const [headings, setHeadings] = useState<TocItem[]>([]);
   const [activeId, setActiveId] = useState<string>('');
   const [isCollapsed, setIsCollapsed] = useState<boolean>(false);
+  const [copied, setCopied] = useState<boolean>(false);
+  const [scrollProgress, setScrollProgress] = useState<number>(0);
 
   // Load saved collapse preference
   useEffect(() => {
@@ -40,6 +43,20 @@ export function OnThisPage({ className = '', contentSelector = '#docs-content' }
       }
       return next;
     });
+  };
+
+  // Copy current URL to clipboard
+  const handleCopyLink = () => {
+    if (typeof window !== 'undefined') {
+      navigator.clipboard.writeText(window.location.href);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    }
+  };
+
+  // Scroll to top
+  const handleScrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   // Extract table of contents headings from the active documentation page
@@ -109,11 +126,18 @@ export function OnThisPage({ className = '', contentSelector = '#docs-content' }
     };
   }, [pathname, parseHeadings, contentSelector]);
 
-  // ScrollSpy: Track active heading on scroll
+  // Track active heading & scroll percentage on scroll
   useEffect(() => {
-    if (headings.length === 0) return;
-
     const handleScroll = () => {
+      // Calculate reading progress
+      const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+      if (totalHeight > 0) {
+        const progress = Math.min(100, Math.max(0, Math.round((window.scrollY / totalHeight) * 100)));
+        setScrollProgress(progress);
+      }
+
+      if (headings.length === 0) return;
+
       const scrollPos = window.scrollY + 140;
 
       if (window.scrollY < 100 && headings.length > 0) {
@@ -167,7 +191,7 @@ export function OnThisPage({ className = '', contentSelector = '#docs-content' }
   return (
     <aside
       className={cn(
-        "shrink-0 border-l border-border-theme bg-bg-secondary transition-all duration-300 ease-in-out xl:sticky xl:top-16 xl:h-[calc(100vh-4rem)] xl:overflow-y-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden",
+        "shrink-0 border-l border-slate-200 bg-white transition-all duration-300 ease-in-out xl:sticky xl:top-16 xl:h-[calc(100vh-4rem)] xl:overflow-y-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden flex flex-col justify-between",
         isCollapsed ? "w-12 p-2.5 flex flex-col items-center select-none overflow-x-hidden" : "w-60 lg:w-64 p-5",
         className
       )}
@@ -178,68 +202,122 @@ export function OnThisPage({ className = '', contentSelector = '#docs-content' }
           <button
             type="button"
             onClick={toggleCollapse}
-            className="p-2 rounded-lg bg-bg-tertiary hover:bg-border-theme text-text-secondary hover:text-accent-primary transition-colors cursor-pointer"
+            className="p-2 rounded-lg bg-slate-50 hover:bg-slate-100 text-slate-500 hover:text-indigo-600 border border-slate-200 transition-colors cursor-pointer"
             title="Expand Table of Contents"
             aria-label="Expand Table of Contents"
           >
-            <Icon icon="ph:sidebar-simple-bold" className="w-4 h-4 rotate-180 text-accent-primary" />
+            <Icon icon="ph:sidebar-simple-bold" className="w-4 h-4 rotate-180 text-indigo-600" />
           </button>
 
           <button
             type="button"
             onClick={toggleCollapse}
-            className="text-[11px] font-bold text-text-muted hover:text-text-primary tracking-widest uppercase py-2 cursor-pointer transition-colors"
+            className="text-[11px] font-bold text-slate-400 hover:text-slate-800 tracking-widest uppercase py-2 cursor-pointer transition-colors"
             style={{ writingMode: 'vertical-rl' }}
             title="Click to expand Table of Contents"
           >
-            On this page
+            On this page ({scrollProgress}%)
           </button>
         </div>
       ) : (
-        <div className="space-y-3">
-          <div className="flex items-center justify-between pb-1 border-b border-border-theme/40">
-            <h4 className="font-bold text-text-primary text-xs uppercase tracking-wider flex items-center gap-1.5">
-              <Icon icon="ph:list-bullets-bold" className="w-3.5 h-3.5 text-accent-primary" />
-              <span>On this page</span>
-            </h4>
+        <div className="space-y-4 flex flex-col h-full justify-between">
+          <div className="space-y-3">
+            {/* Header & Collapse Button */}
+            <div className="flex items-center justify-between pb-2 border-b border-slate-100">
+              <div className="flex items-center gap-1.5">
+                <Icon icon="ph:list-bullets-bold" className="w-3.5 h-3.5 text-indigo-600" />
+                <h4 className="font-bold text-slate-900 text-xs uppercase tracking-wider">
+                  On this page
+                </h4>
+              </div>
+
+              <button
+                type="button"
+                onClick={toggleCollapse}
+                className="p-1 rounded-md text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors cursor-pointer"
+                title="Collapse Table of Contents"
+                aria-label="Collapse Table of Contents"
+              >
+                <Icon icon="ph:sidebar-simple-bold" className="w-3.5 h-3.5" />
+              </button>
+            </div>
+
+            {/* Reading Scroll Progress Line */}
+            <div className="w-full bg-slate-100 h-1 rounded-full overflow-hidden">
+              <div
+                className="bg-indigo-600 h-full rounded-full transition-all duration-150"
+                style={{ width: `${scrollProgress}%` }}
+              />
+            </div>
+
+            {/* Headings List */}
+            <nav className="max-h-[calc(100vh-16rem)] overflow-y-auto pr-1 space-y-0.5">
+              <ul className="space-y-0.5 text-xs">
+                {headings.map((item) => {
+                  const isActive = activeId === item.id;
+
+                  return (
+                    <li key={item.id}>
+                      <a
+                        href={`#${item.id}`}
+                        onClick={(e) => scrollToHeading(item.id, e)}
+                        className={cn(
+                          "block py-1 px-2.5 rounded-lg transition-all truncate cursor-pointer",
+                          item.level === 3 && "pl-5 text-slate-400 text-[11px]",
+                          isActive
+                            ? "text-indigo-700 font-semibold bg-indigo-50 border-l-2 border-indigo-600 shadow-2xs"
+                            : "text-slate-600 hover:text-slate-900 hover:bg-slate-50 font-normal"
+                        )}
+                        title={item.title}
+                      >
+                        {item.title}
+                      </a>
+                    </li>
+                  );
+                })}
+              </ul>
+            </nav>
+          </div>
+
+          {/* Quick Actions Bar */}
+          <div className="pt-3 border-t border-slate-100 space-y-1.5 text-xs text-slate-500">
+            <button
+              type="button"
+              onClick={handleCopyLink}
+              className="w-full flex items-center justify-between p-1.5 rounded-lg hover:bg-slate-50 hover:text-slate-800 transition-colors cursor-pointer"
+            >
+              <span className="flex items-center gap-1.5">
+                <Icon icon={copied ? "ph:check-bold" : "ph:link-bold"} className={copied ? "text-emerald-600" : "text-slate-400"} />
+                <span>{copied ? 'Link Copied!' : 'Copy page URL'}</span>
+              </span>
+              <kbd className="text-[10px] font-mono text-slate-400">URL</kbd>
+            </button>
 
             <button
               type="button"
-              onClick={toggleCollapse}
-              className="p-1 rounded-md text-text-muted hover:text-text-primary hover:bg-bg-tertiary transition-colors cursor-pointer"
-              title="Collapse Table of Contents"
-              aria-label="Collapse Table of Contents"
+              onClick={handleScrollToTop}
+              className="w-full flex items-center justify-between p-1.5 rounded-lg hover:bg-slate-50 hover:text-slate-800 transition-colors cursor-pointer"
             >
-              <Icon icon="ph:sidebar-simple-bold" className="w-3.5 h-3.5" />
+              <span className="flex items-center gap-1.5">
+                <Icon icon="ph:arrow-up-bold" className="text-slate-400" />
+                <span>Scroll to top</span>
+              </span>
+              <span className="text-[10px] font-mono text-slate-400">{scrollProgress}%</span>
             </button>
+
+            <a
+              href={`${siteConfig.links.github}/blob/main/playground_api_fe/src/app${pathname}/page.tsx`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full flex items-center justify-between p-1.5 rounded-lg hover:bg-slate-50 hover:text-slate-800 transition-colors"
+            >
+              <span className="flex items-center gap-1.5">
+                <Icon icon="ph:pencil-simple-line-bold" className="text-slate-400" />
+                <span>Edit on GitHub</span>
+              </span>
+              <Icon icon="ph:arrow-square-out-bold" className="w-3 h-3 text-slate-400" />
+            </a>
           </div>
-
-          <nav>
-            <ul className="space-y-1 text-xs">
-              {headings.map((item) => {
-                const isActive = activeId === item.id;
-
-                return (
-                  <li key={item.id}>
-                    <a
-                      href={`#${item.id}`}
-                      onClick={(e) => scrollToHeading(item.id, e)}
-                      className={cn(
-                        "block py-1 px-2 rounded-md transition-colors truncate cursor-pointer",
-                        item.level === 3 && "pl-4 text-text-muted text-[11px]",
-                        isActive
-                          ? "text-accent-primary font-bold bg-accent-light"
-                          : "text-text-secondary hover:text-text-primary hover:bg-bg-tertiary/50"
-                      )}
-                      title={item.title}
-                    >
-                      {item.title}
-                    </a>
-                  </li>
-                );
-              })}
-            </ul>
-          </nav>
         </div>
       )}
     </aside>
