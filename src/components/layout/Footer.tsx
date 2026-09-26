@@ -34,27 +34,27 @@ export function Footer() {
             <h4 className="text-xs font-semibold uppercase tracking-wider text-slate-900">Endpoints</h4>
             <ul className="space-y-2 text-sm">
               <li>
-                <Link href="/docs/posts" className="text-slate-500 hover:text-indigo-600 transition-colors">
+                <Link href="/docs/resources/posts" className="text-slate-500 hover:text-indigo-600 transition-colors">
                   /api/v1/posts
                 </Link>
               </li>
               <li>
-                <Link href="/docs/users" className="text-slate-500 hover:text-indigo-600 transition-colors">
+                <Link href="/docs/resources/users" className="text-slate-500 hover:text-indigo-600 transition-colors">
                   /api/v1/users
                 </Link>
               </li>
               <li>
-                <Link href="/docs/comments" className="text-slate-500 hover:text-indigo-600 transition-colors">
+                <Link href="/docs/resources/comments" className="text-slate-500 hover:text-indigo-600 transition-colors">
                   /api/v1/comments
                 </Link>
               </li>
               <li>
-                <Link href="/docs/todos" className="text-slate-500 hover:text-indigo-600 transition-colors">
+                <Link href="/docs/resources/todos" className="text-slate-500 hover:text-indigo-600 transition-colors">
                   /api/v1/todos
                 </Link>
               </li>
               <li>
-                <Link href="/docs/graphql" className="text-slate-500 hover:text-indigo-600 transition-colors">
+                <Link href="/docs/graphql/queries" className="text-slate-500 hover:text-indigo-600 transition-colors">
                   /api/v1/graphql
                 </Link>
               </li>
@@ -66,27 +66,27 @@ export function Footer() {
             <h4 className="text-xs font-semibold uppercase tracking-wider text-slate-900">Simulations</h4>
             <ul className="space-y-2 text-sm">
               <li>
-                <Link href="/docs/auth" className="text-slate-500 hover:text-indigo-600 transition-colors">
+                <Link href="/docs/auth/jwt-flow" className="text-slate-500 hover:text-indigo-600 transition-colors">
                   JWT Auth & Roles
                 </Link>
               </li>
               <li>
-                <Link href="/docs/payments" className="text-slate-500 hover:text-indigo-600 transition-colors">
+                <Link href="/docs/payments/hosted-checkout" className="text-slate-500 hover:text-indigo-600 transition-colors">
                   Stripe Payments
                 </Link>
               </li>
               <li>
-                <Link href="/docs/inbox" className="text-slate-500 hover:text-indigo-600 transition-colors">
+                <Link href="/docs/inbox/email-mailbox" className="text-slate-500 hover:text-indigo-600 transition-colors">
                   Virtual Email & OTP
                 </Link>
               </li>
               <li>
-                <Link href="/docs/simulation" className="text-slate-500 hover:text-indigo-600 transition-colors">
+                <Link href="/docs/chaos/latency" className="text-slate-500 hover:text-indigo-600 transition-colors">
                   Latency & Chaos
                 </Link>
               </li>
               <li>
-                <Link href="/docs/webhooks" className="text-slate-500 hover:text-indigo-600 transition-colors">
+                <Link href="/docs/webhooks/subscriptions" className="text-slate-500 hover:text-indigo-600 transition-colors">
                   Realtime Webhooks
                 </Link>
               </li>
@@ -98,12 +98,12 @@ export function Footer() {
             <h4 className="text-xs font-semibold uppercase tracking-wider text-slate-900">Ecosystem</h4>
             <ul className="space-y-2 text-sm">
               <li>
-                <Link href="/docs/quickstart" className="text-slate-500 hover:text-indigo-600 transition-colors">
+                <Link href="/docs/getting-started/quickstart" className="text-slate-500 hover:text-indigo-600 transition-colors">
                   Quickstart Guide
                 </Link>
               </li>
               <li>
-                <Link href="/docs/sdk" className="text-slate-500 hover:text-indigo-600 transition-colors">
+                <Link href="/docs/toolkit/typescript-sdk" className="text-slate-500 hover:text-indigo-600 transition-colors">
                   TypeScript SDK
                 </Link>
               </li>
