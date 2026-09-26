@@ -61,6 +61,38 @@ export const searchSynonyms: Record<string, string[]> = {
     'react ecommerce demo',
   ],
 
+  // Guides & Masterclass Series
+  '/blog': [
+    'blog',
+    'masterclass',
+    'tutorials',
+    'articles',
+    'stop waiting for the backend',
+    '12 part series',
+    'frontend api guide',
+  ],
+  '/blog/react-crud-without-backend': [
+    'react crud',
+    'crud without backend',
+    'react mock api tutorial',
+    'stateful react forms',
+  ],
+  '/blog/why-static-mock-apis-arent-enough': [
+    'why static apis fail',
+    'limitations of mock apis',
+    'why jsonplaceholder is not enough',
+  ],
+  '/blog/mock-api-remember-post-requests': [
+    'remember post requests',
+    'persistent post mock',
+    'stateful auth mock',
+  ],
+  '/blog/mock-websockets-and-sse-guide': [
+    'websocket tutorial',
+    'sse tutorial',
+    'mock realtime data',
+  ],
+
   // AI & Machine
   '/docs/ai': [
     'cursorrules',

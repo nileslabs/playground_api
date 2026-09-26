@@ -36,6 +36,17 @@ export const siteConfig = {
       ],
     },
     {
+      title: 'Guides & Masterclass',
+      icon: 'ph:newspaper-clipping-bold',
+      items: [
+        { title: '12-Part Masterclass Series', href: '/blog', icon: 'ph:stack-bold', badge: '12 Parts' },
+        { title: 'React CRUD Without Backend', href: '/blog/react-crud-without-backend', icon: 'ph:code-bold', badge: 'Guide' },
+        { title: 'Why Static APIs Fail', href: '/blog/why-static-mock-apis-arent-enough', icon: 'ph:warning-circle-bold' },
+        { title: 'Mocking Stateful Auth', href: '/blog/mock-api-remember-post-requests', icon: 'ph:key-bold' },
+        { title: 'WebSockets & SSE Guide', href: '/blog/mock-websockets-and-sse-guide', icon: 'ph:broadcast-bold' },
+      ],
+    },
+    {
       title: 'AI & Machine Integration',
       icon: 'ph:robot-bold',
       items: [

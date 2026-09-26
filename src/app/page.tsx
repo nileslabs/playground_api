@@ -7,6 +7,7 @@ import { HowItWorksSection } from '@/components/landing/HowItWorksSection';
 import { FeaturesSection } from '@/components/landing/FeaturesSection';
 import { EndpointsSection } from '@/components/landing/EndpointsSection';
 import { DownloadsSection } from '@/components/landing/DownloadsSection';
+import { BlogSection } from '@/components/landing/BlogSection';
 import { FaqSection } from '@/components/landing/FaqSection';
 import { CtaSection } from '@/components/landing/CtaSection';
 import { siteConfig } from '@/config/site';
@@ -70,7 +71,10 @@ export default function LandingPage() {
       {/* 7. Client SDK & Collections Downloads */}
       <DownloadsSection />
 
-      {/* 8. Frequently Asked Questions */}
+      {/* 8. Masterclass Technical Blog & Tutorials Series */}
+      <BlogSection />
+
+      {/* 9. Frequently Asked Questions */}
       <FaqSection />
 
       {/* 9. Bottom Call to Action */}

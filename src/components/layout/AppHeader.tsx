@@ -25,7 +25,7 @@ export function AppHeader({ onOpenSearch }: AppHeaderProps) {
 
   return (
     <header className="sticky top-0 z-40 w-full border-b border-slate-200/80 bg-white/95 backdrop-blur-md transition-colors">
-      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8 gap-4">
+      <div className="mx-auto flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8 gap-4">
         {/* Left Section: Logo & Section Switcher */}
         <div className="flex items-center gap-4 sm:gap-6 shrink-0">
           <Link href="/" className="flex items-center gap-2.5 group focus:outline-none">
@@ -51,13 +51,16 @@ export function AppHeader({ onOpenSearch }: AppHeaderProps) {
             </Link>
             <Link
               href="/blog"
-              className={`px-3 py-1 rounded-lg transition-all ${
+              className={`px-3 py-1 rounded-lg transition-all inline-flex items-center gap-1.5 ${
                 isBlog
                   ? 'bg-white text-indigo-700 shadow-2xs font-bold border border-slate-200/60'
                   : 'text-slate-600 hover:text-slate-900 hover:bg-white/50'
               }`}
             >
-              Blog
+              <span>Blog</span>
+              <span className="px-1.5 py-0.2 rounded-full bg-indigo-50 text-[10px] font-bold text-indigo-700 border border-indigo-200/80">
+                12 Parts
+              </span>
             </Link>
             <Link
               href="/docs/toolkit/studio"

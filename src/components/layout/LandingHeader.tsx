@@ -70,12 +70,21 @@ export function LandingHeader({ onOpenSearch }: LandingHeaderProps) {
             >
               Why Playground
             </a>
+            <Link
+              href="/blog"
+              className="px-3.5 py-1.5 text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100/70 rounded-md transition-colors inline-flex items-center gap-1.5"
+            >
+              <span>Blog</span>
+              <span className="px-1.5 py-0.2 rounded-full bg-indigo-50 text-[10px] font-bold text-indigo-700 border border-indigo-200/80">
+                29 Parts
+              </span>
+            </Link>
             <a
               href="#downloads"
               onClick={(e) => scrollToSection(e, 'downloads')}
               className="px-3.5 py-1.5 text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100/70 rounded-md transition-colors cursor-pointer"
             >
-              SDK & Collections
+              SDK & Specs
             </a>
           </nav>
         </div>
@@ -91,8 +100,8 @@ export function LandingHeader({ onOpenSearch }: LandingHeaderProps) {
           >
             <Icon icon="ph:magnifying-glass-bold" className="w-3.5 h-3.5 text-slate-400" />
             <span>Search</span>
-            <kbd className="font-mono text-[10px] font-semibold px-1.5 py-0.2 bg-white rounded border border-slate-200 text-slate-500 shadow-2xs">
-              ⌘K
+            <kbd className="font-mono text-[10px] font-semibold px-1.5 py-0.5 bg-white rounded border border-slate-200 text-slate-500 shadow-2xs">
+              ⌘ K
             </kbd>
           </button>
 
@@ -170,12 +179,22 @@ export function LandingHeader({ onOpenSearch }: LandingHeaderProps) {
           >
             Why Playground
           </a>
+          <Link
+            href="/blog"
+            onClick={() => setMobileMenuOpen(false)}
+            className="flex items-center justify-between px-3 py-2 text-base font-medium text-slate-700 hover:bg-slate-50 rounded-lg"
+          >
+            <span>Technical Blog</span>
+            <span className="px-2 py-0.5 rounded-full bg-indigo-50 text-xs font-bold text-indigo-700 border border-indigo-200">
+              12 Parts
+            </span>
+          </Link>
           <a
             href="#downloads"
             onClick={(e) => scrollToSection(e, 'downloads')}
             className="block px-3 py-2 text-base font-medium text-slate-700 hover:bg-slate-50 rounded-lg cursor-pointer"
           >
-            SDK & Collections
+            SDK & Specs
           </a>
           <div className="pt-2 border-t border-slate-100 flex flex-col gap-2">
             <Link

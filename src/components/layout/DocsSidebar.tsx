@@ -110,7 +110,7 @@ export function DocsSidebar({ className, onSelect }: DocsSidebarProps) {
           type="text"
           value={filterText}
           onChange={(e) => setFilterText(e.target.value)}
-          placeholder="Filter 15 categories..."
+          placeholder="Filter categories & endpoints..."
           className="w-full pl-8 pr-7 py-1.5 text-xs rounded-xl border border-slate-200 bg-slate-50/70 focus:bg-white focus:border-indigo-300 focus:outline-none placeholder:text-slate-400 text-slate-800 transition-all shadow-2xs"
         />
         {filterText && (
@@ -125,7 +125,32 @@ export function DocsSidebar({ className, onSelect }: DocsSidebarProps) {
         )}
       </div>
 
-      {/* 15 Accordion Groups */}
+      {/* Direct Link to Technical Blog Masterclass Series */}
+      {!filterText && (
+        <Link
+          href="/blog"
+          onClick={() => {
+            onSelect?.();
+            if (isMobile) setMobileDrawerOpen(false);
+          }}
+          className="flex items-center justify-between p-2 rounded-xl bg-gradient-to-r from-indigo-50/90 via-white to-slate-50/70 border border-indigo-100 hover:border-indigo-300 hover:shadow-2xs transition-all group select-none"
+        >
+          <div className="flex items-center gap-2 truncate">
+            <div className="w-6 h-6 rounded-lg bg-indigo-600 text-white flex items-center justify-center shrink-0 shadow-2xs">
+              <Icon icon="ph:newspaper-clipping-bold" className="w-3.5 h-3.5" />
+            </div>
+            <div className="truncate text-left">
+              <span className="font-semibold text-slate-900 group-hover:text-indigo-600 transition-colors block text-[11px] truncate leading-tight">
+                Technical Blog
+              </span>
+              <span className="text-[10px] text-indigo-700 font-medium block truncate">12-Part Masterclass</span>
+            </div>
+          </div>
+          <Icon icon="ph:arrow-right-bold" className="w-3 h-3 text-indigo-600 group-hover:translate-x-0.5 transition-transform shrink-0" />
+        </Link>
+      )}
+
+      {/* Accordion Groups */}
       <div className="space-y-1">
         {filteredGroups.length === 0 ? (
           <div className="py-8 text-center text-xs text-slate-400 space-y-1">
@@ -218,6 +243,33 @@ export function DocsSidebar({ className, onSelect }: DocsSidebarProps) {
             );
           })
         )}
+      </div>
+
+      {/* Technical Blog & Masterclass Promotion Card */}
+      <div className="p-3.5 rounded-2xl border border-indigo-100 bg-gradient-to-br from-indigo-50/70 via-white to-slate-50 space-y-2.5 mt-4 shadow-2xs">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-1.5 text-[11px] font-bold text-indigo-700 uppercase tracking-wider">
+            <Icon icon="ph:newspaper-clipping-bold" className="w-3.5 h-3.5 text-indigo-600" />
+            <span>Technical Blog</span>
+          </div>
+          <span className="text-[10px] font-bold px-1.5 py-0.2 rounded-full bg-indigo-600 text-white font-mono">
+            12 Parts
+          </span>
+        </div>
+        <p className="text-xs text-slate-600 leading-snug">
+          &ldquo;Stop Waiting for the Backend&rdquo; series: practical React, Next.js & GraphQL workflows.
+        </p>
+        <Link
+          href="/blog"
+          onClick={() => {
+            onSelect?.();
+            if (isMobile) setMobileDrawerOpen(false);
+          }}
+          className="inline-flex items-center gap-1 text-xs font-bold text-indigo-600 hover:text-indigo-800 transition-colors group"
+        >
+          <span>Read Masterclass</span>
+          <Icon icon="ph:arrow-right-bold" className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
+        </Link>
       </div>
     </div>
   );

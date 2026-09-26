@@ -19,13 +19,18 @@ export function HeroSection() {
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-96 bg-gradient-to-b from-indigo-50/60 via-slate-50/20 to-transparent pointer-events-none -z-10" />
 
       <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 text-center space-y-8">
-        {/* Status Eyebrow Badge */}
-        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-indigo-50/80 border border-indigo-100/90 text-xs font-semibold text-indigo-700 shadow-xs">
+        {/* Status Eyebrow Badge linking to Series */}
+        <Link
+          href="/blog"
+          className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-indigo-50/80 hover:bg-indigo-100/80 border border-indigo-100/90 text-xs font-semibold text-indigo-700 shadow-xs transition-colors group cursor-pointer"
+        >
           <span className="flex h-2 w-2 rounded-full bg-indigo-500 animate-pulse" />
           <span>The Zero-Login Stateful Mock API</span>
           <span className="text-indigo-300">•</span>
-          <span className="font-normal text-indigo-600">REST, GraphQL & WebSockets</span>
-        </div>
+          <span className="font-normal text-indigo-600 group-hover:text-indigo-800 transition-colors">
+            12-Part Masterclass Series →
+          </span>
+        </Link>
 
         {/* Main Headline */}
         <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-slate-900 leading-[1.12]">

@@ -8,8 +8,8 @@ export function LandingFooter() {
 
   return (
     <footer className="w-full border-t border-slate-200 bg-slate-50/50 py-12 md:py-16 text-slate-600 transition-colors">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-8 lg:gap-12 pb-12 border-b border-slate-200/80">
+      <div className="mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 lg:gap-10 pb-12 border-b border-slate-200/80">
           {/* Brand info */}
           <div className="col-span-2 space-y-4">
             <Link href="/" className="inline-flex items-center gap-2.5">
@@ -88,6 +88,44 @@ export function LandingFooter() {
               <li>
                 <Link href="/docs/webhooks/subscriptions" className="text-slate-500 hover:text-indigo-600 transition-colors">
                   Realtime Webhooks
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Column: Technical Blog & Masterclass Series */}
+          <div className="space-y-3">
+            <div className="flex items-center gap-1.5">
+              <h4 className="text-xs font-semibold uppercase tracking-wider text-slate-900">Blog & Guides</h4>
+              <span className="px-1.5 py-0.2 rounded-full bg-indigo-50 text-[10px] font-bold text-indigo-700 border border-indigo-200">
+                12 Parts
+              </span>
+            </div>
+            <ul className="space-y-2 text-sm">
+              <li>
+                <Link href="/blog" className="text-indigo-600 hover:text-indigo-800 font-semibold transition-colors flex items-center gap-1">
+                  <span>All 12 Articles</span>
+                  <span aria-hidden="true">→</span>
+                </Link>
+              </li>
+              <li>
+                <Link href="/blog/react-crud-without-backend" className="text-slate-500 hover:text-indigo-600 transition-colors">
+                  React CRUD Guide
+                </Link>
+              </li>
+              <li>
+                <Link href="/blog/why-static-mock-apis-arent-enough" className="text-slate-500 hover:text-indigo-600 transition-colors">
+                  Why Static APIs Fail
+                </Link>
+              </li>
+              <li>
+                <Link href="/blog/mock-api-remember-post-requests" className="text-slate-500 hover:text-indigo-600 transition-colors">
+                  Mocking Stateful Auth
+                </Link>
+              </li>
+              <li>
+                <Link href="/blog/mock-websockets-and-sse-guide" className="text-slate-500 hover:text-indigo-600 transition-colors">
+                  WebSockets & SSE
                 </Link>
               </li>
             </ul>
