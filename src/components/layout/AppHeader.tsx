@@ -14,9 +14,15 @@ interface AppHeaderProps {
 export function AppHeader({ onOpenSearch }: AppHeaderProps) {
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [navigatingTab, setNavigatingTab] = useState<string | null>(null);
 
-  const isDocs = pathname.startsWith('/docs');
+  React.useEffect(() => {
+    setNavigatingTab(null);
+  }, [pathname]);
+
+  const isDocs = pathname.startsWith('/docs') && !pathname.startsWith('/docs/toolkit/studio');
   const isBlog = pathname.startsWith('/blog');
+  const isStudio = pathname.startsWith('/docs/toolkit/studio');
 
   const toggleSidebarMobile = () => {
     // Custom event to trigger mobile sidebar drawer in docs or blog
@@ -41,32 +47,58 @@ export function AppHeader({ onOpenSearch }: AppHeaderProps) {
           <nav className="flex items-center gap-1 bg-slate-100/80 p-1 rounded-xl border border-slate-200/80 text-xs font-semibold">
             <Link
               href="/docs/introduction"
-              className={`px-3 py-1 rounded-lg transition-all ${
+              prefetch={true}
+              onClick={() => {
+                if (!isDocs) setNavigatingTab('docs');
+              }}
+              className={`px-3 py-1 rounded-lg transition-all inline-flex items-center gap-1.5 ${
                 isDocs
                   ? 'bg-white text-indigo-700 shadow-2xs font-bold border border-slate-200/60'
                   : 'text-slate-600 hover:text-slate-900 hover:bg-white/50'
-              }`}
+              } ${navigatingTab === 'docs' ? 'opacity-70 pointer-events-none' : ''}`}
             >
-              Docs
+              {navigatingTab === 'docs' && (
+                <Icon icon="ph:spinner-gap-bold" className="w-3 h-3 text-indigo-600 animate-spin" />
+              )}
+              <span>Docs</span>
             </Link>
             <Link
               href="/blog"
+              prefetch={true}
+              onClick={() => {
+                if (!isBlog) setNavigatingTab('blog');
+              }}
               className={`px-3 py-1 rounded-lg transition-all inline-flex items-center gap-1.5 ${
                 isBlog
                   ? 'bg-white text-indigo-700 shadow-2xs font-bold border border-slate-200/60'
                   : 'text-slate-600 hover:text-slate-900 hover:bg-white/50'
-              }`}
+              } ${navigatingTab === 'blog' ? 'opacity-70 pointer-events-none' : ''}`}
             >
-              <span>Blog</span>
+              {navigatingTab === 'blog' ? (
+                <Icon icon="ph:spinner-gap-bold" className="w-3 h-3 text-indigo-600 animate-spin" />
+              ) : (
+                <span>Blog</span>
+              )}
               <span className="px-1.5 py-0.2 rounded-full bg-indigo-50 text-[10px] font-bold text-indigo-700 border border-indigo-200/80">
                 12 Parts
               </span>
             </Link>
             <Link
               href="/docs/toolkit/studio"
-              className="px-3 py-1 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-white/50 transition-all hidden md:inline-block"
+              prefetch={true}
+              onClick={() => {
+                if (!isStudio) setNavigatingTab('studio');
+              }}
+              className={`px-3 py-1 rounded-lg transition-all inline-flex items-center gap-1.5 hidden md:inline-flex ${
+                isStudio
+                  ? 'bg-white text-indigo-700 shadow-2xs font-bold border border-slate-200/60'
+                  : 'text-slate-600 hover:text-slate-900 hover:bg-white/50'
+              } ${navigatingTab === 'studio' ? 'opacity-70 pointer-events-none' : ''}`}
             >
-              Studio
+              {navigatingTab === 'studio' && (
+                <Icon icon="ph:spinner-gap-bold" className="w-3 h-3 text-indigo-600 animate-spin" />
+              )}
+              <span>Studio</span>
             </Link>
           </nav>
         </div>

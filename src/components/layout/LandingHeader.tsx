@@ -12,6 +12,11 @@ interface LandingHeaderProps {
 
 export function LandingHeader({ onOpenSearch }: LandingHeaderProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [navigatingPath, setNavigatingPath] = useState<string | null>(null);
+
+  const handlePageRedirect = (path: string) => {
+    setNavigatingPath(path);
+  };
 
   const scrollToSection = (e: React.MouseEvent<HTMLAnchorElement>, sectionId: string) => {
     e.preventDefault();
@@ -72,12 +77,20 @@ export function LandingHeader({ onOpenSearch }: LandingHeaderProps) {
             </a>
             <Link
               href="/blog"
-              className="px-3.5 py-1.5 text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100/70 rounded-md transition-colors inline-flex items-center gap-1.5"
+              prefetch={true}
+              onClick={() => handlePageRedirect('/blog')}
+              className={`px-3.5 py-1.5 text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100/70 rounded-md transition-colors inline-flex items-center gap-1.5 ${
+                navigatingPath === '/blog' ? 'opacity-80 pointer-events-none' : ''
+              }`}
             >
               <span>Blog</span>
-              <span className="px-1.5 py-0.2 rounded-full bg-indigo-50 text-[10px] font-bold text-indigo-700 border border-indigo-200/80">
-                29 Parts
-              </span>
+              {navigatingPath === '/blog' ? (
+                <Icon icon="ph:spinner-gap-bold" className="w-3.5 h-3.5 text-indigo-600 animate-spin" />
+              ) : (
+                <span className="px-1.5 py-0.2 rounded-full bg-indigo-50 text-[10px] font-bold text-indigo-700 border border-indigo-200/80">
+                  12 Parts
+                </span>
+              )}
             </Link>
             <a
               href="#downloads"
@@ -119,10 +132,17 @@ export function LandingHeader({ onOpenSearch }: LandingHeaderProps) {
 
           <Link
             href="/docs/introduction"
-            className="inline-flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-semibold text-white bg-indigo-600 hover:bg-indigo-700 rounded-lg shadow-sm transition-all focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 active:scale-95"
+            prefetch={true}
+            onClick={() => handlePageRedirect('/docs/introduction')}
+            className={`inline-flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-semibold text-white bg-indigo-600 hover:bg-indigo-700 rounded-lg shadow-sm transition-all focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 active:scale-95 ${
+              navigatingPath === '/docs/introduction' ? 'opacity-80 pointer-events-none cursor-wait' : ''
+            }`}
           >
-            <span>Explore Docs</span>
-            <Icon icon="ph:arrow-right-bold" className="w-3.5 h-3.5" />
+            <span>{navigatingPath === '/docs/introduction' ? 'Opening Docs...' : 'Explore Docs'}</span>
+            <Icon
+              icon={navigatingPath === '/docs/introduction' ? 'ph:spinner-gap-bold' : 'ph:arrow-right-bold'}
+              className={`w-3.5 h-3.5 ${navigatingPath === '/docs/introduction' ? 'animate-spin' : ''}`}
+            />
           </Link>
         </div>
 
@@ -199,10 +219,19 @@ export function LandingHeader({ onOpenSearch }: LandingHeaderProps) {
           <div className="pt-2 border-t border-slate-100 flex flex-col gap-2">
             <Link
               href="/docs/introduction"
-              onClick={() => setMobileMenuOpen(false)}
-              className="w-full text-center px-4 py-2 text-sm font-semibold text-white bg-indigo-600 rounded-lg shadow-sm"
+              prefetch={true}
+              onClick={() => {
+                handlePageRedirect('/docs/introduction');
+                setMobileMenuOpen(false);
+              }}
+              className={`w-full text-center px-4 py-2.5 text-sm font-semibold text-white bg-indigo-600 rounded-lg shadow-sm flex items-center justify-center gap-2 ${
+                navigatingPath === '/docs/introduction' ? 'opacity-80 pointer-events-none' : ''
+              }`}
             >
-              Explore Documentation
+              {navigatingPath === '/docs/introduction' && (
+                <Icon icon="ph:spinner-gap-bold" className="w-4 h-4 animate-spin" />
+              )}
+              <span>{navigatingPath === '/docs/introduction' ? 'Opening Docs...' : 'Explore Documentation'}</span>
             </Link>
           </div>
         </div>

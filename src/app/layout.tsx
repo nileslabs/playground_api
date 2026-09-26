@@ -12,6 +12,7 @@ import { GoogleAnalytics } from '@/components/analytics/GoogleAnalytics';
 import config from '@/config/env';
 
 import { SandboxSyncHandler } from '@/components/dashboard/SandboxSyncHandler';
+import { NavigationProgressBar } from '@/components/layout/NavigationProgressBar';
 
 export const viewport: Viewport = {
   themeColor: [
@@ -162,6 +163,7 @@ export default function RootLayout({
         <ThemeProvider>
           <CountsProvider>
             <Suspense fallback={null}>
+              <NavigationProgressBar />
               <SandboxSyncHandler />
             </Suspense>
             <Header />

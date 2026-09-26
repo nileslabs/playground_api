@@ -129,6 +129,7 @@ export function DocsSidebar({ className, onSelect }: DocsSidebarProps) {
       {!filterText && (
         <Link
           href="/blog"
+          prefetch={true}
           onClick={() => {
             onSelect?.();
             if (isMobile) setMobileDrawerOpen(false);
@@ -200,6 +201,7 @@ export function DocsSidebar({ className, onSelect }: DocsSidebarProps) {
                         <li key={item.href}>
                           <Link
                             href={item.href}
+                            prefetch={true}
                             onClick={() => {
                               onSelect?.();
                               if (isMobile) setMobileDrawerOpen(false);
