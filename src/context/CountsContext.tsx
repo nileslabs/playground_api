@@ -48,3 +48,5 @@ export function CountsProvider({ children }: { children: React.ReactNode }) {
 export function useCounts() {
   return useContext(CountsContext);
 }
+
+export const useLiveCounts = useCounts;

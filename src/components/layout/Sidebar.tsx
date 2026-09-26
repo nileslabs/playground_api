@@ -17,7 +17,6 @@ export function Sidebar({ className, onSelect }: SidebarProps) {
   const [openGroups, setOpenGroups] = useState<Record<string, boolean>>({});
   const [isCollapsed, setIsCollapsed] = useState(false);
 
-  // Initialize group state: ensure the group containing the active page is open by default
   useEffect(() => {
     const initial: Record<string, boolean> = {};
     siteConfig.nestedSidebarGroups.forEach((group) => {
@@ -41,7 +40,7 @@ export function Sidebar({ className, onSelect }: SidebarProps) {
   return (
     <aside
       className={cn(
-        "shrink-0 border-r border-border-theme bg-bg-secondary transition-all duration-300 ease-in-out md:sticky md:top-16 md:h-[calc(100vh-4rem)] md:overflow-y-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden",
+        "shrink-0 border-r border-slate-200 bg-white transition-all duration-300 ease-in-out md:sticky md:top-16 md:h-[calc(100vh-4rem)] md:overflow-y-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden",
         isCollapsed
           ? "w-16 p-2 flex flex-col items-center select-none overflow-x-hidden"
           : "w-full md:w-64 lg:w-72 p-4",
@@ -50,19 +49,19 @@ export function Sidebar({ className, onSelect }: SidebarProps) {
       aria-label="Documentation Navigation"
     >
       {isCollapsed ? (
-        /* Collapsed Icon-Only View with Tooltips */
+        /* Collapsed Icon-Only View */
         <div className="w-full flex flex-col items-center space-y-3 pt-1">
           <button
             type="button"
             onClick={toggleCollapse}
-            className="w-10 h-10 rounded-xl bg-bg-tertiary hover:bg-border-theme text-text-secondary hover:text-accent-primary flex items-center justify-center transition-colors cursor-pointer"
+            className="w-10 h-10 rounded-xl bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-600 hover:text-indigo-600 flex items-center justify-center transition-colors cursor-pointer"
             title="Expand Sidebar"
             aria-label="Expand Sidebar"
           >
-            <Icon icon="ph:sidebar-simple-bold" className="w-4 h-4 text-accent-primary" />
+            <Icon icon="ph:sidebar-simple-bold" className="w-4 h-4 text-indigo-600" />
           </button>
 
-          <div className="w-8 h-px bg-border-theme my-1" />
+          <div className="w-8 h-px bg-slate-200 my-1" />
 
           <nav className="w-full flex flex-col items-center space-y-4">
             {siteConfig.nestedSidebarGroups.map((group, gIdx) => (
@@ -77,20 +76,20 @@ export function Sidebar({ className, onSelect }: SidebarProps) {
                         onClick={() => onSelect?.()}
                         title={item.badge ? `${item.title} (${item.badge})` : item.title}
                         className={cn(
-                          "w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-150 cursor-pointer",
+                          "w-10 h-10 rounded-xl flex items-center justify-center transition-all cursor-pointer",
                           isActive
-                            ? "bg-accent-light text-accent-primary font-bold ring-1 ring-accent-primary/40 shadow-xs"
-                            : "text-text-secondary hover:text-text-primary hover:bg-bg-tertiary/70"
+                            ? "bg-indigo-50 text-indigo-700 font-bold border border-indigo-200 shadow-xs"
+                            : "text-slate-600 hover:text-slate-900 hover:bg-slate-100/70"
                         )}
                         aria-label={item.title}
                       >
                         <Icon icon={item.icon} className="w-4 h-4 shrink-0" />
                       </Link>
 
-                      <div className="absolute left-full ml-2 px-2.5 py-1.5 rounded-lg bg-bg-primary text-text-primary text-xs font-semibold whitespace-nowrap shadow-xl border border-border-theme z-50 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-150 flex items-center gap-1.5">
+                      <div className="absolute left-full ml-2 px-2.5 py-1.5 rounded-lg bg-slate-900 text-white text-xs font-semibold whitespace-nowrap shadow-xl border border-slate-800 z-50 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-150 flex items-center gap-1.5">
                         <span>{item.title}</span>
                         {item.badge && (
-                          <span className="text-[10px] px-1 py-0.2 rounded font-mono bg-accent-light text-accent-primary">
+                          <span className="text-[10px] px-1 py-0.2 rounded font-mono bg-indigo-500 text-white">
                             {item.badge}
                           </span>
                         )}
@@ -100,25 +99,25 @@ export function Sidebar({ className, onSelect }: SidebarProps) {
                 })}
 
                 {gIdx < siteConfig.nestedSidebarGroups.length - 1 && (
-                  <div className="w-6 h-px bg-border-theme/40 my-1" />
+                  <div className="w-6 h-px bg-slate-200 my-1" />
                 )}
               </div>
             ))}
           </nav>
         </div>
       ) : (
-        /* Full Expanded Sidebar View */
+        /* Full Expanded Sidebar View (Clean Landing Page Style) */
         <div className="space-y-4">
-          <div className="flex items-center justify-between pb-2 border-b border-border-theme/40">
-            <span className="text-xs font-bold text-text-primary uppercase tracking-wider flex items-center gap-1.5">
-              <Icon icon="ph:compass-bold" className="w-3.5 h-3.5 text-accent-primary" />
-              <span>Docs Navigation</span>
+          <div className="flex items-center justify-between pb-2 border-b border-slate-100">
+            <span className="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center gap-1.5">
+              <Icon icon="ph:compass-bold" className="w-3.5 h-3.5 text-indigo-600" />
+              <span>Documentation</span>
             </span>
 
             <button
               type="button"
               onClick={toggleCollapse}
-              className="p-1 rounded-md text-text-muted hover:text-text-primary hover:bg-bg-tertiary transition-colors cursor-pointer"
+              className="p-1 rounded-md text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors cursor-pointer"
               title="Collapse Sidebar"
               aria-label="Collapse Sidebar"
             >
@@ -134,27 +133,27 @@ export function Sidebar({ className, onSelect }: SidebarProps) {
                 <button
                   type="button"
                   onClick={() => toggleGroup(group.title)}
-                  className="w-full flex items-center justify-between px-2.5 py-1.5 rounded-lg text-[11px] font-extrabold uppercase tracking-wider text-text-muted hover:text-text-primary bg-bg-tertiary/40 border border-border-theme/50 hover:border-border-theme transition-all cursor-pointer group select-none"
+                  className="w-full flex items-center justify-between px-2.5 py-1.5 rounded-lg text-xs font-semibold text-slate-700 hover:text-slate-900 hover:bg-slate-50 transition-all cursor-pointer group select-none"
                 >
                   <div className="flex items-center gap-2 truncate">
                     {group.icon && (
                       <Icon
                         icon={group.icon}
-                        className="w-3.5 h-3.5 text-accent-primary group-hover:scale-110 transition-transform shrink-0"
+                        className="w-3.5 h-3.5 text-indigo-600 group-hover:scale-105 transition-transform shrink-0"
                       />
                     )}
                     <span className="truncate">{group.title}</span>
                   </div>
                   <Icon
                     icon="ph:caret-down-bold"
-                    className={`w-3 h-3 text-text-muted group-hover:text-text-primary transition-transform duration-200 shrink-0 ${
+                    className={`w-3 h-3 text-slate-400 group-hover:text-slate-600 transition-transform duration-200 shrink-0 ${
                       isOpen ? 'rotate-0' : '-rotate-90'
                     }`}
                   />
                 </button>
 
                 {isOpen && (
-                  <ul className="space-y-0.5 ml-2.5 pl-2 border-l border-border-theme/70 pt-0.5">
+                  <ul className="space-y-0.5 ml-2.5 pl-2 border-l border-slate-200 pt-0.5">
                     {group.items.map((item) => {
                       const isActive = pathname === item.href;
 
@@ -166,12 +165,12 @@ export function Sidebar({ className, onSelect }: SidebarProps) {
                             className={cn(
                               "flex items-center justify-between px-2.5 py-1.5 rounded-lg text-xs transition-all gap-2",
                               isActive
-                                ? "bg-accent-light text-accent-primary font-bold shadow-xs border border-accent-primary/20"
-                                : "text-text-secondary hover:text-text-primary hover:bg-bg-tertiary/60 font-medium"
+                                ? "bg-indigo-50 text-indigo-700 font-semibold border border-indigo-200/80 shadow-2xs"
+                                : "text-slate-600 hover:text-slate-900 hover:bg-slate-50 font-normal"
                             )}
                           >
                             <div className="flex items-center gap-2 min-w-0">
-                              <Icon icon={item.icon} className="w-3.5 h-3.5 shrink-0 opacity-80" />
+                              <Icon icon={item.icon} className="w-3.5 h-3.5 shrink-0 opacity-70" />
                               <span className="truncate">{item.title}</span>
                             </div>
                             {item.badge && (
@@ -179,8 +178,8 @@ export function Sidebar({ className, onSelect }: SidebarProps) {
                                 className={cn(
                                   "text-[10px] px-1.5 py-0.2 rounded font-mono shrink-0 ml-1.5",
                                   isActive
-                                    ? "bg-accent-primary text-white"
-                                    : "bg-bg-tertiary text-text-muted border border-border-theme"
+                                    ? "bg-indigo-600 text-white font-medium"
+                                    : "bg-slate-100 text-slate-500 border border-slate-200"
                                 )}
                               >
                                 {item.badge}
@@ -200,4 +199,5 @@ export function Sidebar({ className, onSelect }: SidebarProps) {
     </aside>
   );
 }
+
 export default Sidebar;
