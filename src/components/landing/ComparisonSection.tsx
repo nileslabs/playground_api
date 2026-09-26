@@ -15,7 +15,7 @@ export function ComparisonSection() {
             Built for modern developers who need real state
           </h2>
           <p className="text-base sm:text-lg text-slate-600 font-normal leading-relaxed">
-            Stop dealing with fake echo mocks that disappear when you refresh your browser.
+            Move beyond stateless mock endpoints that reset every time your application reloads.
           </p>
         </div>
 
@@ -26,42 +26,42 @@ export function ComparisonSection() {
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <span className="text-xs font-bold uppercase tracking-wider text-slate-500">
-                  Legacy Approach
+                  Standard Approach
                 </span>
                 <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-slate-200/80 text-slate-700">
-                  JSONPlaceholder / DummyJSON
+                  Stateless Mock Services
                 </span>
               </div>
-              <h3 className="text-xl font-bold text-slate-900">Fake Echo APIs</h3>
+              <h3 className="text-xl font-bold text-slate-900">Stateless & Read-Only Mocks</h3>
               <p className="text-sm text-slate-600 leading-relaxed">
-                Great for a 5-minute tutorial, but breaks as soon as you build a real CRUD UI, pagination test, or automated Playwright suite.
+                Ideal for quick starter demos and simple read tests, but limited when prototyping full CRUD user interfaces or end-to-end test flows.
               </p>
             </div>
 
             <ul className="space-y-3.5 text-sm text-slate-600 border-t border-slate-200/80 pt-6">
               <li className="flex items-start gap-3">
-                <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-rose-100 text-rose-600 font-bold text-xs mt-0.5">
-                  ✕
+                <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-slate-200 text-slate-600 font-bold text-xs mt-0.5">
+                  –
                 </span>
-                <span><strong>No real persistence:</strong> POST and PUT return a static dummy ID like 101, but the record is never saved.</span>
+                <span><strong>Simulated mutations:</strong> POST and PUT requests return echo IDs, but records are not saved to a persistent store.</span>
               </li>
               <li className="flex items-start gap-3">
-                <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-rose-100 text-rose-600 font-bold text-xs mt-0.5">
-                  ✕
+                <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-slate-200 text-slate-600 font-bold text-xs mt-0.5">
+                  –
                 </span>
-                <span><strong>Disappears on refresh:</strong> State vanishes immediately; list views never show your created items.</span>
+                <span><strong>Ephemeral session state:</strong> Data disappears on page reload, making complex multi-step UI flows tricky to test.</span>
               </li>
               <li className="flex items-start gap-3">
-                <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-rose-100 text-rose-600 font-bold text-xs mt-0.5">
-                  ✕
+                <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-slate-200 text-slate-600 font-bold text-xs mt-0.5">
+                  –
                 </span>
-                <span><strong>No visitor sandboxing:</strong> Either everyone shares the same read-only data, or mutations pollute everyone.</span>
+                <span><strong>Shared baseline:</strong> All visitors see static read-only records without private per-user or per-test sandboxing.</span>
               </li>
               <li className="flex items-start gap-3">
-                <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-rose-100 text-rose-600 font-bold text-xs mt-0.5">
-                  ✕
+                <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-slate-200 text-slate-600 font-bold text-xs mt-0.5">
+                  –
                 </span>
-                <span><strong>Missing modern protocols:</strong> No GraphQL gateway, no subscriptions, no payment simulation.</span>
+                <span><strong>Limited protocols:</strong> Primarily restricted to basic REST without integrated GraphQL gateway or payment flows.</span>
               </li>
             </ul>
           </div>
