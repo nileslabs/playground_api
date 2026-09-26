@@ -2,7 +2,7 @@
 @import "tailwindcss";
 
 @layer base {
-  :root, [data-theme="dark"] {
+  [data-theme="dark"] {
     /* Surfaces & Backgrounds */
     --bg-canvas: #08090c;
     --bg-surface: #0e1017;
@@ -92,7 +92,7 @@
     --status-info-border: rgba(14, 165, 233, 0.25);
   }
 
-  [data-theme="light"] {
+  :root, [data-theme="light"] {
     /* Surfaces & Backgrounds */
     --bg-canvas: #ffffff;
     --bg-surface: #f8fafc;
