@@ -136,7 +136,7 @@ export function LandingFooter() {
             <h4 className="text-xs font-semibold uppercase tracking-wider text-slate-900">Ecosystem</h4>
             <ul className="space-y-2 text-sm">
               <li>
-                <Link href="/docs/getting-started/quickstart" className="text-slate-500 hover:text-indigo-600 transition-colors">
+                <Link href="/docs/quickstart" className="text-slate-500 hover:text-indigo-600 transition-colors">
                   Quickstart Guide
                 </Link>
               </li>

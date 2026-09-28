@@ -112,7 +112,7 @@ export default function BlogIndexPage() {
               Get Started in 30s
             </Link>
             <Link
-              href="/docs/studio"
+              href="/docs/toolkit/studio"
               className="px-6 py-3 rounded-xl bg-bg-secondary hover:bg-bg-tertiary border border-border-theme text-text-primary font-bold text-sm transition-all flex items-center gap-2"
             >
               <Icon icon="ph:play-circle-bold" className="w-4.5 h-4.5 text-accent-primary" />

@@ -280,7 +280,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                   Quickstart Guide
                 </Link>
                 <Link
-                  href="/docs/studio"
+                  href="/docs/toolkit/studio"
                   className="px-4 py-2 rounded-xl bg-bg-secondary hover:bg-bg-tertiary border border-border-theme text-text-primary text-xs sm:text-sm font-semibold transition-colors flex items-center gap-1.5"
                 >
                   <Icon icon="ph:play-circle-bold" className="w-4 h-4 text-accent-primary" />

@@ -64,6 +64,41 @@ const nextConfig = {
       },
     ];
   },
+  async redirects() {
+    return [
+      // Legacy main branch routes
+      { source: '/docs/studio', destination: '/docs/toolkit/studio', permanent: true },
+      { source: '/docs/posts', destination: '/docs/resources/posts', permanent: true },
+      { source: '/docs/users', destination: '/docs/resources/users', permanent: true },
+      { source: '/docs/comments', destination: '/docs/resources/comments', permanent: true },
+      { source: '/docs/todos', destination: '/docs/resources/todos', permanent: true },
+      { source: '/docs/auth', destination: '/docs/auth/jwt-flow', permanent: true },
+      { source: '/docs/payments', destination: '/docs/payments/hosted-checkout', permanent: true },
+      { source: '/docs/inbox', destination: '/docs/inbox/email-mailbox', permanent: true },
+      { source: '/docs/chat', destination: '/docs/realtime/native-ws', permanent: true },
+      { source: '/docs/simulation', destination: '/docs/chaos/latency', permanent: true },
+      { source: '/docs/sandbox', destination: '/docs/sandbox/dashboard', permanent: true },
+      { source: '/docs/stats', destination: '/docs/sandbox/dashboard', permanent: true },
+      { source: '/docs/export-import', destination: '/docs/sandbox/snapshots', permanent: true },
+      { source: '/docs/sandbox-sync', destination: '/docs/sandbox/mobile-qr-sync', permanent: true },
+      { source: '/docs/rbac', destination: '/docs/auth/rbac-matrix', permanent: true },
+      { source: '/docs/sdk', destination: '/docs/toolkit/typescript-sdk', permanent: true },
+      { source: '/docs/devtools', destination: '/docs/toolkit/devtools-extension', permanent: true },
+      { source: '/docs/filtering', destination: '/docs/query/filtering', permanent: true },
+      { source: '/docs/getting-started/quickstart', destination: '/docs/quickstart', permanent: true },
+
+      // Category parent routes without index
+      { source: '/docs/query', destination: '/docs/query/filtering', permanent: true },
+      { source: '/docs/realtime', destination: '/docs/realtime/native-ws', permanent: true },
+      { source: '/docs/webhooks', destination: '/docs/webhooks/subscriptions', permanent: true },
+      { source: '/docs/chaos', destination: '/docs/chaos/latency', permanent: true },
+      { source: '/docs/media', destination: '/docs/media/svg-avatars', permanent: true },
+      { source: '/docs/graphql', destination: '/docs/graphql/ide', permanent: true },
+      { source: '/docs/collections', destination: '/docs/collections/openapi', permanent: true },
+      { source: '/docs/toolkit', destination: '/docs/toolkit/studio', permanent: true },
+      { source: '/docs/resources', destination: '/docs/resources/users', permanent: true },
+    ];
+  },
 };
 
 export default nextConfig;

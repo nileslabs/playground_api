@@ -129,7 +129,7 @@ export function useProductCatalog() {
 
           <div className="flex flex-wrap items-center gap-3 pt-2">
             <Link
-              href="/docs/studio"
+              href="/docs/toolkit/studio"
               className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs sm:text-sm font-semibold shadow-xs transition-all cursor-pointer"
             >
               <Icon icon="ph:play-circle-bold" className="w-4 h-4" />

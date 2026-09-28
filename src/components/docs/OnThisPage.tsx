@@ -306,18 +306,6 @@ export function OnThisPage({ className = '', contentSelector = '#docs-content' }
               <span className="text-[10px] font-mono text-slate-400">{scrollProgress}%</span>
             </button>
 
-            <a
-              href={`${siteConfig.links.github}/blob/main/playground_api_fe/src/app${pathname}/page.tsx`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-full flex items-center justify-between p-1.5 rounded-lg hover:bg-slate-50 hover:text-slate-800 transition-colors"
-            >
-              <span className="flex items-center gap-1.5">
-                <Icon icon="ph:pencil-simple-line-bold" className="text-slate-400" />
-                <span>Edit on GitHub</span>
-              </span>
-              <Icon icon="ph:arrow-square-out-bold" className="w-3 h-3 text-slate-400" />
-            </a>
           </div>
         </div>
       )}
