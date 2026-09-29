@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import Link from 'next/link';
 import { Icon } from '@iconify/react';
 import config from '@/config/env';
 import { CodeBlock } from '@/components/ui/CodeBlock';
@@ -243,6 +244,20 @@ export default function LatencySimulationPage() {
             </tbody>
           </table>
         </div>
+      </div>
+
+      {/* 4. Navigation Footer */}
+      <div className="p-6 sm:p-7 rounded-2xl border border-indigo-100 bg-indigo-50/40 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div className="space-y-1">
+          <h3 className="font-bold text-base text-slate-900">Need to test specific error codes?</h3>
+          <p className="text-sm text-slate-600">Simulate 400 Bad Request, 404 Not Found, 429 Rate Limits, or 500 Server Crashes.</p>
+        </div>
+        <Link
+          href="/docs/chaos/status-codes"
+          className="px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-sm transition-all shrink-0"
+        >
+          View Status Code Injection
+        </Link>
       </div>
     </div>
   );
