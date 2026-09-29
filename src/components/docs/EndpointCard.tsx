@@ -92,7 +92,8 @@ export function EndpointCard({ endpoint }: EndpointCardProps) {
   return (
     <div
       id={endpoint.id}
-      className="rounded-2xl border border-slate-200 bg-white shadow-xs overflow-hidden transition-all hover:shadow-sm"
+      data-toc-title={endpoint.title}
+      className="rounded-2xl border border-slate-200 bg-white shadow-xs overflow-hidden transition-all hover:shadow-sm scroll-mt-20"
     >
       {/* 1. Header Bar with Method, Endpoint Path & Action Tabs */}
       <div className="border-b border-slate-200 bg-slate-50/70 px-4 sm:px-6 py-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-3">

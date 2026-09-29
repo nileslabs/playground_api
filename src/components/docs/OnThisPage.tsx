@@ -124,8 +124,21 @@ export function OnThisPage({ className = '', contentSelector = '#docs-content' }
   useEffect(() => {
     parseHeadings();
     const timer = setTimeout(parseHeadings, 200);
-    return () => clearTimeout(timer);
-  }, [pathname, parseHeadings]);
+
+    const contentNode = document.querySelector(contentSelector);
+    let observer: MutationObserver | null = null;
+    if (contentNode) {
+      observer = new MutationObserver(() => parseHeadings());
+      observer.observe(contentNode, { childList: true, subtree: true });
+    }
+
+    return () => {
+      clearTimeout(timer);
+      if (observer) {
+        observer.disconnect();
+      }
+    };
+  }, [pathname, parseHeadings, contentSelector]);
 
   // Track active heading & scroll percentage on scroll
   useEffect(() => {
