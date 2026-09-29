@@ -69,8 +69,8 @@ export const siteConfig = {
         { title: 'Dynamic Sorting', href: '/docs/query/sorting', icon: 'ph:arrows-down-up-bold' },
         { title: 'Offset Pagination', href: '/docs/query/pagination-offset', icon: 'ph:number-circle-two-bold' },
         { title: 'Cursor Pagination', href: '/docs/query/pagination-cursor', icon: 'ph:infinite-bold', badge: 'Scroll' },
-        { title: 'Domain Seeders', href: '/docs/query/domain-templates', icon: 'ph:sparkle-bold', badge: '1-Click' },
-        { title: 'CSV & Excel Export', href: '/docs/query/csv-excel-export', icon: 'ph:file-xls-bold', badge: 'Export' },
+        { title: 'CSV & Excel Export & Import', href: '/docs/query/csv-excel-export', icon: 'ph:file-xls-bold', badge: 'IO' },
+        { title: 'Custom Collections', href: '/docs/query/custom-resources', icon: 'ph:table-bold', badge: 'CRUD' },
       ],
     },
     {

@@ -76,7 +76,7 @@ export default function IntroductionPage() {
     },
     {
       title: 'Dynamic Custom Collections',
-      desc: 'Define arbitrary custom schemas on the fly with 1-click domain seeders for E-Commerce, CRM, and SaaS products.',
+      desc: 'Define arbitrary custom schemas on the fly for dynamic E-Commerce, CRM, and SaaS database collections.',
       icon: 'ph:table-bold',
       href: '/docs/query/custom-resources',
       badge: 'Flexible',

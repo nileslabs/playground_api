@@ -16,8 +16,10 @@ interface QueryParamItem {
 }
 
 export interface InteractiveConsoleProps {
-  method: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
-  path: string;
+  method?: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
+  path?: string;
+  initialMethod?: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
+  initialEndpoint?: string;
   initialHeaders?: HeaderItem[] | Record<string, string>;
   initialQueryParams?: QueryParamItem[];
   initialBody?: string;
@@ -37,14 +39,19 @@ function normalizeHeaders(input?: HeaderItem[] | Record<string, string>): Header
 export function InteractiveConsole({
   method,
   path,
+  initialMethod,
+  initialEndpoint,
   initialHeaders = EMPTY_HEADERS,
   initialQueryParams = EMPTY_QUERY_PARAMS,
   initialBody = '',
   title = 'Live Request Console',
   description,
 }: InteractiveConsoleProps) {
+  const effectiveMethod = (initialMethod || method || 'GET') as 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
+  const effectivePath = initialEndpoint || path || '/';
+
   const [activeTab, setActiveTab] = useState<'response' | 'body' | 'headers'>('response');
-  const [currentPath, setCurrentPath] = useState(path);
+  const [currentPath, setCurrentPath] = useState(effectivePath);
 
   const headersSerialized = JSON.stringify(initialHeaders);
   const normalizedInitialHeaders = React.useMemo(
@@ -61,8 +68,8 @@ export function InteractiveConsole({
 
   // Update currentPath when prop changes
   React.useEffect(() => {
-    setCurrentPath(path);
-  }, [path]);
+    setCurrentPath(effectivePath);
+  }, [effectivePath]);
 
   // Update body when initialBody changes
   React.useEffect(() => {
@@ -107,12 +114,12 @@ export function InteractiveConsole({
       });
 
       const options: RequestInit = {
-        method,
+        method: effectiveMethod,
         headers: headerObj,
         credentials: 'include',
       };
 
-      if (['POST', 'PUT', 'PATCH', 'DELETE'].includes(method) && body.trim()) {
+      if (['POST', 'PUT', 'PATCH', 'DELETE'].includes(effectiveMethod) && body.trim()) {
         options.body = body;
       }
 
@@ -151,10 +158,10 @@ export function InteractiveConsole({
         <div className="flex items-center gap-2 w-full sm:w-auto">
           <span
             className={`px-2.5 py-1 rounded-lg text-xs font-mono font-bold border shrink-0 ${getMethodBadge(
-              method
+              effectiveMethod
             )}`}
           >
-            {method}
+            {effectiveMethod}
           </span>
 
           <input
@@ -194,7 +201,7 @@ export function InteractiveConsole({
           >
             Response
           </button>
-          {['POST', 'PUT', 'PATCH'].includes(method) && (
+          {['POST', 'PUT', 'PATCH'].includes(effectiveMethod) && (
             <button
               type="button"
               onClick={() => setActiveTab('body')}

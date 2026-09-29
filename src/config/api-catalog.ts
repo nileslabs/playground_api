@@ -822,25 +822,6 @@ export const apiCatalog: ResourceCatalogDef[] = [
         },
       },
       {
-        id: 'post-custom-seed',
-        method: 'POST',
-        path: '/custom/seed',
-        title: 'Seed Domain Mock Data Template',
-        description: 'Instantly populates pre-built domain collections into your session sandbox with one request (templates: ecommerce, saas, blog, crm).',
-        queryParams: [
-          { name: 'template', type: 'string', required: false, defaultVal: 'ecommerce', description: 'Domain template name ("ecommerce", "saas", "blog", "crm").' },
-        ],
-        requestBody: {
-          template: 'ecommerce',
-        },
-        responseExample: {
-          message: 'Seeded 5 records across custom collections: products, orders.',
-          template: 'ecommerce',
-          collections: ['products', 'orders'],
-          totalSeeded: 5,
-        },
-      },
-      {
         id: 'get-custom-collection-items',
         method: 'GET',
         path: '/custom/:collection',
