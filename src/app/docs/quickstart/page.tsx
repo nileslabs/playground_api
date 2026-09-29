@@ -3,40 +3,154 @@
 import React, { useState } from 'react';
 import { Icon } from '@iconify/react';
 import config from '@/config/env';
+import { CodeBlock } from '@/components/ui/CodeBlock';
+import Link from 'next/link';
 
 export default function QuickstartPage() {
-  const [activeTab, setActiveTab] = useState<'curl' | 'fetch' | 'axios'>('curl');
+  const [activeTab, setActiveTab] = useState<'curl' | 'fetch' | 'axios' | 'react' | 'python'>('fetch');
   const [isPinging, setIsPinging] = useState(false);
   const [pingResult, setPingResult] = useState<any>(null);
-  const [copied, setCopied] = useState(false);
+  const [pingLatency, setPingLatency] = useState<number | null>(null);
 
   const publicApiUrl = config.publicApiUrl || 'https://playground.nileslabs.com/api/v1';
 
   const snippets = {
-    curl: `curl ${publicApiUrl}/posts`,
-    fetch: `fetch('${publicApiUrl}/posts')
-  .then(res => res.json())
-  .then(data => console.log(data));`,
+    fetch: `// 1. Fetch posts with credentials to isolate your visitor session
+const response = await fetch('${publicApiUrl}/posts?_limit=5', {
+  credentials: 'include', // Automatically attaches/receives pg_identity cookie
+});
+
+const data = await response.json();
+console.log('Posts:', data.data || data);
+
+// 2. Create a persistent post in your sandbox
+const createRes = await fetch('${publicApiUrl}/posts', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  credentials: 'include',
+  body: JSON.stringify({
+    title: 'My First Stateful Post',
+    body: 'This post persists across page reloads in your session overlay!',
+    user_id: 1,
+  }),
+});
+
+const newPost = await createRes.json();
+console.log('Created Post:', newPost);`,
+
+    curl: `# 1. Fetch baseline posts
+curl -X GET "${publicApiUrl}/posts?_limit=5"
+
+# 2. Create a new stateful post with custom identity header
+curl -X POST "${publicApiUrl}/posts" \\
+  -H "Content-Type: application/json" \\
+  -H "X-Playground-Identity: my-quickstart-test" \\
+  -d '{
+    "title": "Persistent Terminal Post",
+    "body": "Saved to your visitor sandbox",
+    "user_id": 1
+  }'
+
+# 3. Query with the same identity header to confirm persistence!
+curl -X GET "${publicApiUrl}/posts" \\
+  -H "X-Playground-Identity: my-quickstart-test"`,
+
     axios: `import axios from 'axios';
 
-const { data } = await axios.get('${publicApiUrl}/posts');
-console.log(data);`,
-  };
+// Create pre-configured client with credentials
+const api = axios.create({
+  baseURL: '${publicApiUrl}',
+  withCredentials: true, // Stores HMAC visitor session cookie
+  headers: { 'Content-Type': 'application/json' },
+});
 
-  const handleCopy = () => {
-    navigator.clipboard.writeText(snippets[activeTab]);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+// GET with pagination
+const { data: posts } = await api.get('/posts', {
+  params: { _page: 1, _limit: 5 },
+});
+
+// POST mutation (persists immediately)
+const { data: newPost } = await api.post('/posts', {
+  title: 'Axios Stateful Record',
+  body: 'Mutations stay in your sandbox',
+  user_id: 1,
+});
+
+console.log('Persisted post:', newPost);`,
+
+    react: `import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+
+// Query posts with session credentials
+export function usePosts() {
+  return useQuery({
+    queryKey: ['posts'],
+    queryFn: async () => {
+      const res = await fetch('${publicApiUrl}/posts?_limit=10', {
+        credentials: 'include',
+      });
+      return res.json();
+    },
+  });
+}
+
+// Mutation with automatic cache invalidation
+export function useCreatePost() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (newPost: { title: string; body: string }) => {
+      const res = await fetch('${publicApiUrl}/posts', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({ ...newPost, user_id: 1 }),
+      });
+      return res.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['posts'] });
+    },
+  });
+}`,
+
+    python: `import requests
+
+# Create session to automatically preserve visitor cookies
+session = requests.Session()
+
+# 1. Fetch posts
+response = session.get('${publicApiUrl}/posts', params={'_limit': 5})
+print("Initial:", response.json())
+
+# 2. Mutate stateful record
+create_resp = session.post(
+    '${publicApiUrl}/posts',
+    json={
+        'title': 'Python Client Post',
+        'body': 'Persisted in private session sandbox',
+        'user_id': 1
+    }
+)
+print("Created:", create_resp.json())
+
+# 3. Subsequent query includes newly created post
+updated_resp = session.get('${publicApiUrl}/posts')
+print("Total count updated:", len(updated_resp.json().get('data', [])))`,
   };
 
   const handlePingHealth = async () => {
     setIsPinging(true);
+    setPingLatency(null);
+    const startTime = performance.now();
     try {
-      const res = await fetch(`${config.apiUrl}/health`, { credentials: 'include' });
+      const res = await fetch(`${publicApiUrl}/health`, { credentials: 'include' });
       const data = await res.json();
+      const endTime = performance.now();
+      setPingLatency(Math.round(endTime - startTime));
       setPingResult(data);
     } catch (err: any) {
-      setPingResult({ status: 'offline', error: err.message });
+      const endTime = performance.now();
+      setPingLatency(Math.round(endTime - startTime));
+      setPingResult({ status: 'error', message: err.message });
     } finally {
       setIsPinging(false);
     }
@@ -56,20 +170,22 @@ console.log(data);`,
         </h1>
 
         <p className="text-base sm:text-lg text-slate-600 leading-relaxed max-w-3xl">
-          Get up and running with Playground API in under 30 seconds. No API keys, zero authentication setup, and zero credit card required.
+          Get started with Playground API in under 60 seconds. Zero API keys, zero authentication configuration, and zero credit card required.
         </p>
       </div>
 
-      {/* 2. Interactive Health Ping Card */}
-      <div className="p-6 rounded-2xl bg-white border border-slate-200 shadow-xs space-y-4">
+      {/* 2. Step 1: Connectivity Health Ping */}
+      <div id="step-1" className="p-6 sm:p-7 rounded-2xl bg-white border border-slate-200 shadow-xs space-y-4 scroll-mt-20">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div className="space-y-1">
-            <h3 className="font-bold text-base text-slate-900 flex items-center gap-2">
-              <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
-              <span>Step 1: Test Server Connectivity</span>
-            </h3>
-            <p className="text-xs sm:text-sm text-slate-600">
-              Ping the live health check endpoint <code className="font-mono text-xs bg-slate-100 px-1 py-0.5 rounded text-indigo-600">GET /api/v1/health</code>.
+            <h2 className="font-bold text-base sm:text-lg text-slate-900 flex items-center gap-2">
+              <span className="w-6 h-6 rounded-lg bg-indigo-50 border border-indigo-100 text-indigo-600 font-bold text-xs flex items-center justify-center">
+                1
+              </span>
+              <span>Test Live Server Connectivity</span>
+            </h2>
+            <p className="text-sm text-slate-600">
+              Execute a real-time request to the health check endpoint <code className="font-mono text-xs bg-slate-100 text-indigo-600 px-1.5 py-0.5 rounded border border-slate-200">GET /api/v1/health</code>.
             </p>
           </div>
 
@@ -77,16 +193,16 @@ console.log(data);`,
             type="button"
             onClick={handlePingHealth}
             disabled={isPinging}
-            className="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-xs shadow-xs transition-all flex items-center gap-2 shrink-0 cursor-pointer disabled:opacity-50"
+            className="px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-sm shadow-xs transition-all flex items-center gap-2 shrink-0 cursor-pointer disabled:opacity-50"
           >
             {isPinging ? (
               <>
-                <Icon icon="ph:spinner-bold" className="w-3.5 h-3.5 animate-spin" />
-                <span>Pinging...</span>
+                <Icon icon="ph:spinner-bold" className="w-4 h-4 animate-spin" />
+                <span>Pinging Gateway...</span>
               </>
             ) : (
               <>
-                <Icon icon="ph:heartbeat-bold" className="w-3.5 h-3.5" />
+                <Icon icon="ph:heartbeat-bold" className="w-4 h-4" />
                 <span>Ping Live Server</span>
               </>
             )}
@@ -94,90 +210,174 @@ console.log(data);`,
         </div>
 
         {pingResult && (
-          <div className="rounded-xl border border-slate-200 bg-slate-900 p-4 font-mono text-xs text-emerald-400 overflow-x-auto shadow-inner">
-            <pre>{JSON.stringify(pingResult, null, 2)}</pre>
+          <div className="rounded-xl border border-slate-200 bg-slate-900 p-4 space-y-2">
+            <div className="flex items-center justify-between text-xs font-mono border-b border-slate-800 pb-2">
+              <div className="flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-emerald-400"></span>
+                <span className="text-emerald-400 font-bold text-sm">200 OK</span>
+              </div>
+              {pingLatency !== null && (
+                <span className="text-slate-400 text-xs sm:text-sm">Latency: <strong className="text-white">{pingLatency}ms</strong></span>
+              )}
+            </div>
+            <pre className="font-mono text-xs sm:text-sm text-emerald-400 overflow-x-auto">
+              {JSON.stringify(pingResult, null, 2)}
+            </pre>
           </div>
         )}
       </div>
 
-      {/* 3. Interactive Code Snippet Runner */}
-      <div className="rounded-2xl border border-slate-200 bg-white shadow-xs overflow-hidden space-y-0">
-        <div className="border-b border-slate-200 bg-slate-50/70 px-4 sm:px-6 py-3 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <span className="text-xs font-bold text-slate-700 uppercase tracking-wider">
-              Step 2: Fetch Your First Resource
+      {/* 3. Step 2: Multi-Language Integration Snippet */}
+      <div id="step-2" className="space-y-4 scroll-mt-20">
+        <div className="space-y-1">
+          <h2 className="text-xl sm:text-2xl font-bold text-slate-900 flex items-center gap-2">
+            <span className="w-6 h-6 rounded-lg bg-indigo-50 border border-indigo-100 text-indigo-600 font-bold text-xs flex items-center justify-center">
+              2
             </span>
-          </div>
-
-          <div className="flex items-center gap-1.5">
-            {(['curl', 'fetch', 'axios'] as const).map((tab) => (
-              <button
-                key={tab}
-                type="button"
-                onClick={() => setActiveTab(tab)}
-                className={`px-3 py-1 text-xs font-medium rounded-lg uppercase tracking-wider transition-all ${
-                  activeTab === tab
-                    ? 'bg-white text-indigo-700 font-bold border border-slate-200 shadow-2xs'
-                    : 'text-slate-600 hover:text-slate-900'
-                }`}
-              >
-                {tab}
-              </button>
-            ))}
-          </div>
+            <span>Fetch & Mutate in Your Favorite Tool</span>
+          </h2>
+          <p className="text-base text-slate-600 leading-relaxed">
+            Choose your programming language or framework below to see ready-to-use code snippets with stateful session persistence.
+          </p>
         </div>
 
-        <div className="p-4 sm:p-6 bg-slate-900 relative">
-          <button
-            type="button"
-            onClick={handleCopy}
-            className="absolute top-4 right-4 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-medium transition-all flex items-center gap-1.5"
-          >
-            <Icon icon={copied ? 'ph:check-bold' : 'ph:copy-bold'} className="w-3.5 h-3.5 text-indigo-400" />
-            <span>{copied ? 'Copied' : 'Copy'}</span>
-          </button>
+        <div className="rounded-2xl border border-slate-200 bg-white shadow-xs overflow-hidden">
+          {/* Framework Selector Tabs */}
+          <div className="border-b border-slate-200 bg-slate-50/80 px-4 py-2.5 flex items-center justify-between gap-2 overflow-x-auto">
+            <div className="flex items-center gap-1.5 shrink-0">
+              {(
+                [
+                  { id: 'fetch', label: 'JavaScript (Fetch)', icon: 'simple-icons:javascript' },
+                  { id: 'curl', label: 'cURL (Terminal)', icon: 'ph:terminal-window-bold' },
+                  { id: 'axios', label: 'Axios', icon: 'simple-icons:axios' },
+                  { id: 'react', label: 'React Query (TanStack)', icon: 'simple-icons:react' },
+                  { id: 'python', label: 'Python (Requests)', icon: 'simple-icons:python' },
+                ] as const
+              ).map((tab) => (
+                <button
+                  key={tab.id}
+                  type="button"
+                  onClick={() => setActiveTab(tab.id)}
+                  className={`px-3.5 py-2 rounded-lg text-sm font-semibold transition-all flex items-center gap-1.5 cursor-pointer ${
+                    activeTab === tab.id
+                      ? 'bg-indigo-600 text-white shadow-xs'
+                      : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200/60'
+                  }`}
+                >
+                  <Icon icon={tab.icon} className="w-4 h-4" />
+                  <span>{tab.label}</span>
+                </button>
+              ))}
+            </div>
+          </div>
 
-          <pre className="font-mono text-xs sm:text-sm text-slate-100 overflow-x-auto py-2">
-            {snippets[activeTab]}
-          </pre>
+          <div className="p-0">
+            <CodeBlock
+              code={snippets[activeTab]}
+              language={activeTab === 'curl' ? 'bash' : activeTab === 'python' ? 'python' : 'typescript'}
+              title={`quickstart-${activeTab}`}
+            />
+          </div>
         </div>
       </div>
 
-      {/* 4. Three Steps Flow Card */}
-      <div className="space-y-4">
-        <h2 className="text-xl sm:text-2xl font-bold text-slate-900">
-          How to Test With Your App
+      {/* 4. Step 3: Understanding Session Identity */}
+      <div id="step-3" className="space-y-4 scroll-mt-20">
+        <h2 className="text-xl sm:text-2xl font-bold text-slate-900 flex items-center gap-2">
+          <span className="w-6 h-6 rounded-lg bg-indigo-50 border border-indigo-100 text-indigo-600 font-bold text-xs flex items-center justify-center">
+            3
+          </span>
+          <span>How Your Private Sandbox Stays Isolated</span>
         </h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-          <div className="p-5 rounded-2xl border border-slate-200 bg-white shadow-xs space-y-2">
-            <div className="w-7 h-7 rounded-lg bg-indigo-50 border border-indigo-100 text-indigo-600 font-bold text-xs flex items-center justify-center">
-              1
+        <p className="text-base text-slate-600 leading-relaxed">
+          Playground API ensures multiple developers, test runners, and browsers never collide or overwrite each other. Here is how your identity is resolved:
+        </p>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 pt-1">
+          <div className="p-6 rounded-2xl border border-slate-200 bg-white shadow-xs space-y-2.5">
+            <div className="flex items-center gap-2 text-indigo-700 font-bold text-base">
+              <Icon icon="ph:browser-bold" className="w-5 h-5" />
+              <span>Browser Apps (Cookie-Based)</span>
             </div>
-            <h3 className="font-bold text-sm text-slate-900">Set Base URL</h3>
-            <p className="text-xs text-slate-600 leading-relaxed">
-              Point your API client or fetch calls to <code className="font-mono text-xs bg-slate-100 px-1 py-0.5 rounded text-indigo-600">{publicApiUrl}</code>.
+            <p className="text-sm text-slate-600 leading-relaxed">
+              When making requests from a web browser, pass <code className="font-mono text-xs bg-slate-100 text-indigo-600 px-1.5 py-0.5 rounded border border-slate-200">credentials: &apos;include&apos;</code> (or Axios <code className="font-mono text-xs bg-slate-100 text-indigo-600 px-1.5 py-0.5 rounded border border-slate-200">withCredentials: true</code>). The backend assigns an HMAC-signed <code className="font-mono text-xs bg-slate-100 text-slate-800 px-1.5 py-0.5 rounded border border-slate-200">pg_identity</code> cookie.
             </p>
           </div>
 
-          <div className="p-5 rounded-2xl border border-slate-200 bg-white shadow-xs space-y-2">
-            <div className="w-7 h-7 rounded-lg bg-indigo-50 border border-indigo-100 text-indigo-600 font-bold text-xs flex items-center justify-center">
-              2
+          <div className="p-6 rounded-2xl border border-slate-200 bg-white shadow-xs space-y-2.5">
+            <div className="flex items-center gap-2 text-indigo-700 font-bold text-base">
+              <Icon icon="ph:git-branch-bold" className="w-5 h-5" />
+              <span>CI/CD & Mobile (Header-Based)</span>
             </div>
-            <h3 className="font-bold text-sm text-slate-900">Mutate Freely</h3>
-            <p className="text-xs text-slate-600 leading-relaxed">
-              Create, update, and delete posts, comments, or custom products. Mutations persist immediately in your visitor session.
+            <p className="text-sm text-slate-600 leading-relaxed">
+              For Playwright test workers, Postman, or mobile apps without cookies, pass the header <code className="font-mono text-xs bg-slate-100 text-indigo-600 px-1.5 py-0.5 rounded border border-slate-200">X-Playground-Identity: worker-1</code>. Each worker receives its own isolated database overlay.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* 5. Step 4: Chaos & Fault Simulation */}
+      <div id="step-4" className="space-y-4 scroll-mt-20">
+        <h2 className="text-xl sm:text-2xl font-bold text-slate-900 flex items-center gap-2">
+          <span className="w-6 h-6 rounded-lg bg-indigo-50 border border-indigo-100 text-indigo-600 font-bold text-xs flex items-center justify-center">
+            4
+          </span>
+          <span>Inject Latency & Chaos Parameters</span>
+        </h2>
+        <p className="text-base text-slate-600 leading-relaxed">
+          Test UI skeleton loaders and error boundary states instantly by attaching query parameters to any REST endpoint:
+        </p>
+
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 pt-1">
+          <div className="p-5 rounded-xl border border-slate-200 bg-white shadow-xs space-y-2">
+            <div className="font-mono text-xs sm:text-sm text-indigo-600 font-bold bg-indigo-50 px-2.5 py-1 rounded-md w-fit border border-indigo-100">
+              ?_delay=1500
+            </div>
+            <h3 className="font-bold text-sm sm:text-base text-slate-900">Artificial Latency</h3>
+            <p className="text-sm text-slate-600 leading-relaxed">
+              Forces a 1500ms delay to test loading spinners and skeleton placeholders.
             </p>
           </div>
 
-          <div className="p-5 rounded-2xl border border-slate-200 bg-white shadow-xs space-y-2">
-            <div className="w-7 h-7 rounded-lg bg-indigo-50 border border-indigo-100 text-indigo-600 font-bold text-xs flex items-center justify-center">
-              3
+          <div className="p-5 rounded-xl border border-slate-200 bg-white shadow-xs space-y-2">
+            <div className="font-mono text-xs sm:text-sm text-rose-600 font-bold bg-rose-50 px-2.5 py-1 rounded-md w-fit border border-rose-100">
+              ?_status=500
             </div>
-            <h3 className="font-bold text-sm text-slate-900">Reset Anytime</h3>
-            <p className="text-xs text-slate-600 leading-relaxed">
-              Call <code className="font-mono text-xs bg-slate-100 px-1 py-0.5 rounded text-indigo-600">DELETE /session/reset</code> whenever you want to purge mutations and restore the baseline dataset.
+            <h3 className="font-bold text-sm sm:text-base text-slate-900">Simulate Server Error</h3>
+            <p className="text-sm text-slate-600 leading-relaxed">
+              Returns HTTP 500 Internal Server Error to test toast alerts and retry buttons.
             </p>
           </div>
+
+          <div className="p-5 rounded-xl border border-slate-200 bg-white shadow-xs space-y-2">
+            <div className="font-mono text-xs sm:text-sm text-amber-600 font-bold bg-amber-50 px-2.5 py-1 rounded-md w-fit border border-amber-100">
+              ?_flaky=true
+            </div>
+            <h3 className="font-bold text-sm sm:text-base text-slate-900">Flaky Network Jitter</h3>
+            <p className="text-sm text-slate-600 leading-relaxed">
+              Simulates real-world mobile jitter with randomized delay (200-2500ms) and 10% dropped packets.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* 6. Step 5: Resetting the Sandbox */}
+      <div id="step-5" className="p-6 sm:p-7 rounded-2xl border border-slate-200 bg-slate-50/60 space-y-3.5 scroll-mt-20">
+        <h3 className="font-bold text-base sm:text-lg text-slate-900 flex items-center gap-2">
+          <Icon icon="ph:arrow-counter-clockwise-bold" className="w-5 h-5 text-indigo-600" />
+          <span>Resetting Your Sandbox to Pristine Baseline</span>
+        </h3>
+        <p className="text-sm sm:text-base text-slate-600 leading-relaxed">
+          Need a clean slate? Execute <code className="font-mono text-xs bg-slate-200 text-slate-800 px-1.5 py-0.5 rounded border border-slate-300">DELETE /api/v1/session/reset</code> to immediately wipe your visitor mutations overlay and revert all core resources to the factory seed data.
+        </p>
+        <div className="pt-2">
+          <Link
+            href="/docs/sandbox/reset"
+            className="text-sm font-semibold text-indigo-600 hover:text-indigo-700 inline-flex items-center gap-1.5"
+          >
+            <span>Learn more about sandbox reset & snapshots</span>
+            <Icon icon="ph:arrow-right-bold" className="w-4 h-4" />
+          </Link>
         </div>
       </div>
     </div>
