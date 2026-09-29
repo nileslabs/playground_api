@@ -21,6 +21,27 @@ export function PostsSidebar({ posts, tags, className }: PostsSidebarProps) {
 
   const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
   const [searchFilter, setSearchFilter] = useState('');
+  const [isCollapsed, setIsCollapsed] = useState(false);
+
+  // Load saved collapse preference
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('pg_blog_sidebar_collapsed');
+      if (saved === 'true') {
+        setIsCollapsed(true);
+      }
+    }
+  }, []);
+
+  const toggleCollapse = () => {
+    setIsCollapsed((prev) => {
+      const next = !prev;
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('pg_blog_sidebar_collapsed', String(next));
+      }
+      return next;
+    });
+  };
 
   // Listen to mobile toggle from AppHeader
   useEffect(() => {
@@ -43,13 +64,27 @@ export function PostsSidebar({ posts, tags, className }: PostsSidebarProps) {
     return matchesSearch && matchesTag;
   });
 
-  const renderContent = () => (
+  const renderContent = (isMobile = false) => (
     <div className="space-y-6">
       {/* Series Header */}
       <div className="space-y-1.5 pb-3 border-b border-slate-100">
-        <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-100 text-[11px] font-bold uppercase tracking-wider">
-          <Icon icon="ph:newspaper-clipping-bold" className="w-3.5 h-3.5" />
-          Feature Deep Dives
+        <div className="flex items-center justify-between">
+          <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-100 text-[11px] font-bold uppercase tracking-wider">
+            <Icon icon="ph:newspaper-clipping-bold" className="w-3.5 h-3.5" />
+            Feature Deep Dives
+          </div>
+
+          {!isMobile && (
+            <button
+              type="button"
+              onClick={toggleCollapse}
+              className="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors cursor-pointer"
+              title="Collapse sidebar"
+              aria-label="Collapse Sidebar"
+            >
+              <Icon icon="ph:sidebar-simple-bold" className="w-4 h-4" />
+            </button>
+          )}
         </div>
         <h3 className="font-bold text-sm text-slate-900">
           Playground API Articles
@@ -247,12 +282,85 @@ export function PostsSidebar({ posts, tags, className }: PostsSidebarProps) {
       {/* Desktop Sticky Sidebar */}
       <aside
         className={cn(
-          "shrink-0 border-r border-slate-200 bg-white transition-all duration-300 ease-in-out md:sticky md:top-16 md:h-[calc(100vh-4rem)] md:overflow-y-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden w-full md:w-64 lg:w-72 p-4",
+          "shrink-0 border-r border-slate-200 bg-white transition-all duration-300 ease-in-out md:sticky md:top-16 md:h-[calc(100vh-4rem)] md:overflow-y-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden",
+          isCollapsed
+            ? "w-16 p-2 flex flex-col items-center select-none overflow-x-hidden"
+            : "w-full md:w-64 lg:w-72 p-4",
           className
         )}
         aria-label="Blog Navigation"
       >
-        {renderContent()}
+        {isCollapsed ? (
+          /* Collapsed Icon-Only View */
+          <div className="w-full flex flex-col items-center space-y-3 pt-1">
+            <button
+              type="button"
+              onClick={toggleCollapse}
+              className="w-10 h-10 rounded-xl bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-600 hover:text-indigo-600 flex items-center justify-center transition-colors cursor-pointer"
+              title="Expand Sidebar"
+              aria-label="Expand Sidebar"
+            >
+              <Icon icon="ph:sidebar-simple-bold" className="w-4 h-4 text-indigo-600" />
+            </button>
+
+            <div className="w-8 h-px bg-slate-200 my-1" />
+
+            {/* Quick Link to All Articles */}
+            <div className="relative group flex items-center justify-center">
+              <Link
+                href="/blog"
+                title="All Articles"
+                className={cn(
+                  "w-10 h-10 rounded-xl flex items-center justify-center transition-all cursor-pointer",
+                  pathname === '/blog' && !activeTag
+                    ? "bg-indigo-50 text-indigo-700 font-bold border border-indigo-200 shadow-xs"
+                    : "text-slate-600 hover:text-slate-900 hover:bg-slate-100/70"
+                )}
+                aria-label="All Articles"
+              >
+                <Icon icon="ph:newspaper-clipping-bold" className="w-4 h-4 shrink-0" />
+              </Link>
+              <div className="absolute left-full ml-2 px-2.5 py-1.5 rounded-lg bg-slate-900 text-white text-xs font-semibold whitespace-nowrap shadow-xl border border-slate-800 z-50 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-150">
+                All Articles ({posts.length})
+              </div>
+            </div>
+
+            <div className="w-6 h-px bg-slate-200 my-1" />
+
+            {/* Articles Icon Navigation */}
+            <nav className="w-full flex flex-col items-center space-y-1.5 max-h-[calc(100vh-14rem)] overflow-y-auto no-scrollbar">
+              {posts.map((post) => {
+                const href = `/blog/${post.slug}`;
+                const isActive = pathname === href;
+
+                return (
+                  <div key={post.slug} className="relative group flex items-center justify-center">
+                    <Link
+                      href={href}
+                      title={post.title}
+                      className={cn(
+                        "w-10 h-10 rounded-xl flex items-center justify-center transition-all cursor-pointer",
+                        isActive
+                          ? "bg-indigo-50 text-indigo-700 font-bold border border-indigo-200 shadow-xs"
+                          : "text-slate-600 hover:text-slate-900 hover:bg-slate-100/70"
+                      )}
+                      aria-label={post.title}
+                    >
+                      <Icon icon="ph:article" className="w-4 h-4 shrink-0" />
+                    </Link>
+
+                    <div className="absolute left-full ml-2 max-w-xs px-2.5 py-1.5 rounded-lg bg-slate-900 text-white text-xs font-semibold whitespace-normal shadow-xl border border-slate-800 z-50 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-150">
+                      <p className="line-clamp-2 leading-tight">{post.title}</p>
+                      <span className="text-[10px] text-slate-400 font-mono mt-0.5 block">{post.readingTime}</span>
+                    </div>
+                  </div>
+                );
+              })}
+            </nav>
+          </div>
+        ) : (
+          renderContent(false)
+        )}
       </aside>
 
       {/* Mobile Drawer Overlay */}
@@ -273,7 +381,7 @@ export function PostsSidebar({ posts, tags, className }: PostsSidebarProps) {
                 <Icon icon="ph:x-bold" className="w-5 h-5" />
               </button>
             </div>
-            {renderContent()}
+            {renderContent(true)}
           </div>
         </div>
       )}

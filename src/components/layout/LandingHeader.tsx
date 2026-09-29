@@ -30,23 +30,23 @@ export function LandingHeader({ onOpenSearch }: LandingHeaderProps) {
 
   return (
     <header className="sticky top-0 z-40 w-full border-b border-slate-200/80 bg-white/90 backdrop-blur-md transition-colors">
-      <div className="mx-auto flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto flex h-16 items-center justify-between px-3 sm:px-6 lg:px-8 gap-2 sm:gap-4">
         {/* Brand Logo */}
-        <div className="flex items-center gap-6">
-          <Link href="/" className="flex items-center gap-3 group focus:outline-none">
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-indigo-50 border border-indigo-100 group-hover:border-indigo-300 transition-colors shadow-xs">
+        <div className="flex items-center gap-4 lg:gap-6 shrink-0">
+          <Link href="/" className="flex items-center gap-2.5 sm:gap-3 group focus:outline-none">
+            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-indigo-50 border border-indigo-100 group-hover:border-indigo-300 transition-colors shadow-xs shrink-0">
               <LogoIcon className="h-5 w-5 text-indigo-600" size={22} />
             </div>
             <div className="flex items-center gap-2">
-              <span className="font-bold text-lg text-slate-900 tracking-tight">Playground API</span>
-              <span className="inline-flex items-center rounded-full bg-indigo-50 px-2 py-0.5 text-xs font-semibold text-indigo-600 border border-indigo-100/80">
+              <span className="font-bold text-base sm:text-lg text-slate-900 tracking-tight">Playground API</span>
+              <span className="hidden xs:inline-flex items-center rounded-full bg-indigo-50 px-2 py-0.5 text-xs font-semibold text-indigo-600 border border-indigo-100/80">
                 v1.0
               </span>
             </div>
           </Link>
 
-          {/* Desktop Anchor Navigation with Smooth Scrolling */}
-          <nav className="hidden md:flex items-center gap-1">
+          {/* Desktop Anchor Navigation with Smooth Scrolling (Shown on large desktop xl: 1280px+) */}
+          <nav className="hidden xl:flex items-center gap-1">
             <a
               href="#try-it"
               onClick={(e) => scrollToSection(e, 'try-it')}
@@ -103,12 +103,12 @@ export function LandingHeader({ onOpenSearch }: LandingHeaderProps) {
         </div>
 
         {/* Right Actions */}
-        <div className="hidden sm:flex items-center gap-3">
-          {/* Quick Search Trigger */}
+        <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+          {/* Quick Search Trigger (Desktop & Tablet) */}
           <button
             type="button"
             onClick={onOpenSearch}
-            className="inline-flex items-center gap-2 px-2.5 py-1.5 text-xs font-medium text-slate-500 hover:text-slate-900 bg-slate-100/80 hover:bg-slate-200/70 rounded-lg border border-slate-200 transition-colors cursor-pointer"
+            className="hidden sm:inline-flex items-center gap-2 px-3 py-1.5 text-xs font-medium text-slate-500 hover:text-slate-900 bg-slate-100/80 hover:bg-slate-200/70 rounded-lg border border-slate-200 transition-colors cursor-pointer"
             title="Search documentation (Cmd+K)"
           >
             <Icon icon="ph:magnifying-glass-bold" className="w-3.5 h-3.5 text-slate-400" />
@@ -118,11 +118,12 @@ export function LandingHeader({ onOpenSearch }: LandingHeaderProps) {
             </kbd>
           </button>
 
+          {/* GitHub link (Visible on larger screens) */}
           <Link
             href={siteConfig.links.github}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-3 py-1.5 text-xs font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200/80 rounded-lg border border-slate-200 transition-colors"
+            className="hidden xl:inline-flex items-center gap-2 px-3 py-1.5 text-xs font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200/80 rounded-lg border border-slate-200 transition-colors"
           >
             <svg className="h-4 w-4 fill-current" viewBox="0 0 24 24">
               <path fillRule="evenodd" clipRule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" />
@@ -130,37 +131,37 @@ export function LandingHeader({ onOpenSearch }: LandingHeaderProps) {
             <span>GitHub</span>
           </Link>
 
+          {/* Primary CTA (Visible on tablet portrait/landscape and desktop) */}
           <Link
             href="/docs/introduction"
             prefetch={true}
             onClick={() => handlePageRedirect('/docs/introduction')}
-            className={`inline-flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-semibold text-white bg-indigo-600 hover:bg-indigo-700 rounded-lg shadow-sm transition-all focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 active:scale-95 ${
+            className={`hidden sm:inline-flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-semibold text-white bg-indigo-600 hover:bg-indigo-700 rounded-lg shadow-sm transition-all focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 active:scale-95 ${
               navigatingPath === '/docs/introduction' ? 'opacity-80 pointer-events-none cursor-wait' : ''
             }`}
           >
-            <span>{navigatingPath === '/docs/introduction' ? 'Opening Docs...' : 'Explore Docs'}</span>
+            <span>{navigatingPath === '/docs/introduction' ? 'Opening...' : 'Explore Docs'}</span>
             <Icon
               icon={navigatingPath === '/docs/introduction' ? 'ph:spinner-gap-bold' : 'ph:arrow-right-bold'}
               className={`w-3.5 h-3.5 ${navigatingPath === '/docs/introduction' ? 'animate-spin' : ''}`}
             />
           </Link>
-        </div>
 
-        {/* Mobile menu button */}
-        <div className="flex md:hidden items-center gap-2">
+          {/* Mobile search icon button */}
           <button
             type="button"
             onClick={onOpenSearch}
-            className="p-2 text-slate-600 hover:text-slate-900 rounded-lg hover:bg-slate-100 transition-colors"
+            className="sm:hidden p-2 text-slate-600 hover:text-slate-900 rounded-lg hover:bg-slate-100 transition-colors"
             aria-label="Search"
           >
             <Icon icon="ph:magnifying-glass-bold" className="w-5 h-5" />
           </button>
 
+          {/* Mobile menu hamburger toggle (Visible whenever nav is hidden: < xl) */}
           <button
             type="button"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="p-2 text-slate-600 hover:text-slate-900 rounded-lg hover:bg-slate-100 transition-colors"
+            className="xl:hidden p-2 text-slate-600 hover:text-slate-900 rounded-lg hover:bg-slate-100 transition-colors"
             aria-label="Toggle Navigation Menu"
           >
             <Icon icon={mobileMenuOpen ? "ph:x-bold" : "ph:list-bold"} className="w-6 h-6" />
@@ -170,7 +171,7 @@ export function LandingHeader({ onOpenSearch }: LandingHeaderProps) {
 
       {/* Mobile dropdown */}
       {mobileMenuOpen && (
-        <div className="md:hidden border-b border-slate-200 bg-white px-4 pt-3 pb-5 space-y-2 shadow-lg animate-in fade-in slide-in-from-top-2">
+        <div className="xl:hidden border-b border-slate-200 bg-white px-4 pt-3 pb-5 space-y-2 shadow-lg animate-in fade-in slide-in-from-top-2">
           <a
             href="#try-it"
             onClick={(e) => scrollToSection(e, 'try-it')}

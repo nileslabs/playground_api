@@ -31,20 +31,53 @@ export function AppHeader({ onOpenSearch }: AppHeaderProps) {
 
   return (
     <header className="sticky top-0 z-40 w-full border-b border-slate-200/80 bg-white/95 backdrop-blur-md transition-colors">
-      <div className="mx-auto flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8 gap-4">
-        {/* Left Section: Logo & Section Switcher */}
-        <div className="flex items-center gap-4 sm:gap-6 shrink-0">
-          <Link href="/" className="flex items-center gap-2.5 group focus:outline-none">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-50 border border-indigo-100 group-hover:border-indigo-300 transition-colors shadow-xs">
+      <div className="mx-auto flex h-16 items-center justify-between px-3 sm:px-5 lg:px-8 gap-2 sm:gap-4">
+        {/* Left Section: Logo */}
+        <div className="flex items-center gap-2 sm:gap-4 shrink-0">
+          <Link href="/" className="flex items-center gap-2 sm:gap-2.5 group focus:outline-none">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-50 border border-indigo-100 group-hover:border-indigo-300 transition-colors shadow-xs shrink-0">
               <LogoIcon className="h-4.5 w-4.5 text-indigo-600" size={18} />
             </div>
-            <span className="font-bold text-base text-slate-900 tracking-tight hidden sm:inline">
+            <span className="font-bold text-sm sm:text-base text-slate-900 tracking-tight hidden xs:inline sm:inline">
               Playground API
             </span>
           </Link>
+        </div>
 
-          {/* Section Switcher Tabs */}
-          <nav className="flex items-center gap-1 bg-slate-100/80 p-1 rounded-xl border border-slate-200/80 text-xs font-semibold">
+        {/* Center Section: Search Input Bar (Refined for tablet landscape & desktop) */}
+        <div className="flex-1 max-w-xs md:max-w-64 lg:max-w-sm xl:max-w-md mx-2 hidden md:block">
+          <button
+            type="button"
+            onClick={onOpenSearch}
+            className="w-full flex items-center justify-between px-3 py-1.5 rounded-xl border border-slate-200 bg-slate-50/80 hover:bg-slate-100/80 hover:border-indigo-300 text-slate-500 hover:text-slate-800 transition-all shadow-2xs group cursor-pointer"
+          >
+            <div className="flex items-center gap-2 truncate">
+              <Icon
+                icon="ph:magnifying-glass-bold"
+                className="w-4 h-4 text-slate-400 group-hover:text-indigo-600 transition-colors shrink-0"
+              />
+              <span className="text-xs font-normal truncate">Search docs & endpoints...</span>
+            </div>
+            <kbd className="hidden lg:inline-flex items-center gap-0.5 px-1.5 py-0.5 font-mono text-[10px] font-semibold text-slate-500 bg-white border border-slate-200 rounded-md shadow-2xs shrink-0">
+              <span>⌘</span>K
+            </kbd>
+          </button>
+        </div>
+
+        {/* Right Section: Tabs (Desktop/Tablet), Search Icon & Navigation */}
+        <div className="flex items-center gap-1 sm:gap-2 shrink-0">
+          {/* Mobile & Tablet Portrait search icon button */}
+          <button
+            type="button"
+            onClick={onOpenSearch}
+            className="md:hidden p-2 text-slate-500 hover:text-slate-900 rounded-lg hover:bg-slate-100 transition-colors shrink-0"
+            aria-label="Open Search"
+          >
+            <Icon icon="ph:magnifying-glass-bold" className="w-5 h-5 text-slate-600" />
+          </button>
+
+          {/* Section Switcher Tabs - Shown on md (tablets landscape & desktop), hidden on mobile phones */}
+          <nav className="hidden md:flex items-center gap-1 bg-slate-100/80 p-1 rounded-xl border border-slate-200/80 text-xs font-semibold shrink-0">
             <Link
               href="/docs/introduction"
               prefetch={true}
@@ -79,7 +112,7 @@ export function AppHeader({ onOpenSearch }: AppHeaderProps) {
               ) : (
                 <span>Blog</span>
               )}
-              <span className="px-1.5 py-0.2 rounded-full bg-indigo-50 text-[10px] font-bold text-indigo-700 border border-indigo-200/80">
+              <span className="hidden xl:inline-block px-1.5 py-0.2 rounded-full bg-indigo-50 text-[10px] font-bold text-indigo-700 border border-indigo-200/80">
                 Deep Dives
               </span>
             </Link>
@@ -89,7 +122,7 @@ export function AppHeader({ onOpenSearch }: AppHeaderProps) {
               onClick={() => {
                 if (!isStudio) setNavigatingTab('studio');
               }}
-              className={`px-3 py-1 rounded-lg transition-all inline-flex items-center gap-1.5 hidden md:inline-flex ${
+              className={`px-3 py-1 rounded-lg transition-all inline-flex items-center gap-1.5 ${
                 isStudio
                   ? 'bg-white text-indigo-700 shadow-2xs font-bold border border-slate-200/60'
                   : 'text-slate-600 hover:text-slate-900 hover:bg-white/50'
@@ -101,56 +134,13 @@ export function AppHeader({ onOpenSearch }: AppHeaderProps) {
               <span>Studio</span>
             </Link>
           </nav>
-        </div>
-
-        {/* Center Section: Prominent Search Input Bar */}
-        <div className="flex-1 max-w-lg mx-2 hidden sm:block">
-          <button
-            type="button"
-            onClick={onOpenSearch}
-            className="w-full flex items-center justify-between px-3.5 py-1.5 rounded-xl border border-slate-200 bg-slate-50/80 hover:bg-slate-100/80 hover:border-indigo-300 text-slate-500 hover:text-slate-800 transition-all shadow-2xs group cursor-pointer"
-          >
-            <div className="flex items-center gap-2.5 truncate">
-              <Icon
-                icon="ph:magnifying-glass-bold"
-                className="w-4 h-4 text-slate-400 group-hover:text-indigo-600 transition-colors shrink-0"
-              />
-              <span className="text-xs font-normal truncate">Search docs, endpoints & guides...</span>
-            </div>
-            <kbd className="hidden sm:inline-flex items-center gap-0.5 px-2 py-0.5 font-mono text-[10px] font-semibold text-slate-500 bg-white border border-slate-200 rounded-md shadow-2xs">
-              <span>⌘</span>K
-            </kbd>
-          </button>
-        </div>
-
-        {/* Right Section: Sandbox Status & Links */}
-        <div className="flex items-center gap-3 shrink-0">
-          {/* Mobile search icon button */}
-          <button
-            type="button"
-            onClick={onOpenSearch}
-            className="sm:hidden p-2 text-slate-500 hover:text-slate-900 rounded-lg hover:bg-slate-100 transition-colors"
-            aria-label="Open Search"
-          >
-            <Icon icon="ph:magnifying-glass-bold" className="w-5 h-5 text-slate-600" />
-          </button>
-
-          {/* Sandbox Online Status indicator */}
-          <Link
-            href="/docs/sandbox/dashboard"
-            className="hidden lg:inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 text-xs font-medium hover:bg-emerald-100/70 transition-colors"
-            title="Session sandbox is active"
-          >
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-            <span>Sandbox Active</span>
-          </Link>
 
           {/* GitHub link */}
           <Link
             href={siteConfig.links.github}
             target="_blank"
             rel="noopener noreferrer"
-            className="p-1.5 text-slate-500 hover:text-slate-900 rounded-lg hover:bg-slate-100 transition-colors"
+            className="p-1.5 text-slate-500 hover:text-slate-900 rounded-lg hover:bg-slate-100 transition-colors hidden md:inline-flex"
             title="GitHub Repository"
           >
             <svg className="h-5 w-5 fill-current" viewBox="0 0 24 24">
@@ -212,13 +202,6 @@ export function AppHeader({ onOpenSearch }: AppHeaderProps) {
             className="block px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 rounded-lg"
           >
             Interactive API Studio
-          </Link>
-          <Link
-            href="/docs/sandbox/dashboard"
-            onClick={() => setMobileMenuOpen(false)}
-            className="block px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 rounded-lg"
-          >
-            Sandbox State Dashboard
           </Link>
         </div>
       )}
