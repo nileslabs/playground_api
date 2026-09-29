@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { Icon } from '@iconify/react';
 import config from '@/config/env';
+import { CodeBlock } from '@/components/ui/CodeBlock';
 
 interface HeaderItem {
   key: string;
@@ -44,7 +45,6 @@ export function InteractiveConsole({
   const [statusCode, setStatusCode] = useState<number | null>(null);
   const [latencyMs, setLatencyMs] = useState<number | null>(null);
   const [response, setResponse] = useState<any>(null);
-  const [copied, setCopied] = useState(false);
 
   // Update currentPath when prop changes
   React.useEffect(() => {
@@ -124,14 +124,6 @@ export function InteractiveConsole({
       setLoading(false);
       setActiveTab('response');
     }
-  };
-
-  const handleCopy = () => {
-    navigator.clipboard.writeText(
-      typeof response === 'string' ? response : JSON.stringify(response, null, 2)
-    );
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
   };
 
   return (
@@ -237,45 +229,45 @@ export function InteractiveConsole({
       </div>
 
       {/* Tab Panels */}
-      <div className="p-4 sm:p-5 bg-slate-900 relative min-h-[140px]">
+      <div className="p-4 sm:p-5 bg-slate-50/60 border-t border-slate-100">
         {activeTab === 'response' && (
-          <>
-            {response ? (
-              <>
-                <button
-                  type="button"
-                  onClick={handleCopy}
-                  className="absolute top-4 right-4 px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-medium transition-all flex items-center gap-1 cursor-pointer"
-                >
-                  <Icon icon={copied ? 'ph:check-bold' : 'ph:copy-bold'} className="w-3.5 h-3.5 text-indigo-400" />
-                  <span>{copied ? 'Copied' : 'Copy'}</span>
-                </button>
-                <pre className="font-mono text-xs text-emerald-400 overflow-x-auto max-h-96 leading-relaxed">
-                  {typeof response === 'string' ? response : JSON.stringify(response, null, 2)}
-                </pre>
-              </>
-            ) : (
-              <div className="text-center py-8 text-slate-500 text-xs">
-                Click &quot;Send&quot; above to execute this request against the live server.
-              </div>
-            )}
-          </>
+          <CodeBlock
+            code={
+              response
+                ? typeof response === 'string'
+                  ? response
+                  : JSON.stringify(response, null, 2)
+                : '{\n  // Click "Send" above to execute this request against the live server.\n}'
+            }
+            language="json"
+            title="response.json"
+            subtitle={
+              statusCode !== null
+                ? `HTTP ${statusCode}${latencyMs !== null ? ` • ${latencyMs}ms` : ''}`
+                : undefined
+            }
+            copyable={Boolean(response)}
+            maxHeight="max-h-[420px]"
+          />
         )}
 
         {activeTab === 'body' && (
-          <textarea
-            value={body}
-            onChange={(e) => setBody(e.target.value)}
-            rows={8}
-            className="w-full bg-slate-950 font-mono text-xs text-slate-100 p-3 rounded-lg border border-slate-800 focus:outline-indigo-500"
+          <CodeBlock
+            code={body}
+            language="json"
+            title="payload.json"
+            editable
+            onChange={setBody}
+            maxHeight="max-h-[420px]"
+            placeholder='{\n  "key": "value"\n}'
           />
         )}
 
         {activeTab === 'headers' && (
-          <div className="space-y-2">
+          <div className="space-y-2 p-4 rounded-xl border border-slate-200 bg-white shadow-2xs">
             {headers.map((h, i) => (
-              <div key={i} className="flex items-center gap-2 text-xs font-mono text-slate-300">
-                <span className="text-indigo-400 font-bold">{h.key}:</span>
+              <div key={i} className="flex items-center gap-2 text-xs font-mono text-slate-700">
+                <span className="text-indigo-600 font-bold">{h.key}:</span>
                 <span>{h.value}</span>
               </div>
             ))}

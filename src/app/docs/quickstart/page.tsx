@@ -210,19 +210,25 @@ print("Total count updated:", len(updated_resp.json().get('data', [])))`,
         </div>
 
         {pingResult && (
-          <div className="rounded-xl border border-slate-200 bg-slate-900 p-4 space-y-2">
-            <div className="flex items-center justify-between text-xs font-mono border-b border-slate-800 pb-2">
+          <div className="space-y-2 pt-2">
+            <div className="flex items-center justify-between text-xs font-semibold text-slate-700 px-1">
               <div className="flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-emerald-400"></span>
-                <span className="text-emerald-400 font-bold text-sm">200 OK</span>
+                <span className="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+                <span className="font-bold text-slate-900">Status: 200 OK</span>
               </div>
               {pingLatency !== null && (
-                <span className="text-slate-400 text-xs sm:text-sm">Latency: <strong className="text-white">{pingLatency}ms</strong></span>
+                <span className="text-slate-500 font-mono text-xs">
+                  Latency: <strong className="text-indigo-600">{pingLatency}ms</strong>
+                </span>
               )}
             </div>
-            <pre className="font-mono text-xs sm:text-sm text-emerald-400 overflow-x-auto">
-              {JSON.stringify(pingResult, null, 2)}
-            </pre>
+
+            <CodeBlock
+              code={JSON.stringify(pingResult, null, 2)}
+              language="json"
+              title="health-check.json"
+              subtitle={pingLatency ? `${pingLatency}ms` : undefined}
+            />
           </div>
         )}
       </div>
