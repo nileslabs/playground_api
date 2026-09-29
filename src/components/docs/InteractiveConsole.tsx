@@ -18,7 +18,7 @@ interface QueryParamItem {
 export interface InteractiveConsoleProps {
   method: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
   path: string;
-  initialHeaders?: HeaderItem[];
+  initialHeaders?: HeaderItem[] | Record<string, string>;
   initialQueryParams?: QueryParamItem[];
   initialBody?: string;
   title?: string;
@@ -27,6 +27,12 @@ export interface InteractiveConsoleProps {
 
 const EMPTY_HEADERS: HeaderItem[] = [];
 const EMPTY_QUERY_PARAMS: QueryParamItem[] = [];
+
+function normalizeHeaders(input?: HeaderItem[] | Record<string, string>): HeaderItem[] {
+  if (!input) return EMPTY_HEADERS;
+  if (Array.isArray(input)) return input;
+  return Object.entries(input).map(([key, value]) => ({ key, value }));
+}
 
 export function InteractiveConsole({
   method,
@@ -39,7 +45,14 @@ export function InteractiveConsole({
 }: InteractiveConsoleProps) {
   const [activeTab, setActiveTab] = useState<'response' | 'body' | 'headers'>('response');
   const [currentPath, setCurrentPath] = useState(path);
-  const [headers, setHeaders] = useState<HeaderItem[]>(initialHeaders);
+
+  const headersSerialized = JSON.stringify(initialHeaders);
+  const normalizedInitialHeaders = React.useMemo(
+    () => normalizeHeaders(initialHeaders),
+    [headersSerialized]
+  );
+
+  const [headers, setHeaders] = useState<HeaderItem[]>(normalizedInitialHeaders);
   const [body, setBody] = useState<string>(initialBody);
   const [loading, setLoading] = useState(false);
   const [statusCode, setStatusCode] = useState<number | null>(null);
@@ -56,11 +69,10 @@ export function InteractiveConsole({
     setBody(initialBody);
   }, [initialBody]);
 
-  // Update headers only when serialized content changes to prevent infinite loops
-  const headersSerialized = JSON.stringify(initialHeaders);
+  // Update headers when initialHeaders changes
   React.useEffect(() => {
-    setHeaders(initialHeaders);
-  }, [headersSerialized]);
+    setHeaders(normalizedInitialHeaders);
+  }, [normalizedInitialHeaders]);
 
   const getMethodBadge = (m: string) => {
     switch (m.toUpperCase()) {
