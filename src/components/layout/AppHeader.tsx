@@ -80,7 +80,7 @@ export function AppHeader({ onOpenSearch }: AppHeaderProps) {
                 <span>Blog</span>
               )}
               <span className="px-1.5 py-0.2 rounded-full bg-indigo-50 text-[10px] font-bold text-indigo-700 border border-indigo-200/80">
-                12 Parts
+                Deep Dives
               </span>
             </Link>
             <Link
@@ -204,7 +204,7 @@ export function AppHeader({ onOpenSearch }: AppHeaderProps) {
             onClick={() => setMobileMenuOpen(false)}
             className="block px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 rounded-lg"
           >
-            Technical Blog & Tutorials
+            Technical Blog & Deep Dives
           </Link>
           <Link
             href="/docs/toolkit/studio"

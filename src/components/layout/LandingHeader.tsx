@@ -88,7 +88,7 @@ export function LandingHeader({ onOpenSearch }: LandingHeaderProps) {
                 <Icon icon="ph:spinner-gap-bold" className="w-3.5 h-3.5 text-indigo-600 animate-spin" />
               ) : (
                 <span className="px-1.5 py-0.2 rounded-full bg-indigo-50 text-[10px] font-bold text-indigo-700 border border-indigo-200/80">
-                  12 Parts
+                  Deep Dives
                 </span>
               )}
             </Link>
@@ -206,7 +206,7 @@ export function LandingHeader({ onOpenSearch }: LandingHeaderProps) {
           >
             <span>Technical Blog</span>
             <span className="px-2 py-0.5 rounded-full bg-indigo-50 text-xs font-bold text-indigo-700 border border-indigo-200">
-              12 Parts
+              Deep Dives
             </span>
           </Link>
           <a

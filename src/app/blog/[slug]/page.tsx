@@ -143,7 +143,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           </Link>
           <Icon icon="ph:caret-right-bold" className="w-3.5 h-3.5" />
           <span className="text-text-primary font-medium truncate max-w-50 sm:max-w-xs">
-            Part {post.order}: {post.slug}
+            {post.title}
           </span>
         </nav>
 
@@ -153,14 +153,14 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           <div className="lg:col-span-8 min-w-0 space-y-8">
             {/* Article Header */}
             <header className="space-y-6">
-              {/* Series & Part Pill */}
+              {/* Category Pill */}
               <div className="flex flex-wrap items-center gap-2">
                 <Link
                   href="/blog"
                   className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-accent-light text-accent-primary border border-accent-primary/20 text-xs font-bold hover:bg-accent-light/80 transition-colors"
                 >
-                  <Icon icon="ph:stack-bold" className="w-3.5 h-3.5" />
-                  {post.series} • Part {post.order} of 12
+                  <Icon icon="ph:article-bold" className="w-3.5 h-3.5" />
+                  Feature Deep Dive
                 </Link>
                 <span className="flex items-center gap-1 text-xs text-text-muted">
                   <Icon icon="ph:clock-bold" className="w-3.5 h-3.5 text-accent-primary" />
@@ -244,12 +244,13 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             <div className="my-5 pt-6 border-t border-border-theme flex flex-wrap items-center gap-2">
               <span className="text-xs font-bold text-text-muted uppercase tracking-wider mr-1">Tags:</span>
               {post.tags.map((tag) => (
-                <span
+                <Link
                   key={tag}
-                  className="px-2.5 py-1 rounded-lg bg-bg-secondary text-xs font-medium text-text-secondary border border-border-theme"
+                  href={`/blog?tag=${encodeURIComponent(tag.toLowerCase())}`}
+                  className="px-2.5 py-1 rounded-lg bg-bg-secondary hover:bg-accent-light hover:text-accent-primary hover:border-accent-primary/40 text-xs font-medium text-text-secondary border border-border-theme transition-colors"
                 >
                   #{tag}
-                </span>
+                </Link>
               ))}
             </div>
 
@@ -294,20 +295,20 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           <aside className="hidden lg:block lg:col-span-4 sticky top-20 self-start space-y-6">
             <TableOfContents headings={post.headings} />
 
-            {/* Series Overview Sidebar Card */}
+            {/* Feature Deep Dives Sidebar Card */}
             <div className="p-4 sm:p-5 rounded-2xl border border-border-theme bg-bg-secondary/40 space-y-3">
               <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-text-muted">
-                <Icon icon="ph:books-bold" className="w-4 h-4 text-accent-primary" />
-                About the Series
+                <Icon icon="ph:article-medium-bold" className="w-4 h-4 text-accent-primary" />
+                Feature Deep Dives
               </div>
               <p className="text-xs text-text-secondary leading-relaxed">
-                <strong>Stop Waiting for the Backend</strong> covers 12 practical frontend workflows: React CRUD, GraphQL mutations, JWT auth loops, latency & chaos simulation, and more.
+                In-depth technical guides exploring Playground API features — real-time subscriptions, stateful sandboxes, schema validation, latency simulation, and developer tooling.
               </p>
               <Link
                 href="/blog"
                 className="inline-flex items-center gap-1 text-xs font-bold text-accent-primary hover:text-accent-secondary transition-colors"
               >
-                View All 12 Articles
+                Browse All Articles
                 <Icon icon="ph:arrow-right-bold" className="w-3.5 h-3.5" />
               </Link>
             </div>

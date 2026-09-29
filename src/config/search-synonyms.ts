@@ -61,15 +61,18 @@ export const searchSynonyms: Record<string, string[]> = {
     'react ecommerce demo',
   ],
 
-  // Guides & Masterclass Series
+  // Articles & Feature Deep Dives
   '/blog': [
     'blog',
+    'articles',
+    'feature deep dives',
+    'deep dive',
+    'architecture',
+    'guides',
+    'stop waiting for the backend',
+    'frontend api guide',
     'masterclass',
     'tutorials',
-    'articles',
-    'stop waiting for the backend',
-    '12 part series',
-    'frontend api guide',
   ],
   '/blog/react-crud-without-backend': [
     'react crud',

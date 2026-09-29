@@ -16,7 +16,7 @@ interface FeaturedArticle {
 const featuredArticles: FeaturedArticle[] = [
   {
     part: 1,
-    title: 'React CRUD Without a Backend: Full Tutorial',
+    title: 'React CRUD Without a Backend: Build Real Apps Today',
     slug: 'react-crud-without-backend',
     readingTime: '8 min read',
     description:
@@ -45,28 +45,28 @@ const featuredArticles: FeaturedArticle[] = [
 
 export function BlogSection() {
   return (
-    <section id="tutorials" className="scroll-mt-16 sm:scroll-mt-20 py-20 md:py-28 bg-slate-50/50 border-b border-slate-200/80">
+    <section id="articles" className="scroll-mt-16 sm:scroll-mt-20 py-20 md:py-28 bg-slate-50/50 border-b border-slate-200/80">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 space-y-12">
         {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div className="space-y-3 max-w-2xl">
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-50 text-indigo-700 text-xs font-semibold uppercase tracking-wider border border-indigo-100">
               <Icon icon="ph:newspaper-clipping-bold" className="w-3.5 h-3.5 text-indigo-600" />
-              <span>Official Masterclass Series</span>
+              <span>Engineering & Architecture</span>
             </div>
             <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-slate-900">
               Stop Waiting for the Backend
             </h2>
             <p className="text-base sm:text-lg text-slate-600 font-normal leading-relaxed">
-              Step-by-step technical guides on stateful mock APIs, WebSockets, JWT loops, payments, and frontend autonomy.
+              In-depth technical articles explaining Playground API features, stateful architectures, WebSockets, payment intents, and frontend autonomy.
             </p>
           </div>
 
           <Link
             href="/blog"
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white hover:bg-slate-50 text-slate-800 hover:text-indigo-600 font-semibold text-sm border border-slate-200 shadow-2xs transition-all shrink-0 group self-start md:self-auto"
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white hover:bg-slate-50 text-slate-800 hover:text-indigo-600 font-semibold text-sm border border-slate-200 shadow-2xs transition-all shrink-0 group self-start md:self-auto cursor-pointer"
           >
-            <span>View All 12 Articles</span>
+            <span>Explore All Articles</span>
             <Icon icon="ph:arrow-right-bold" className="w-4 h-4 text-indigo-600 group-hover:translate-x-0.5 transition-transform" />
           </Link>
         </div>
@@ -82,7 +82,7 @@ export function BlogSection() {
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
                   <span className="font-mono text-xs font-bold px-2 py-0.5 rounded bg-indigo-50 text-indigo-700 border border-indigo-100">
-                    Part {article.part} of 12
+                    #{article.tags[0]}
                   </span>
                   <span className="text-[11px] font-medium text-slate-400 flex items-center gap-1">
                     <Icon icon="ph:clock-bold" className="w-3 h-3 text-slate-400" />

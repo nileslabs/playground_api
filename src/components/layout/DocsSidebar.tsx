@@ -125,7 +125,7 @@ export function DocsSidebar({ className, onSelect }: DocsSidebarProps) {
         )}
       </div>
 
-      {/* Direct Link to Technical Blog Masterclass Series */}
+      {/* Direct Link to Technical Blog & Feature Deep Dives */}
       {!filterText && (
         <Link
           href="/blog"
@@ -144,7 +144,7 @@ export function DocsSidebar({ className, onSelect }: DocsSidebarProps) {
               <span className="font-semibold text-slate-900 group-hover:text-indigo-600 transition-colors block text-xs sm:text-[13px] truncate leading-tight">
                 Technical Blog
               </span>
-              <span className="text-[11px] text-indigo-700 font-medium block truncate">12-Part Masterclass</span>
+              <span className="text-[11px] text-indigo-700 font-medium block truncate">Feature Deep Dives</span>
             </div>
           </div>
           <Icon icon="ph:arrow-right-bold" className="w-3.5 h-3.5 text-indigo-600 group-hover:translate-x-0.5 transition-transform shrink-0" />
@@ -247,7 +247,7 @@ export function DocsSidebar({ className, onSelect }: DocsSidebarProps) {
         )}
       </div>
 
-      {/* Technical Blog & Masterclass Promotion Card */}
+      {/* Technical Blog & Feature Deep Dives Promotion Card */}
       <div className="p-3.5 rounded-2xl border border-indigo-100 bg-gradient-to-br from-indigo-50/70 via-white to-slate-50 space-y-2.5 mt-4 shadow-2xs">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-1.5 text-[11px] font-bold text-indigo-700 uppercase tracking-wider">
@@ -255,11 +255,11 @@ export function DocsSidebar({ className, onSelect }: DocsSidebarProps) {
             <span>Technical Blog</span>
           </div>
           <span className="text-[10px] font-bold px-1.5 py-0.2 rounded-full bg-indigo-600 text-white font-mono">
-            12 Parts
+            Articles
           </span>
         </div>
         <p className="text-xs text-slate-600 leading-snug">
-          &ldquo;Stop Waiting for the Backend&rdquo; series: practical React, Next.js & GraphQL workflows.
+          In-depth articles explaining stateful mock APIs, WebSockets, payments, and frontend resilience.
         </p>
         <Link
           href="/blog"
@@ -269,7 +269,7 @@ export function DocsSidebar({ className, onSelect }: DocsSidebarProps) {
           }}
           className="inline-flex items-center gap-1 text-xs font-bold text-indigo-600 hover:text-indigo-800 transition-colors group"
         >
-          <span>Read Masterclass</span>
+          <span>Read Articles</span>
           <Icon icon="ph:arrow-right-bold" className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
         </Link>
       </div>

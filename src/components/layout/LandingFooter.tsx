@@ -93,18 +93,18 @@ export function LandingFooter() {
             </ul>
           </div>
 
-          {/* Column: Technical Blog & Masterclass Series */}
+          {/* Column: Articles & Feature Deep Dives */}
           <div className="space-y-3">
             <div className="flex items-center gap-1.5">
-              <h4 className="text-xs font-semibold uppercase tracking-wider text-slate-900">Blog & Guides</h4>
+              <h4 className="text-xs font-semibold uppercase tracking-wider text-slate-900">Articles & Guides</h4>
               <span className="px-1.5 py-0.2 rounded-full bg-indigo-50 text-[10px] font-bold text-indigo-700 border border-indigo-200">
-                12 Parts
+                Deep Dives
               </span>
             </div>
             <ul className="space-y-2 text-sm">
               <li>
                 <Link href="/blog" className="text-indigo-600 hover:text-indigo-800 font-semibold transition-colors flex items-center gap-1">
-                  <span>All 12 Articles</span>
+                  <span>All Feature Articles</span>
                   <span aria-hidden="true">→</span>
                 </Link>
               </li>

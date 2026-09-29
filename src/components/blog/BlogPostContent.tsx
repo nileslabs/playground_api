@@ -129,8 +129,10 @@ function renderTable(tableLines: string[], keyIndex: number): React.ReactNode {
 }
 
 export function BlogPostContent({ content }: BlogPostContentProps) {
-  // Strip top SEO meta paragraphs (like Suggested URL Slug, Dev.to Tags) if present
-  let cleanContent = content;
+  // Strip top SEO draft notes (Suggested URL Slug, Primary Keyword, Dev.to Tags, etc.) if present
+  let cleanContent = content
+    .replace(/\*\*Suggested URL Slug:\*\*[\s\S]*?---\r?\n+/m, '')
+    .replace(/\*\*Primary Keyword:\*\*[\s\S]*?---\r?\n+/m, '');
 
   // Split lines into structured blocks
   const lines = cleanContent.split('\n');

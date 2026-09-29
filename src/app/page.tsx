@@ -71,7 +71,7 @@ export default function LandingPage() {
       {/* 7. Client SDK & Collections Downloads */}
       <DownloadsSection />
 
-      {/* 8. Masterclass Technical Blog & Tutorials Series */}
+      {/* 8. Technical Blog & Feature Deep Dives */}
       <BlogSection />
 
       {/* 9. Frequently Asked Questions */}

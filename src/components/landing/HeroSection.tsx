@@ -29,7 +29,7 @@ export function HeroSection() {
           <span>The Zero-Login Stateful Mock API</span>
           <span className="text-indigo-300">•</span>
           <span className="font-normal text-indigo-600 group-hover:text-indigo-800 transition-colors">
-            12-Part Masterclass Series →
+            Explore Feature Deep Dives →
           </span>
         </Link>
 
