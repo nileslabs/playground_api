@@ -148,34 +148,36 @@ export function InteractiveConsole({
   return (
     <div className="rounded-2xl border border-slate-200 bg-white shadow-xs overflow-hidden">
       {/* Console Header */}
-      <div className="border-b border-slate-100 bg-slate-50/70 p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-        <div>
+      <div className="border-b border-slate-100 bg-slate-50/70 p-4 sm:p-5 space-y-3">
+        <div className="flex items-center justify-between gap-2">
           <h4 className="text-sm font-bold text-slate-900">{title}</h4>
-          {description && <p className="text-xs text-slate-500 mt-0.5">{description}</p>}
+          {description && <p className="text-xs text-slate-500 hidden sm:block truncate max-w-xs">{description}</p>}
         </div>
 
         {/* URL Bar & Method & Run Button */}
-        <div className="flex items-center gap-2 w-full sm:w-auto">
+        <div className="flex items-center gap-2 w-full">
           <span
-            className={`px-2.5 py-1 rounded-lg text-xs font-mono font-bold border shrink-0 ${getMethodBadge(
+            className={`px-2.5 py-1.5 rounded-xl text-xs font-mono font-bold border shrink-0 ${getMethodBadge(
               effectiveMethod
             )}`}
           >
             {effectiveMethod}
           </span>
 
-          <input
-            type="text"
-            value={currentPath}
-            onChange={(e) => setCurrentPath(e.target.value)}
-            className="flex-1 sm:w-64 px-3 py-1.5 rounded-xl border border-slate-200 bg-white text-xs font-mono text-slate-800 focus:outline-indigo-500"
-          />
+          <div className="flex-1 min-w-0">
+            <input
+              type="text"
+              value={currentPath}
+              onChange={(e) => setCurrentPath(e.target.value)}
+              className="w-full px-3 py-1.5 rounded-xl border border-slate-200 bg-white text-xs font-mono text-slate-800 focus:outline-indigo-500"
+            />
+          </div>
 
           <button
             type="button"
             onClick={handleSend}
             disabled={loading}
-            className="px-4 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-xs shadow-xs transition-all flex items-center gap-1.5 shrink-0 cursor-pointer disabled:opacity-50"
+            className="px-3.5 sm:px-4 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs shadow-xs transition-all flex items-center gap-1.5 shrink-0 cursor-pointer disabled:opacity-50"
           >
             {loading ? (
               <Icon icon="ph:spinner-bold" className="w-3.5 h-3.5 animate-spin" />

@@ -107,6 +107,7 @@ export const siteConfig = {
       title: 'Mock Commerce & Billing',
       icon: 'ph:credit-card-bold',
       items: [
+        { title: 'Overview & Flowcharts', href: '/docs/payments', icon: 'ph:stack-bold', badge: 'Hub' },
         { title: 'Hosted Checkout', href: '/docs/payments/hosted-checkout', icon: 'ph:shopping-bag-open-bold', badge: 'Stripe' },
         { title: 'Payment Intents API', href: '/docs/payments/payment-intents', icon: 'ph:receipt-bold' },
         { title: '3DS Challenge Modal', href: '/docs/payments/3ds-authentication', icon: 'ph:shield-warning-bold', badge: 'Modal' },
