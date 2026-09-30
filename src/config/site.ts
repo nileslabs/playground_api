@@ -120,6 +120,7 @@ export const siteConfig = {
       title: 'Virtual Communications',
       icon: 'ph:envelope-simple-bold',
       items: [
+        { title: 'Overview & Channels', href: '/docs/inbox', icon: 'ph:stack-bold', badge: 'Hub' },
         { title: 'Virtual Email Mailbox', href: '/docs/inbox/email-mailbox', icon: 'ph:mailbox-bold', badge: 'Mailtrap' },
         { title: 'Virtual SMS Terminal', href: '/docs/inbox/sms-terminal', icon: 'ph:device-mobile-bold', badge: 'Phone' },
         { title: 'In-App Notifications', href: '/docs/inbox/in-app-messages', icon: 'ph:bell-ringing-bold' },
