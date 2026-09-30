@@ -100,7 +100,6 @@ const nextConfig = {
       { source: '/docs/graphql', destination: '/docs/graphql/ide', permanent: true },
       { source: '/docs/collections', destination: '/docs/collections/openapi', permanent: true },
       { source: '/docs/toolkit', destination: '/docs/toolkit/studio', permanent: true },
-      { source: '/docs/resources', destination: '/docs/resources/users', permanent: true },
     ];
   },
 };

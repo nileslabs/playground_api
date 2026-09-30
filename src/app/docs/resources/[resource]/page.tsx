@@ -90,7 +90,12 @@ export default async function ResourcePage({ params }: ResourcePageProps) {
       <ResourceClient
         resource={resource}
         name={res.name}
+        singular={res.singular}
         description={res.description}
+        itemCount={res.itemCount}
+        icon={res.icon}
+        prevPage={res.prevPage}
+        nextPage={res.nextPage}
         initialEndpoints={res.endpoints}
       />
     </>

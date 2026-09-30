@@ -50,6 +50,7 @@ export const siteConfig = {
       title: 'Core REST Resources',
       icon: 'ph:database-bold',
       items: [
+        { title: 'Overview & Models', href: '/docs/resources', icon: 'ph:stack-bold', badge: 'Hub' },
         { title: 'Users Resource', href: '/docs/resources/users', icon: 'ph:users-bold' },
         { title: 'Posts Resource', href: '/docs/resources/posts', icon: 'ph:newspaper-bold' },
         { title: 'Comments Resource', href: '/docs/resources/comments', icon: 'ph:chats-circle-bold' },
