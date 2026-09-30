@@ -55,9 +55,15 @@ export const siteConfig = {
         { title: 'Comments Resource', href: '/docs/resources/comments', icon: 'ph:chats-circle-bold' },
         { title: 'Todos Resource', href: '/docs/resources/todos', icon: 'ph:check-square-bold' },
         { title: 'Custom Collections', href: '/docs/query/custom-resources', icon: 'ph:table-bold', badge: 'Custom' },
+      ],
+    },
+    {
+      title: 'Media & Binary Assets',
+      icon: 'ph:image-bold',
+      items: [
+        { title: 'Multipart File Uploads', href: '/docs/media/file-uploads', icon: 'ph:upload-simple-bold', badge: 'Upload' },
         { title: 'Dynamic SVG Avatars', href: '/docs/media/svg-avatars', icon: 'ph:smiley-bold', badge: 'SVG' },
-        { title: 'Multipart File Uploads', href: '/docs/media/file-uploads', icon: 'ph:upload-simple-bold' },
-        { title: 'Image Thumbnails', href: '/docs/media/image-thumbnails', icon: 'ph:frame-corners-bold' },
+        { title: 'Image Thumbnails', href: '/docs/media/image-thumbnails', icon: 'ph:frame-corners-bold', badge: 'CDN' },
       ],
     },
     {
