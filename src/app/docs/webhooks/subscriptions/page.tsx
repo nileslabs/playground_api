@@ -5,6 +5,7 @@ import { Icon } from '@iconify/react';
 import config from '@/config/env';
 import { InteractiveConsole } from '@/components/docs/InteractiveConsole';
 import { CodeBlock } from '@/components/ui/CodeBlock';
+import { DocWorkflowDiagram } from '@/components/docs/DocWorkflowDiagram';
 
 export default function WebhookSubscriptionsPage() {
   const publicApiUrl = config.publicApiUrl || 'https://playground.nileslabs.com/api/v1';
@@ -118,6 +119,35 @@ export async function POST(request: Request) {
         <p className="text-base sm:text-lg text-slate-600 leading-relaxed max-w-3xl">
           Register HTTP callback URLs to receive real-time JSON webhooks whenever resources change in your session. Filter by specific entity events (<code className="font-mono text-xs bg-slate-100 px-1.5 py-0.5 rounded text-indigo-600 font-bold">posts.created</code>, <code className="font-mono text-xs bg-slate-100 px-1.5 py-0.5 rounded text-indigo-600 font-bold">payment_intent.succeeded</code>) or category-level wildcards (<code className="font-mono text-xs bg-slate-100 px-1.5 py-0.5 rounded text-indigo-600 font-bold">posts.*</code>).
         </p>
+
+        {/* Workflow Diagram */}
+        <DocWorkflowDiagram
+          src="/images/docs/workflows/webhooks-dispatcher-retry.jpg"
+          alt="Playground API Webhook Dispatcher and Exponential Backoff Retry Engine Workflow Diagram"
+          title="Webhook Dispatcher & Exponential Backoff Retry Engine"
+          subtitle="Event-driven delivery loop: HMAC-SHA256 signature signing, asynchronous queuing, and exponential jitter retries."
+          badge="Webhook Lifecycle"
+          steps={[
+            {
+              number: 1,
+              title: 'Event Trigger & Signing',
+              desc: 'Sandbox mutations generate event payloads signed with HMAC-SHA256 secrets.',
+              badge: 'HMAC SHA-256',
+            },
+            {
+              number: 2,
+              title: 'Asynchronous Queue Delivery',
+              desc: 'Dispatches HTTP POST to destination URLs with X-Playground-Signature headers.',
+              badge: 'HTTP POST',
+            },
+            {
+              number: 3,
+              title: 'Exponential Backoff Retry',
+              desc: '5xx errors and timeouts trigger automated retries (attempts 1-3 with jitter).',
+              badge: 'Fault Tolerant',
+            },
+          ]}
+        />
       </div>
 
       {/* 2. Interactive Webhook Workbench */}

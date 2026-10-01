@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Icon } from '@iconify/react';
 import config from '@/config/env';
 import { CodeBlock } from '@/components/ui/CodeBlock';
+import { DocWorkflowDiagram } from '@/components/docs/DocWorkflowDiagram';
 
 interface ChatMessage {
   id: string;
@@ -273,6 +274,35 @@ export function useWebSocket(url: string, room = 'general') {
         <p className="text-base sm:text-lg text-slate-600 leading-relaxed max-w-3xl">
           Connect to the native browser WebSocket server at <code className="font-mono text-xs bg-slate-100 px-1.5 py-0.5 rounded text-indigo-600 font-bold">/ws</code>. Features room multiplexing, peer-to-peer event broadcasts, typing indicators, and an automated <code className="font-mono text-xs bg-slate-100 px-1.5 py-0.5 rounded text-indigo-600 font-bold">@bot</code> assistant simulator without external socket dependencies.
         </p>
+
+        {/* Workflow Diagram */}
+        <DocWorkflowDiagram
+          src="/images/docs/workflows/realtime-pubsub-workflow.jpg"
+          alt="Playground API Modern Realtime WebSocket and SSE Workflow Diagram"
+          title="Realtime WebSocket PubSub & SSE Fallback Architecture"
+          subtitle="Full-duplex bidirectional event bus: Connection upgrade, channel subscription, presence echo bots, and HTTP SSE fallback."
+          badge="Realtime Protocol"
+          steps={[
+            {
+              number: 1,
+              title: 'WebSocket Handshake',
+              desc: 'Client establishes persistent ws:// or wss:// connection passing session identity.',
+              badge: 'HTTP 101 Upgrade',
+            },
+            {
+              number: 2,
+              title: 'Channel PubSub & Bots',
+              desc: 'Subscribe to rooms (#general, #support) with automated AI bot responses.',
+              badge: 'Multiplexing',
+            },
+            {
+              number: 3,
+              title: 'SSE Fallback Stream',
+              desc: 'Server-Sent Events fallback for environments blocking persistent WebSocket frames.',
+              badge: 'SSE Resilient',
+            },
+          ]}
+        />
       </div>
 
       {/* 2. Interactive WebSocket Terminal Workbench */}

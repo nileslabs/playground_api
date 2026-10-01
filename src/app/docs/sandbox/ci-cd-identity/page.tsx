@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { Icon } from '@iconify/react';
 import config from '@/config/env';
 import { CodeBlock } from '@/components/ui/CodeBlock';
+import { DocWorkflowDiagram } from '@/components/docs/DocWorkflowDiagram';
 
 export default function CiCdIdentityPage() {
   const publicApiUrl = config.publicApiUrl || 'https://playground.nileslabs.com/api/v1';
@@ -129,6 +130,35 @@ jobs:
         <p className="text-base sm:text-lg text-slate-600 leading-relaxed max-w-3xl">
           Execute dozens of parallel automated test jobs without state collisions, database locks, or cross-test data pollution. Pass a unique <code className="font-mono text-xs bg-slate-100 px-1.5 py-0.5 rounded text-indigo-600 font-bold">X-Playground-Identity</code> header to give every automated runner its own isolated memory sandbox.
         </p>
+
+        {/* Workflow Diagram */}
+        <DocWorkflowDiagram
+          src="/images/docs/workflows/cicd-parallel-isolation.jpg"
+          alt="Playground API Parallel Test Runner Isolation with Custom Identity Headers Workflow Diagram"
+          title="CI/CD Parallel Test Runner Isolation Architecture"
+          subtitle="Sharded matrix runners (Playwright / Cypress) execute concurrently with zero database locks or cross-test mutations."
+          badge="DevOps Concurrency"
+          steps={[
+            {
+              number: 1,
+              title: 'Parallel Runner Sharding',
+              desc: 'CI matrices spawn parallel runner workers (e.g. GitHub Actions matrix shards 1-4).',
+              badge: 'Sharded CI',
+            },
+            {
+              number: 2,
+              title: 'Identity Header Routing',
+              desc: 'Pass X-Playground-Identity to guarantee private isolated sandboxes for each job.',
+              badge: 'X-Playground-Identity',
+            },
+            {
+              number: 3,
+              title: 'Deterministic Tear Down',
+              desc: 'Call DELETE /session/reset before each suite for instantaneous baseline recovery.',
+              badge: 'Zero Flakiness',
+            },
+          ]}
+        />
       </div>
 
       {/* 2. Architecture Comparison */}

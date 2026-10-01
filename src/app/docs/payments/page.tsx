@@ -3,6 +3,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { Icon } from '@iconify/react';
 import { siteConfig } from '@/config/site';
+import { DocWorkflowDiagram } from '@/components/docs/DocWorkflowDiagram';
 
 export const metadata: Metadata = {
   title: 'Mock Commerce & Billing Architecture — Playground API',
@@ -156,6 +157,35 @@ export default function PaymentsOverviewPage() {
             <span className="text-[11px] text-purple-600 font-semibold">Integrated sandbox mailbox</span>
           </div>
         </div>
+
+        {/* Workflow Diagram */}
+        <DocWorkflowDiagram
+          src="/images/docs/workflows/payments-checkout-lifecycle.jpg"
+          alt="Playground API Payment Intent Lifecycle and 3D Secure State Machine Workflow Diagram"
+          title="Payment Intent Lifecycle & 3D Secure (SCA) State Machine"
+          subtitle="Multi-stage checkout flow: Intent creation, requires_payment_method, dynamic 3DS challenge step-up, and automated webhook capture."
+          badge="Billing Lifecycle"
+          steps={[
+            {
+              number: 1,
+              title: 'Payment Intent Creation',
+              desc: 'Client initiates checkout with amount and currency, receiving a client secret.',
+              badge: 'Intent Init',
+            },
+            {
+              number: 2,
+              title: '3DS SCA Challenge',
+              desc: 'Test cards trigger requires_action status with simulated biometric/OTP modals.',
+              badge: 'PSD2 / SCA',
+            },
+            {
+              number: 3,
+              title: 'Capture & Webhook Fulfillment',
+              desc: 'Funds captured into merchant balance and payment_intent.succeeded webhook dispatched.',
+              badge: 'Fulfillment',
+            },
+          ]}
+        />
       </div>
 
       {/* 2. Six Focused Module Cards */}

@@ -4,6 +4,7 @@ import config from '@/config/env';
 import { siteConfig } from '@/config/site';
 import { Icon } from '@iconify/react';
 import Link from 'next/link';
+import { DocWorkflowDiagram } from '@/components/docs/DocWorkflowDiagram';
 
 export const metadata: Metadata = {
   title: 'How Sandboxing Works — Copy-on-Write Virtual Mutation Overlays',
@@ -51,6 +52,35 @@ export default function HowItWorksPage() {
             Every read request dynamically executes a three-stage pipeline to construct your realistic view of the world:
           </p>
         </div>
+
+        <DocWorkflowDiagram
+          src="/images/docs/workflows/cow-sandbox-architecture.jpg"
+          alt="Playground API 3-Layer Copy-on-Write Sandbox Engine Architecture & Workflow"
+          title="3-Layer Copy-on-Write (CoW) Engine Pipeline"
+          subtitle="Requests split between immutable seed baselines and private session overlays, merging in memory in <1ms."
+          badge="CoW Architecture"
+          priority
+          steps={[
+            {
+              number: 1,
+              title: 'Immutable Baseline Seed',
+              desc: 'Global seed dataset (100 posts, 10 users, 500 comments) acts as read-only blueprint.',
+              badge: 'Layer 1: Read-Only',
+            },
+            {
+              number: 2,
+              title: 'Visitor Mutation Overlay',
+              desc: 'All POST, PUT, and DELETE operations are stored in private diffs keyed by session identity.',
+              badge: 'Layer 2: Private Delta',
+            },
+            {
+              number: 3,
+              title: 'In-Memory Query Resolver',
+              desc: 'Merges Layer 1 + Layer 2 in memory in <1ms with conflict resolution and tombstones.',
+              badge: 'Layer 3: Merged View',
+            },
+          ]}
+        />
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5 pt-2">
           {/* Layer 1 */}

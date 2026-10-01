@@ -5,6 +5,7 @@ import { Icon } from '@iconify/react';
 import { siteConfig } from '@/config/site';
 import { InteractiveConsole } from '@/components/docs/InteractiveConsole';
 import { CodeBlock } from '@/components/ui/CodeBlock';
+import { DocWorkflowDiagram } from '@/components/docs/DocWorkflowDiagram';
 
 export const metadata: Metadata = {
   title: 'Auth & Security Architecture — Playground API',
@@ -208,6 +209,35 @@ export default function AuthOverviewPage() {
             <span className="text-[11px] text-amber-600 font-semibold">Automatic reuse invalidation</span>
           </div>
         </div>
+
+        {/* Workflow Diagram */}
+        <DocWorkflowDiagram
+          src="/images/docs/workflows/auth-jwt-refresh-rotation.jpg"
+          alt="Playground API JWT Authentication and Refresh Token Rotation Workflow Diagram"
+          title="JWT Authentication & Refresh Token Rotation Loop"
+          subtitle="Dual-token lifecycle: Access token expiry triggers client mutex locks and atomic refresh token family rotation."
+          badge="Security Lifecycle"
+          steps={[
+            {
+              number: 1,
+              title: 'Login & Token Issuance',
+              desc: 'Submitting credentials issues a 15-minute access token and a 7-day refresh token pair.',
+              badge: 'Dual Token',
+            },
+            {
+              number: 2,
+              title: 'Protected API Access',
+              desc: 'Client sends Bearer token. When expired, API responds with 401 Unauthorized.',
+              badge: 'Bearer Auth',
+            },
+            {
+              number: 3,
+              title: 'Mutex Lock & Token Rotation',
+              desc: 'Client queues parallel requests, calls /auth/refresh, rotates token family, and retries.',
+              badge: 'Mutex Rotation',
+            },
+          ]}
+        />
       </div>
 
       {/* 2. Specialized Guides & Modules */}
