@@ -10,6 +10,7 @@ import { DownloadsSection } from '@/components/landing/DownloadsSection';
 import { BlogSection } from '@/components/landing/BlogSection';
 import { FaqSection } from '@/components/landing/FaqSection';
 import { CtaSection } from '@/components/landing/CtaSection';
+import { ScrollProgressBar } from '@/components/landing/ScrollProgressBar';
 import { siteConfig } from '@/config/site';
 import { getBreadcrumbSchema } from '@/lib/json-ld';
 
@@ -44,6 +45,9 @@ export default function LandingPage() {
 
   return (
     <div className="flex flex-col min-h-screen bg-white">
+      {/* Scroll Progress Indicator */}
+      <ScrollProgressBar />
+
       {/* Structured Breadcrumbs */}
       <script
         type="application/ld+json"
