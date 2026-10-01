@@ -20,9 +20,10 @@ export function AppHeader({ onOpenSearch }: AppHeaderProps) {
     setNavigatingTab(null);
   }, [pathname]);
 
-  const isDocs = pathname.startsWith('/docs') && !pathname.startsWith('/docs/toolkit/studio');
-  const isBlog = pathname.startsWith('/blog');
   const isStudio = pathname.startsWith('/docs/toolkit/studio');
+  const isStats = pathname.startsWith('/docs/sandbox/dashboard') || pathname === '/docs/stats' || pathname === '/docs/sandbox';
+  const isBlog = pathname.startsWith('/blog');
+  const isDocs = pathname.startsWith('/docs') && !isStudio && !isStats;
 
   const toggleSidebarMobile = () => {
     // Custom event to trigger mobile sidebar drawer in docs or blog
@@ -96,6 +97,25 @@ export function AppHeader({ onOpenSearch }: AppHeaderProps) {
               <span>Docs</span>
             </Link>
             <Link
+              href="/docs/sandbox/dashboard"
+              prefetch={true}
+              onClick={() => {
+                if (!isStats) setNavigatingTab('stats');
+              }}
+              className={`px-3 py-1 rounded-lg transition-all inline-flex items-center gap-1.5 ${
+                isStats
+                  ? 'bg-white text-indigo-700 shadow-2xs font-bold border border-slate-200/60'
+                  : 'text-slate-600 hover:text-slate-900 hover:bg-white/50'
+              } ${navigatingTab === 'stats' ? 'opacity-70 pointer-events-none' : ''}`}
+            >
+              {navigatingTab === 'stats' ? (
+                <Icon icon="ph:spinner-gap-bold" className="w-3 h-3 text-indigo-600 animate-spin" />
+              ) : (
+                <Icon icon="ph:gauge-bold" className={`w-3.5 h-3.5 ${isStats ? 'text-indigo-600' : 'text-slate-400'}`} />
+              )}
+              <span>Stats</span>
+            </Link>
+            <Link
               href="/blog"
               prefetch={true}
               onClick={() => {
@@ -112,9 +132,6 @@ export function AppHeader({ onOpenSearch }: AppHeaderProps) {
               ) : (
                 <span>Blog</span>
               )}
-              <span className="hidden xl:inline-block px-1.5 py-0.2 rounded-full bg-indigo-50 text-[10px] font-bold text-indigo-700 border border-indigo-200/80">
-                Deep Dives
-              </span>
             </Link>
             <Link
               href="/docs/toolkit/studio"
@@ -185,23 +202,34 @@ export function AppHeader({ onOpenSearch }: AppHeaderProps) {
           <Link
             href="/docs/introduction"
             onClick={() => setMobileMenuOpen(false)}
-            className="block px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 rounded-lg"
+            className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 rounded-lg"
           >
-            Documentation Home
+            <Icon icon="ph:book-open-bold" className="w-4 h-4 text-indigo-600" />
+            <span>Documentation Home</span>
           </Link>
           <Link
-            href="/blog"
+            href="/docs/sandbox/dashboard"
             onClick={() => setMobileMenuOpen(false)}
-            className="block px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 rounded-lg"
+            className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 rounded-lg"
           >
-            Technical Blog & Deep Dives
+            <Icon icon="ph:gauge-bold" className="w-4 h-4 text-indigo-600" />
+            <span>Sandbox Stats &amp; Quotas</span>
           </Link>
           <Link
             href="/docs/toolkit/studio"
             onClick={() => setMobileMenuOpen(false)}
-            className="block px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 rounded-lg"
+            className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 rounded-lg"
           >
-            Interactive API Studio
+            <Icon icon="ph:terminal-window-bold" className="w-4 h-4 text-indigo-600" />
+            <span>Interactive API Studio</span>
+          </Link>
+          <Link
+            href="/blog"
+            onClick={() => setMobileMenuOpen(false)}
+            className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 rounded-lg"
+          >
+            <Icon icon="ph:newspaper-bold" className="w-4 h-4 text-indigo-600" />
+            <span>Technical Blog &amp; Deep Dives</span>
           </Link>
         </div>
       )}
