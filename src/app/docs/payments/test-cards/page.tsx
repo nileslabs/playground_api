@@ -279,12 +279,12 @@ export default function TestCardsCatalogPage() {
             onClick={() => setIsFlipped(!isFlipped)}
             className={`w-full h-56 rounded-2xl p-6 text-white shadow-xl cursor-pointer transition-transform duration-500 relative select-none flex flex-col justify-between overflow-hidden ${
               selectedCard.category === 'success'
-                ? 'bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 border border-indigo-500/30'
+                ? 'bg-linear-to-br from-slate-900 via-indigo-950 to-slate-900 border border-indigo-500/30'
                 : selectedCard.category === '3ds'
-                ? 'bg-gradient-to-br from-amber-950 via-slate-900 to-amber-900 border border-amber-500/30'
+                ? 'bg-linear-to-br from-amber-950 via-slate-900 to-amber-900 border border-amber-500/30'
                 : selectedCard.category === 'fraud'
-                ? 'bg-gradient-to-br from-rose-950 via-slate-900 to-rose-900 border border-rose-500/30'
-                : 'bg-gradient-to-br from-slate-800 via-slate-900 to-zinc-950 border border-slate-700/50'
+                ? 'bg-linear-to-br from-rose-950 via-slate-900 to-rose-900 border border-rose-500/30'
+                : 'bg-linear-to-br from-slate-800 via-slate-900 to-zinc-950 border border-slate-700/50'
             }`}
           >
             {/* Ambient Glow */}

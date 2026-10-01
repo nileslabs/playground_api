@@ -500,7 +500,7 @@ export function useGraphQLSubscription(query: string, variables = {}) {
           </div>
 
           {/* Terminal Event Stream */}
-          <div className="p-4 bg-slate-900 min-h-[260px] max-h-[380px] overflow-y-auto space-y-2 font-mono text-xs text-slate-200">
+          <div className="p-4 bg-slate-900 min-h-65 max-h-95 overflow-y-auto space-y-2 font-mono text-xs text-slate-200">
             {logs.map((log) => (
               <div key={log.id} className="flex items-start gap-2 leading-relaxed">
                 <span className="text-slate-500 text-[10px] shrink-0">[{log.time}]</span>

@@ -205,7 +205,7 @@ export default function ComparisonsPage() {
             <table className="w-full text-left text-sm">
               <thead className="bg-slate-50 text-slate-700 border-b border-slate-200">
                 <tr>
-                  <th className="py-4 px-4 font-bold text-sm min-w-[220px]">Capability</th>
+                  <th className="py-4 px-4 font-bold text-sm min-w-55">Capability</th>
                   <th className="py-4 px-4 font-bold text-sm text-indigo-700 bg-indigo-50/70 min-w-[170px]">
                     Playground API
                   </th>

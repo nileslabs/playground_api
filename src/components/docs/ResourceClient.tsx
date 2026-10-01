@@ -653,7 +653,7 @@ curl -X DELETE "https://playground.nileslabs.com/api/v1/${resource}/1"`,
                               </Link>
                             </td>
                             <td className="py-3 px-4">
-                              <p className="font-semibold text-slate-900 truncate max-w-[140px]">{item.name}</p>
+                              <p className="font-semibold text-slate-900 truncate max-w-35">{item.name}</p>
                               <p className="text-[11px] text-slate-400 truncate">{item.email}</p>
                             </td>
                             <td className="py-3 px-4 text-slate-500 max-w-md truncate" title={item.body}>

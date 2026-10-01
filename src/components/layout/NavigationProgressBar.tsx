@@ -104,7 +104,7 @@ export function NavigationProgressBar() {
       className="fixed top-0 left-0 right-0 z-[9999] pointer-events-none h-[2.5px] bg-transparent"
     >
       <div
-        className="h-full bg-gradient-to-r from-indigo-500 via-indigo-600 to-violet-600 shadow-[0_0_10px_rgba(99,102,241,0.7)]"
+        className="h-full bg-linear-to-r from-indigo-500 via-indigo-600 to-violet-600 shadow-[0_0_10px_rgba(99,102,241,0.7)]"
         style={{
           width: `${progress}%`,
           opacity: isVisible ? 1 : 0,

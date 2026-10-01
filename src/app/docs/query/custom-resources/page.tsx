@@ -965,7 +965,7 @@ export default function CustomResourcesPage() {
                                   {val ? 'TRUE' : 'FALSE'}
                                 </span>
                               ) : (
-                                <span className="truncate max-w-[200px] block font-mono text-slate-700">
+                                <span className="truncate max-w-50 block font-mono text-slate-700">
                                   {val !== undefined && val !== null ? String(val) : '—'}
                                 </span>
                               )}

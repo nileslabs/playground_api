@@ -106,7 +106,7 @@ export default function CustomersVaultPage() {
               >
                 <div className="flex items-start justify-between">
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-indigo-600 to-violet-500 text-white flex items-center justify-center font-bold text-sm">
+                    <div className="w-10 h-10 rounded-full bg-linear-to-tr from-indigo-600 to-violet-500 text-white flex items-center justify-center font-bold text-sm">
                       {cust.name.split(' ').map((n) => n[0]).join('')}
                     </div>
                     <div>

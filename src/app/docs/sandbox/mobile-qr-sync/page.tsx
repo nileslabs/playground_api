@@ -201,7 +201,7 @@ export default function MobileBlogFeed() {
           code={reactNativeSnippet}
           language="typescript"
           title="MobileBlogFeed.tsx"
-          maxHeight="max-h-[440px]"
+          maxHeight="max-h-110"
         />
       </div>
 

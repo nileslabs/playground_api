@@ -244,7 +244,7 @@ jobs:
           code={runnerSnippets[activeTab]}
           language="typescript"
           title={`${activeTab}-config.ts`}
-          maxHeight="max-h-[460px]"
+          maxHeight="max-h-115"
         />
       </div>
 

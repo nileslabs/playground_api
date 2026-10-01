@@ -46,7 +46,7 @@ export function DocPagination() {
           />
           <div className="text-left">
             <span className="text-[10px] text-text-muted block uppercase font-mono tracking-wider">Previous</span>
-            <span className="truncate max-w-[200px] block">{prevPage.title}</span>
+            <span className="truncate max-w-50 block">{prevPage.title}</span>
           </div>
         </Link>
       ) : (
@@ -60,7 +60,7 @@ export function DocPagination() {
         >
           <div className="text-right">
             <span className="text-[10px] text-text-muted block uppercase font-mono tracking-wider">Next</span>
-            <span className="truncate max-w-[200px] block">{nextPage.title}</span>
+            <span className="truncate max-w-50 block">{nextPage.title}</span>
           </div>
           <Icon
             icon="ph:arrow-right-bold"

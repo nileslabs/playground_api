@@ -315,7 +315,7 @@ Key Requirements:
               code={cursorRuleContent}
               language="bash"
               title=".cursorrules / .windsurfrules"
-              maxHeight="max-h-[460px]"
+              maxHeight="max-h-115"
             />
           )}
 
@@ -324,7 +324,7 @@ Key Requirements:
               code={claudeAgentRuleContent}
               language="markdown"
               title="CLAUDE.md / AGENTS.md"
-              maxHeight="max-h-[460px]"
+              maxHeight="max-h-115"
             />
           )}
 
@@ -333,7 +333,7 @@ Key Requirements:
               code={systemPromptContent}
               language="markdown"
               title="system-prompt.txt"
-              maxHeight="max-h-[460px]"
+              maxHeight="max-h-115"
             />
           )}
         </div>

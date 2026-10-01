@@ -716,7 +716,7 @@ export default function RealtimeStudioPage() {
             </div>
 
             {/* Live Chat Window */}
-            <div className="lg:col-span-3 p-5 rounded-2xl bg-white border border-slate-200 shadow-xs flex flex-col h-[560px]">
+            <div className="lg:col-span-3 p-5 rounded-2xl bg-white border border-slate-200 shadow-xs flex flex-col h-140">
               {/* Chat Header */}
               <div className="flex items-center justify-between border-b border-slate-100 pb-3">
                 <div className="flex items-center gap-2">
@@ -1212,7 +1212,7 @@ export default function RealtimeStudioPage() {
             </div>
 
             {/* Raw SSE Frame Inspector */}
-            <div className="lg:col-span-2 p-5 rounded-2xl bg-white border border-slate-200 shadow-xs flex flex-col h-[520px]">
+            <div className="lg:col-span-2 p-5 rounded-2xl bg-white border border-slate-200 shadow-xs flex flex-col h-130">
               <div className="flex items-center justify-between border-b border-slate-100 pb-3">
                 <div>
                   <h3 className="font-bold text-sm text-slate-900 flex items-center gap-2">
@@ -1405,7 +1405,7 @@ export function useServerSentEvents(url: string) {
             </div>
 
             {/* Deep Dive Subpage Links */}
-            <div className="p-6 rounded-2xl bg-gradient-to-r from-indigo-50 to-violet-50 border border-indigo-100 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div className="p-6 rounded-2xl bg-linear-to-r from-indigo-50 to-violet-50 border border-indigo-100 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div>
                 <h4 className="font-bold text-sm text-indigo-950">Looking for In-Depth Dedicated Guides?</h4>
                 <p className="text-xs text-indigo-700 mt-0.5">Explore our standalone protocol walkthroughs and integration guides:</p>

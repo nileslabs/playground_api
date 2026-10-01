@@ -392,7 +392,7 @@ curl -X POST "${publicApiUrl}/graphql" \\
         </div>
 
         {/* Dual Editor Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 items-stretch p-4 sm:p-5 bg-slate-50/50 min-h-[460px]">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 items-stretch p-4 sm:p-5 bg-slate-50/50 min-h-115">
           {/* Left Column: Query & Variables Editor */}
           <div className="flex flex-col h-full space-y-3">
             <div className="flex items-center justify-between border-b border-slate-200/80 pb-2">
@@ -425,7 +425,7 @@ curl -X POST "${publicApiUrl}/graphql" \\
               </span>
             </div>
 
-            <div className="flex-1 flex flex-col min-h-[380px]">
+            <div className="flex-1 flex flex-col min-h-95">
               {activeTab === 'query' ? (
                 <CodeBlock
                   code={query}
@@ -461,7 +461,7 @@ curl -X POST "${publicApiUrl}/graphql" \\
               </span>
             </div>
 
-            <div className="flex-1 flex flex-col min-h-[380px]">
+            <div className="flex-1 flex flex-col min-h-95">
               <CodeBlock
                 code={
                   result

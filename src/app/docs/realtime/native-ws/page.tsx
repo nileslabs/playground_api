@@ -349,7 +349,7 @@ export function useWebSocket(url: string, room = 'general') {
         </div>
 
         {/* Message Log Terminal */}
-        <div className="p-4 bg-slate-900 min-h-[280px] max-h-[380px] overflow-y-auto space-y-2 font-mono text-xs">
+        <div className="p-4 bg-slate-900 min-h-70 max-h-95 overflow-y-auto space-y-2 font-mono text-xs">
           {messages.map((m) => (
             <div key={m.id} className="flex items-start gap-2 leading-relaxed">
               <span className="text-slate-500 text-[10px] shrink-0">[{m.time}]</span>

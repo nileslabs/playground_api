@@ -129,7 +129,7 @@ curl -X POST "${publicApiUrl}/posts" \\
         </div>
 
         <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-slate-900 leading-[1.15]">
-          Introduction to <span className="bg-gradient-to-r from-indigo-600 via-indigo-700 to-indigo-900 bg-clip-text text-transparent">Playground API</span>
+          Introduction to <span className="bg-linear-to-r from-indigo-600 via-indigo-700 to-indigo-900 bg-clip-text text-transparent">Playground API</span>
         </h1>
 
         <p className="text-base sm:text-lg text-slate-600 leading-relaxed max-w-3xl">
@@ -288,7 +288,7 @@ curl -X POST "${publicApiUrl}/posts" \\
       </div>
 
       {/* 6. Next Steps Pathway */}
-      <div id="next-steps" className="p-8 rounded-3xl bg-gradient-to-br from-indigo-50 via-white to-slate-50 border border-indigo-100 shadow-xs space-y-6 scroll-mt-20">
+      <div id="next-steps" className="p-8 rounded-3xl bg-linear-to-br from-indigo-50 via-white to-slate-50 border border-indigo-100 shadow-xs space-y-6 scroll-mt-20">
         <div className="space-y-1.5">
           <h3 className="text-xl font-bold text-slate-900">Next Steps</h3>
           <p className="text-sm sm:text-base text-slate-600">

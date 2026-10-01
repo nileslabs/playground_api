@@ -268,7 +268,7 @@ export function InteractiveConsole({
                 : undefined
             }
             copyable={Boolean(response)}
-            maxHeight="max-h-[420px]"
+            maxHeight="max-h-105"
           />
         )}
 
@@ -279,7 +279,7 @@ export function InteractiveConsole({
             title="payload.json"
             editable
             onChange={setBody}
-            maxHeight="max-h-[420px]"
+            maxHeight="max-h-105"
             placeholder='{\n  "key": "value"\n}'
           />
         )}

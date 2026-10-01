@@ -778,7 +778,7 @@ export default function FileUploadsPage() {
                       <p className="text-[11px] text-slate-500 flex items-center gap-1.5 mt-0.5">
                         <span>{formatFileSize(file.sizeBytes)}</span>
                         <span>•</span>
-                        <span className="font-mono text-[10px] truncate max-w-[120px]">{file.mimetype}</span>
+                        <span className="font-mono text-[10px] truncate max-w-30">{file.mimetype}</span>
                       </p>
                     </div>
 

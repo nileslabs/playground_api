@@ -268,7 +268,7 @@ curl -N -i -H "Accept: text/event-stream" \\
         </div>
 
         {/* Stream Event Terminal */}
-        <div className="p-4 bg-slate-900 min-h-[280px] max-h-[380px] overflow-y-auto space-y-2 font-mono text-xs">
+        <div className="p-4 bg-slate-900 min-h-70 max-h-95 overflow-y-auto space-y-2 font-mono text-xs">
           {events.map((ev) => (
             <div key={ev.id} className="flex items-start gap-2 leading-relaxed">
               <span className="text-slate-500 text-[10px] shrink-0">[{ev.time}]</span>

@@ -103,7 +103,7 @@ export default function SmsTerminalPage() {
             </div>
 
             {/* Phone Screen */}
-            <div className="rounded-3xl bg-slate-900 min-h-[460px] flex flex-col justify-between overflow-hidden border border-slate-800/80">
+            <div className="rounded-3xl bg-slate-900 min-h-115 flex flex-col justify-between overflow-hidden border border-slate-800/80">
               {/* Screen Header */}
               <div className="px-4 py-3 bg-slate-800/90 border-b border-slate-700/60 flex items-center justify-between">
                 <div className="flex items-center gap-2">
@@ -128,7 +128,7 @@ export default function SmsTerminalPage() {
               </div>
 
               {/* Chat Message Stream */}
-              <div className="p-4 space-y-3 overflow-y-auto max-h-[380px] flex-1">
+              <div className="p-4 space-y-3 overflow-y-auto max-h-95 flex-1">
                 {messages.length === 0 ? (
                   <div className="text-center py-20 text-xs text-slate-500 space-y-2">
                     <Icon icon="ph:chat-teardrop-slash-thin" className="w-8 h-8 mx-auto text-slate-600" />

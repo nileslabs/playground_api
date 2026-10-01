@@ -281,7 +281,7 @@ export default function ResourcesIndexPage() {
       </div>
 
       {/* 5. Custom Collections Callout */}
-      <div className="p-6 rounded-2xl bg-gradient-to-r from-indigo-500/10 via-purple-500/10 to-transparent border border-indigo-200 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="p-6 rounded-2xl bg-linear-to-r from-indigo-500/10 via-purple-500/10 to-transparent border border-indigo-200 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div className="space-y-1">
           <div className="inline-flex items-center gap-1 text-xs font-bold text-indigo-700 uppercase tracking-wider">
             <Icon icon="ph:sparkle-bold" className="w-3.5 h-3.5" />

@@ -206,9 +206,9 @@ export default function EmailMailboxPage() {
         </div>
 
         {/* Split View */}
-        <div className="grid grid-cols-1 md:grid-cols-12 min-h-[520px] divide-y md:divide-y-0 md:divide-x divide-slate-100">
+        <div className="grid grid-cols-1 md:grid-cols-12 min-h-130 divide-y md:divide-y-0 md:divide-x divide-slate-100">
           {/* Left Column: Email Thread List (4 of 12 cols) */}
-          <div className="md:col-span-4 divide-y divide-slate-100 overflow-y-auto max-h-[580px] bg-slate-50/30">
+          <div className="md:col-span-4 divide-y divide-slate-100 overflow-y-auto max-h-145 bg-slate-50/30">
             {filteredEmails.length === 0 ? (
               <div className="p-8 text-center text-xs text-slate-400 space-y-2">
                 <Icon icon="ph:mailbox-thin" className="w-10 h-10 mx-auto text-slate-300" />
@@ -401,15 +401,15 @@ export default function EmailMailboxPage() {
 
                 {/* Email Content Frame */}
                 {viewMode === 'text' ? (
-                  <div className="p-4 rounded-xl border border-slate-200 bg-slate-50 font-mono text-xs text-slate-800 leading-relaxed whitespace-pre-wrap max-h-[400px] overflow-y-auto">
+                  <div className="p-4 rounded-xl border border-slate-200 bg-slate-50 font-mono text-xs text-slate-800 leading-relaxed whitespace-pre-wrap max-h-100 overflow-y-auto">
                     {selectedEmail.text || 'No plain text content provided.'}
                   </div>
                 ) : (
-                  <div className={`mx-auto transition-all ${viewMode === 'mobile' ? 'max-w-[375px] border-4 border-slate-300 rounded-3xl p-1 shadow-md' : 'w-full'}`}>
+                  <div className={`mx-auto transition-all ${viewMode === 'mobile' ? 'max-w-93.75 border-4 border-slate-300 rounded-3xl p-1 shadow-md' : 'w-full'}`}>
                     <iframe
                       title="Email Preview"
                       srcDoc={selectedEmail.html || `<p>${selectedEmail.text || 'Empty email'}</p>`}
-                      className={`w-full rounded-xl border border-slate-200 bg-white ${viewMode === 'mobile' ? 'h-[460px]' : 'h-[380px]'}`}
+                      className={`w-full rounded-xl border border-slate-200 bg-white ${viewMode === 'mobile' ? 'h-115' : 'h-95'}`}
                       sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin"
                     />
                   </div>

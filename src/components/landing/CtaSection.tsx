@@ -8,7 +8,7 @@ export function CtaSection() {
   return (
     <section className="py-20 md:py-28 bg-white">
       <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
-        <div className="relative overflow-hidden rounded-3xl border border-indigo-100 bg-gradient-to-br from-indigo-50/70 via-white to-slate-50 p-8 sm:p-12 md:p-16 text-center space-y-8 shadow-xs">
+        <div className="relative overflow-hidden rounded-3xl border border-indigo-100 bg-linear-to-br from-indigo-50/70 via-white to-slate-50 p-8 sm:p-12 md:p-16 text-center space-y-8 shadow-xs">
           {/* Subtle decoration elements */}
           <div className="absolute top-0 right-0 -mt-12 -mr-12 w-64 h-64 rounded-full bg-indigo-100/40 blur-3xl pointer-events-none" />
           <div className="absolute bottom-0 left-0 -mb-12 -ml-12 w-64 h-64 rounded-full bg-indigo-200/30 blur-3xl pointer-events-none" />

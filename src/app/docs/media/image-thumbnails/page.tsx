@@ -225,12 +225,12 @@ export default function ImageThumbnailsPage() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           {/* Live Preview Canvas */}
           <div className="lg:col-span-7 flex flex-col items-center justify-center p-6 rounded-2xl bg-slate-900 border border-slate-800 text-center space-y-4">
-            <div className="w-full max-h-[380px] rounded-xl overflow-hidden shadow-2xl border border-slate-700/60 bg-black/40 flex items-center justify-center">
+            <div className="w-full max-h-95 rounded-xl overflow-hidden shadow-2xl border border-slate-700/60 bg-black/40 flex items-center justify-center">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={livePreviewUrl}
                 alt={customText || seed}
-                className="w-full h-auto max-h-[360px] object-contain transition-all duration-300"
+                className="w-full h-auto max-h-90 object-contain transition-all duration-300"
               />
             </div>
 

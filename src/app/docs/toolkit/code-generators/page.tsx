@@ -491,7 +491,7 @@ try {
             language={selectedLangObj.langCode}
             title={`${activeScenario}-request.${selectedLangObj.key === 'curl' ? 'sh' : selectedLangObj.key === 'python' ? 'py' : selectedLangObj.key === 'go' ? 'go' : selectedLangObj.key === 'php' ? 'php' : 'ts'}`}
             subtitle={selectedLangObj.label}
-            maxHeight="max-h-[460px]"
+            maxHeight="max-h-115"
           />
         </div>
       </div>

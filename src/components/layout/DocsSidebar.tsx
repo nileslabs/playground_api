@@ -134,7 +134,7 @@ export function DocsSidebar({ className, onSelect }: DocsSidebarProps) {
             onSelect?.();
             if (isMobile) setMobileDrawerOpen(false);
           }}
-          className="flex items-center justify-between p-2.5 rounded-xl bg-gradient-to-r from-indigo-50/90 via-white to-slate-50/70 border border-indigo-100 hover:border-indigo-300 hover:shadow-2xs transition-all group select-none"
+          className="flex items-center justify-between p-2.5 rounded-xl bg-linear-to-r from-indigo-50/90 via-white to-slate-50/70 border border-indigo-100 hover:border-indigo-300 hover:shadow-2xs transition-all group select-none"
         >
           <div className="flex items-center gap-2.5 truncate">
             <div className="w-7 h-7 rounded-lg bg-indigo-600 text-white flex items-center justify-center shrink-0 shadow-2xs">
@@ -248,7 +248,7 @@ export function DocsSidebar({ className, onSelect }: DocsSidebarProps) {
       </div>
 
       {/* Technical Blog & Feature Deep Dives Promotion Card */}
-      <div className="p-3.5 rounded-2xl border border-indigo-100 bg-gradient-to-br from-indigo-50/70 via-white to-slate-50 space-y-2.5 mt-4 shadow-2xs">
+      <div className="p-3.5 rounded-2xl border border-indigo-100 bg-linear-to-br from-indigo-50/70 via-white to-slate-50 space-y-2.5 mt-4 shadow-2xs">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-1.5 text-[11px] font-bold text-indigo-700 uppercase tracking-wider">
             <Icon icon="ph:newspaper-clipping-bold" className="w-3.5 h-3.5 text-indigo-600" />
