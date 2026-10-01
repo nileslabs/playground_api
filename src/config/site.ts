@@ -131,6 +131,7 @@ export const siteConfig = {
       title: 'Realtime & WebSockets',
       icon: 'ph:broadcast-bold',
       items: [
+        { title: 'Realtime Studio', href: '/docs/realtime', icon: 'ph:broadcast-bold', badge: 'Studio' },
         { title: 'Native WebSocket (/ws)', href: '/docs/realtime/native-ws', icon: 'ph:plugs-connected-bold' },
         { title: 'Socket.io Gateway', href: '/docs/realtime/socketio', icon: 'ph:network-bold' },
         { title: 'Presence & Echo Bot', href: '/docs/realtime/presence-typing', icon: 'ph:user-circle-gear-bold' },

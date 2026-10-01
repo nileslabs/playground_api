@@ -91,7 +91,6 @@ const nextConfig = {
 
       // Category parent routes without index
       { source: '/docs/query', destination: '/docs/query/filtering', permanent: true },
-      { source: '/docs/realtime', destination: '/docs/realtime/native-ws', permanent: true },
       { source: '/docs/webhooks', destination: '/docs/webhooks/subscriptions', permanent: true },
       { source: '/docs/chaos', destination: '/docs/chaos/latency', permanent: true },
       { source: '/docs/media', destination: '/docs/media/svg-avatars', permanent: true },
