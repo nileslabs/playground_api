@@ -4,6 +4,7 @@ import React from 'react';
 import Link from 'next/link';
 import { Icon } from '@iconify/react';
 import { CodeBlock } from '@/components/docs/CodeBlock';
+import { DocWorkflowDiagram } from '@/components/docs/DocWorkflowDiagram';
 
 interface ChannelModule {
   id: string;
@@ -135,6 +136,35 @@ export default function VirtualCommunicationsOverviewPage() {
             <span className="text-[11px] text-amber-600 font-semibold">GET /emails/otp</span>
           </div>
         </div>
+
+        {/* Workflow Diagram */}
+        <DocWorkflowDiagram
+          src="/images/docs/workflows/inbox-otp-interception.jpg"
+          alt="Playground API Virtual Email Mailbox and SMS Verification OTP Interception Engine Workflow Diagram"
+          title="Virtual Email Mailbox & SMS OTP Interception Lifecycle"
+          subtitle="Outbound communications capture: Intercept transactional emails and SMS verification codes in memory without external third-party SMTP/Twilio credentials."
+          badge="Messaging Engine"
+          steps={[
+            {
+              number: 1,
+              title: 'Transactional Trigger',
+              desc: 'Client initiates password reset or 2FA request without configuring external email APIs.',
+              badge: 'Zero SMTP',
+            },
+            {
+              number: 2,
+              title: 'Sandbox Interception & Regex',
+              desc: 'Parses HTML email body and SMS payload to extract single-use 6-digit OTP codes.',
+              badge: 'Regex Parsing',
+            },
+            {
+              number: 3,
+              title: 'Virtual Mailbox & CI Assertions',
+              desc: 'Inspect message visually in HTML terminal or query GET /api/v1/emails/otp in CI/CD.',
+              badge: 'Automated E2E',
+            },
+          ]}
+        />
 
         {/* Quick Nav Anchors */}
         <div className="flex flex-wrap gap-2 pt-2">

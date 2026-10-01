@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Icon } from '@iconify/react';
 import config, { getWebSocketUrl } from '@/config/env';
 import { CodeBlock } from '@/components/ui/CodeBlock';
+import { DocWorkflowDiagram } from '@/components/docs/DocWorkflowDiagram';
 
 interface SubscriptionTopic {
   id: string;
@@ -396,6 +397,35 @@ export function useGraphQLSubscription(query: string, variables = {}) {
         <p className="text-base sm:text-lg text-slate-600 leading-relaxed max-w-3xl">
           Listen to live resource mutation events over WebSockets using the modern <code className="font-mono text-xs bg-slate-100 px-1 py-0.5 rounded text-indigo-600">graphql-ws</code> protocol. Stream new blog posts, discussion comments, and task modifications instantaneously.
         </p>
+
+        {/* Workflow Diagram */}
+        <DocWorkflowDiagram
+          src="/images/docs/workflows/graphql-subscriptions-workflow.jpg"
+          alt="Playground API GraphQL Split Link and Real-Time Subscriptions Engine Workflow Diagram"
+          title="GraphQL Split Link & Real-Time Subscriptions Engine"
+          subtitle="Directional client link: Queries and mutations route via HTTP POST, while subscriptions establish persistent graphql-ws WebSocket streams."
+          badge="GraphQL Protocol"
+          steps={[
+            {
+              number: 1,
+              title: 'Apollo Split Link',
+              desc: 'Client tests operation definition to route HTTP (queries) vs WebSocket (subscriptions).',
+              badge: 'Client Router',
+            },
+            {
+              number: 2,
+              title: 'In-Memory PubSub Bus',
+              desc: 'REST & GraphQL mutations publish typed events (postAdded, commentAdded) to channel topics.',
+              badge: 'PubSub Bus',
+            },
+            {
+              number: 3,
+              title: 'graphql-ws Streaming',
+              desc: 'Pushes filtered real-time GraphQL query payloads down to active WebSocket subscribers.',
+              badge: 'Live Stream',
+            },
+          ]}
+        />
       </div>
 
       {/* 2. Interactive Subscription Workbench */}

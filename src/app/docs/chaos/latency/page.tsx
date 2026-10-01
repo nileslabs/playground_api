@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { Icon } from '@iconify/react';
 import config from '@/config/env';
 import { CodeBlock } from '@/components/ui/CodeBlock';
+import { DocWorkflowDiagram } from '@/components/docs/DocWorkflowDiagram';
 
 export default function LatencySimulationPage() {
   const publicApiUrl = config.publicApiUrl || 'https://playground.nileslabs.com/api/v1';
@@ -65,6 +66,35 @@ export default function LatencySimulationPage() {
         <p className="text-base sm:text-lg text-slate-600 leading-relaxed max-w-3xl">
           Test UI skeleton loaders, error toast alerts, debounce handlers, and optimistic rollbacks by injecting configurable network delays, HTTP error codes, and flaky jitter into any REST query.
         </p>
+
+        {/* Workflow Diagram */}
+        <DocWorkflowDiagram
+          src="/images/docs/workflows/chaos-latency-simulation.jpg"
+          alt="Playground API Chaos Engineering and Network Latency Simulation Engine Workflow Diagram"
+          title="Chaos Engineering & Fault Injection Pipeline"
+          subtitle="Runtime resilience testing: Intercept incoming requests to inject artificial delays, forced HTTP error codes, and flaky jitter without mock code changes."
+          badge="Fault Injection"
+          steps={[
+            {
+              number: 1,
+              title: 'Request Modifiers',
+              desc: 'Attach query parameters (_delay=2000, _status=500, _flaky=true) to any API call.',
+              badge: 'Query Modifiers',
+            },
+            {
+              number: 2,
+              title: 'Chaos Middleware',
+              desc: 'Injects artificial latency timers (0-5000ms), error overrides, and jitter randomizers.',
+              badge: 'Middleware',
+            },
+            {
+              number: 3,
+              title: 'Frontend UX Resilience',
+              desc: 'Validate skeleton loading animations, toast error messages, and retry backoff UX.',
+              badge: 'UX Resilience',
+            },
+          ]}
+        />
       </div>
 
       {/* 2. Interactive Chaos Workbench */}
