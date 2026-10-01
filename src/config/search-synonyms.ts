@@ -196,6 +196,14 @@ export const searchSynonyms: Record<string, string[]> = {
   ],
 
   // Auth & Security
+  '/docs/auth': [
+    'auth overview',
+    'authentication',
+    'security architecture',
+    'auth hub',
+    'jwt tokens',
+    'rbac',
+  ],
   '/docs/auth/jwt-flow': [
     'jwt login',
     'jwt authentication',

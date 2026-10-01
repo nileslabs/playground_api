@@ -274,7 +274,73 @@ export const config = {
         />
       </div>
 
-      {/* 5. JWT Claims Structure Reference */}
+      {/* 5. Step 3: Update Authenticated Profile (PATCH /auth/me) */}
+      <div id="step-update-profile" className="p-6 sm:p-7 rounded-2xl bg-white border border-slate-200 shadow-xs space-y-6 scroll-mt-20">
+        <div className="border-b border-slate-100 pb-4">
+          <div className="flex items-center gap-2">
+            <span className="w-6 h-6 rounded-full bg-amber-600 text-white font-bold text-xs flex items-center justify-center">
+              3
+            </span>
+            <h2 className="font-bold text-base sm:text-lg text-slate-900">
+              Update Authenticated Profile (PATCH /auth/me)
+            </h2>
+          </div>
+          <p className="text-sm text-slate-600 mt-1">
+            Apply partial mutations to your active user profile. Changes are stored in your session overlay without mutating baseline seed records:
+          </p>
+        </div>
+
+        <InteractiveConsole
+          method="PATCH"
+          path="/auth/me"
+          title="Update User Profile Attributes"
+          initialBody={JSON.stringify(
+            {
+              name: `${activePersona.name} (Updated)`,
+              email: `updated.${activePersona.email}`,
+              website: 'https://developer.nileslabs.com',
+            },
+            null,
+            2
+          )}
+        />
+      </div>
+
+      {/* 6. Step 4: Register New Mock User (POST /auth/register) */}
+      <div id="step-register" className="p-6 sm:p-7 rounded-2xl bg-white border border-slate-200 shadow-xs space-y-6 scroll-mt-20">
+        <div className="border-b border-slate-100 pb-4">
+          <div className="flex items-center gap-2">
+            <span className="w-6 h-6 rounded-full bg-emerald-600 text-white font-bold text-xs flex items-center justify-center">
+              4
+            </span>
+            <h2 className="font-bold text-base sm:text-lg text-slate-900">
+              Register Custom Mock User (POST /auth/register)
+            </h2>
+          </div>
+          <p className="text-sm text-slate-600 mt-1">
+            Create an ad-hoc user account within your isolated sandbox session and immediately receive a signed JWT token pair:
+          </p>
+        </div>
+
+        <InteractiveConsole
+          method="POST"
+          path="/auth/register"
+          title="Register New User & Obtain Tokens"
+          initialBody={JSON.stringify(
+            {
+              name: 'Sarah Connor',
+              username: 'sconnor',
+              email: 'sarah.connor@example.com',
+              password: 'Password@123',
+              token_ttl: 900,
+            },
+            null,
+            2
+          )}
+        />
+      </div>
+
+      {/* 7. JWT Claims Structure Reference */}
       <div id="token-structure" className="space-y-4 scroll-mt-20">
         <div className="border-b border-slate-100 pb-3">
           <h2 className="text-xl sm:text-2xl font-bold text-slate-900">

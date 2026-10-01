@@ -76,7 +76,6 @@ const nextConfig = {
       { source: '/docs/users', destination: '/docs/resources/users', permanent: true },
       { source: '/docs/comments', destination: '/docs/resources/comments', permanent: true },
       { source: '/docs/todos', destination: '/docs/resources/todos', permanent: true },
-      { source: '/docs/auth', destination: '/docs/auth/jwt-flow', permanent: true },
       { source: '/docs/chat', destination: '/docs/realtime/native-ws', permanent: true },
       { source: '/docs/simulation', destination: '/docs/chaos/latency', permanent: true },
       { source: '/docs/sandbox', destination: '/docs/sandbox/dashboard', permanent: true },

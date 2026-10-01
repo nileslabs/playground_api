@@ -331,7 +331,65 @@ export function useHasPermission(user: { role?: string; scopes?: string[] } | nu
         </div>
       </div>
 
-      {/* 4. Production Integration Recipes */}
+      {/* 4. Programmatic RBAC Discovery Endpoints */}
+      <div id="discovery-endpoints" className="space-y-6 scroll-mt-20">
+        <div className="border-b border-slate-100 pb-3">
+          <h2 className="text-xl sm:text-2xl font-bold text-slate-900">
+            Programmatic RBAC Discovery Endpoints
+          </h2>
+          <p className="text-sm text-slate-600">
+            Query system roles, persona definitions, and full permission matrix mappings directly via REST endpoints:
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* GET /auth/roles */}
+          <div className="p-6 rounded-2xl bg-white border border-slate-200 shadow-xs space-y-4">
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="px-2 py-0.5 rounded font-mono font-bold text-[10px] uppercase bg-blue-100 text-blue-800">
+                  GET
+                </span>
+                <h3 className="font-bold text-base text-slate-900">
+                  Roles &amp; Personas Dictionary (/auth/roles)
+                </h3>
+              </div>
+              <p className="text-xs text-slate-500 mt-1">
+                Returns all supported roles (<code className="font-mono text-indigo-600">admin</code>, <code className="font-mono text-indigo-600">editor</code>, <code className="font-mono text-indigo-600">viewer</code>, <code className="font-mono text-indigo-600">guest</code>), persona credentials, and default scopes:
+              </p>
+            </div>
+            <InteractiveConsole
+              method="GET"
+              path="/auth/roles"
+              title="Query Supported Roles & Personas"
+            />
+          </div>
+
+          {/* GET /auth/permissions */}
+          <div className="p-6 rounded-2xl bg-white border border-slate-200 shadow-xs space-y-4">
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="px-2 py-0.5 rounded font-mono font-bold text-[10px] uppercase bg-blue-100 text-blue-800">
+                  GET
+                </span>
+                <h3 className="font-bold text-base text-slate-900">
+                  Granular Permission Matrix (/auth/permissions)
+                </h3>
+              </div>
+              <p className="text-xs text-slate-500 mt-1">
+                Returns the system permission matrix, allowed action verbs per role, and wildcard matching syntax (<code className="font-mono text-indigo-600">*:read</code>, <code className="font-mono text-indigo-600">posts:*</code>):
+              </p>
+            </div>
+            <InteractiveConsole
+              method="GET"
+              path="/auth/permissions"
+              title="Query Granular Permission Matrix"
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* 5. Production Integration Recipes */}
       <div id="client-recipes" className="space-y-4 scroll-mt-20">
         <div className="border-b border-slate-100 pb-3">
           <h2 className="text-xl sm:text-2xl font-bold text-slate-900">

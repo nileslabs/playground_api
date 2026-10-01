@@ -84,6 +84,7 @@ export const siteConfig = {
       title: 'Auth & Security',
       icon: 'ph:shield-check-bold',
       items: [
+        { title: 'Overview & Architecture', href: '/docs/auth', icon: 'ph:stack-bold', badge: 'Hub' },
         { title: 'JWT Auth Flow', href: '/docs/auth/jwt-flow', icon: 'ph:key-bold' },
         { title: 'Refresh Token Rotation', href: '/docs/auth/refresh-rotation', icon: 'ph:arrows-clockwise-bold', badge: 'Mutex' },
         { title: 'RBAC Permission Matrix', href: '/docs/auth/rbac-matrix', icon: 'ph:identification-badge-bold', badge: 'Roles' },
