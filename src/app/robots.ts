@@ -2,12 +2,16 @@ import { MetadataRoute } from 'next';
 import { siteConfig } from '@/config/site';
 
 export default function robots(): MetadataRoute.Robots {
+  // Extract clean hostname without protocol for RFC 9309 Host directive compliance
+  const domainHost = siteConfig.url.replace(/^https?:\/\//, '').replace(/\/$/, '');
+
   return {
     rules: [
       {
         // Standard Web Crawlers (Googlebot, Bingbot, Applebot, DuckDuckBot, Baiduspider, YandexBot)
         userAgent: '*',
         allow: '/',
+        disallow: ['/api/'],
       },
       {
         // LLM Search & AI Retrieval Crawlers (ChatGPT, Claude, Perplexity, Gemini, Cursor, Copilot)
@@ -26,10 +30,12 @@ export default function robots(): MetadataRoute.Robots {
           'Diffbot',
         ],
         allow: '/',
+        disallow: ['/api/'],
       },
     ],
     sitemap: `${siteConfig.url}/sitemap.xml`,
-    host: siteConfig.url,
+    host: domainHost,
   };
 }
+
 

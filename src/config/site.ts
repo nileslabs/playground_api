@@ -1,3 +1,7 @@
+const isProduction =
+  process.env.NODE_ENV === 'production' || process.env.VERCEL_ENV === 'production';
+const rawSiteUrl = process.env.NEXT_PUBLIC_SITE_URL;
+
 /**
  * Central Site Configuration
  */
@@ -6,7 +10,10 @@ export const siteConfig = {
   shortName: 'Playground API',
   description:
     'Free, instant, stateful mock REST & GraphQL API sandbox for web & mobile development. Features persistent per-session CRUD mutation overlays, JWT auth loops, custom collections, and network latency simulation.',
-  url: process.env.NEXT_PUBLIC_SITE_URL || 'https://playground.nileslabs.com',
+  url:
+    isProduction && (!rawSiteUrl || rawSiteUrl.includes('localhost'))
+      ? 'https://playground.nileslabs.com'
+      : (rawSiteUrl || 'https://playground.nileslabs.com'),
   apiUrl: process.env.NEXT_PUBLIC_API_URL || 'https://playground.nileslabs.com/api/v1',
   githubUrl: 'https://github.com/nileslabs/playground_api',
   author: {
