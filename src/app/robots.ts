@@ -2,9 +2,6 @@ import { MetadataRoute } from 'next';
 import { siteConfig } from '@/config/site';
 
 export default function robots(): MetadataRoute.Robots {
-  // Extract clean hostname without protocol for RFC 9309 Host directive compliance
-  const domainHost = siteConfig.url.replace(/^https?:\/\//, '').replace(/\/$/, '');
-
   return {
     rules: [
       {
@@ -34,7 +31,6 @@ export default function robots(): MetadataRoute.Robots {
       },
     ],
     sitemap: `${siteConfig.url}/sitemap.xml`,
-    host: domainHost,
   };
 }
 
