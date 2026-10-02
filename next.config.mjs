@@ -52,6 +52,11 @@ const nextConfig = {
             value:
               "camera=(), microphone=(), geolocation=(), browsing-topics=()",
           },
+          {
+            key: "Link",
+            value:
+              '</openapi.json>; rel="service-desc", </llms.txt>; rel="help"',
+          },
         ],
       },
     ];

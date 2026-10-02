@@ -5,9 +5,26 @@ export default function robots(): MetadataRoute.Robots {
   return {
     rules: [
       {
-        // Allow all crawlers — including web search engines (Googlebot, Bingbot, Baiduspider, YandexBot, DuckDuckBot)
-        // and AI search / LLM training bots (GPTBot, ClaudeBot, PerplexityBot, Google-Extended, Amazonbot, Applebot, OAI-SearchBot, CCBot, cohere-ai)
+        // Standard Web Crawlers (Googlebot, Bingbot, Applebot, DuckDuckBot, Baiduspider, YandexBot)
         userAgent: '*',
+        allow: '/',
+      },
+      {
+        // LLM Search & AI Retrieval Crawlers (ChatGPT, Claude, Perplexity, Gemini, Cursor, Copilot)
+        userAgent: [
+          'GPTBot',
+          'ClaudeBot',
+          'PerplexityBot',
+          'Google-Extended',
+          'Amazonbot',
+          'Applebot-Extended',
+          'OAI-SearchBot',
+          'CCBot',
+          'cohere-ai',
+          'Meta-ExternalAgent',
+          'Bytespider',
+          'Diffbot',
+        ],
         allow: '/',
       },
     ],
@@ -15,3 +32,4 @@ export default function robots(): MetadataRoute.Robots {
     host: siteConfig.url,
   };
 }
+
