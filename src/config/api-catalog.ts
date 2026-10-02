@@ -48,8 +48,8 @@ export const apiCatalog: ResourceCatalogDef[] = [
     itemCount: 25,
     baseUrl: `${baseUrl}/users`,
     icon: 'ph:users-bold',
-    prevPage: { title: 'Session Sandbox Architecture', href: '/docs/sandbox' },
-    nextPage: { title: 'Posts Collection', href: '/docs/posts' },
+    prevPage: { title: 'Core REST Overview', href: '/docs/resources' },
+    nextPage: { title: 'Posts Collection', href: '/docs/resources/posts' },
     endpoints: [
       {
         id: 'get-users',
@@ -244,8 +244,8 @@ export const apiCatalog: ResourceCatalogDef[] = [
     itemCount: 100,
     baseUrl: `${baseUrl}/posts`,
     icon: 'ph:newspaper-bold',
-    prevPage: { title: 'Users Collection', href: '/docs/users' },
-    nextPage: { title: 'Comments Collection', href: '/docs/comments' },
+    prevPage: { title: 'Users Collection', href: '/docs/resources/users' },
+    nextPage: { title: 'Comments Collection', href: '/docs/resources/comments' },
     endpoints: [
       {
         id: 'get-posts',
@@ -396,8 +396,8 @@ export const apiCatalog: ResourceCatalogDef[] = [
     itemCount: 300,
     baseUrl: `${baseUrl}/comments`,
     icon: 'ph:chat-circle-text-bold',
-    prevPage: { title: 'Posts Collection', href: '/docs/posts' },
-    nextPage: { title: 'Todos Collection', href: '/docs/todos' },
+    prevPage: { title: 'Posts Collection', href: '/docs/resources/posts' },
+    nextPage: { title: 'Todos Collection', href: '/docs/resources/todos' },
     endpoints: [
       {
         id: 'get-comments',
@@ -522,8 +522,8 @@ export const apiCatalog: ResourceCatalogDef[] = [
     itemCount: 125,
     baseUrl: `${baseUrl}/todos`,
     icon: 'ph:check-square-offset-bold',
-    prevPage: { title: 'Comments Collection', href: '/docs/comments' },
-    nextPage: { title: 'Authentication (JWT)', href: '/docs/auth' },
+    prevPage: { title: 'Comments Collection', href: '/docs/resources/comments' },
+    nextPage: { title: 'Custom Collections', href: '/docs/query/custom-resources' },
     endpoints: [
       {
         id: 'get-todos',
@@ -819,25 +819,6 @@ export const apiCatalog: ResourceCatalogDef[] = [
             { name: 'products', endpoint: '/custom/products', count: 3, lastUpdated: '2026-08-07T00:00:00.000Z' },
             { name: 'orders', endpoint: '/custom/orders', count: 2, lastUpdated: '2026-08-07T00:00:00.000Z' },
           ],
-        },
-      },
-      {
-        id: 'post-custom-seed',
-        method: 'POST',
-        path: '/custom/seed',
-        title: 'Seed Domain Mock Data Template',
-        description: 'Instantly populates pre-built domain collections into your session sandbox with one request (templates: ecommerce, saas, blog, crm).',
-        queryParams: [
-          { name: 'template', type: 'string', required: false, defaultVal: 'ecommerce', description: 'Domain template name ("ecommerce", "saas", "blog", "crm").' },
-        ],
-        requestBody: {
-          template: 'ecommerce',
-        },
-        responseExample: {
-          message: 'Seeded 5 records across custom collections: products, orders.',
-          template: 'ecommerce',
-          collections: ['products', 'orders'],
-          totalSeeded: 5,
         },
       },
       {

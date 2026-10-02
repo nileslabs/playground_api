@@ -12,19 +12,20 @@ interface BlogPostContentProps {
 /**
  * Parses markdown inline formatting: bold, italic, inline code, links.
  */
-function renderInlineText(text: string): React.ReactNode[] {
+function renderInlineText(text: string, keyPrefix: string = 'inline'): React.ReactNode[] {
   // Regex to split by inline patterns: `code`, **bold**, *italic*, [link](url)
   const pattern = /(`[^`]+`|\*\*[^*]+\*\*|\*[^*]+\*|\[[^\]]+\]\([^)]+\))/g;
   const parts = text.split(pattern);
 
   return parts.map((part, index) => {
     if (!part) return null;
+    const itemKey = `${keyPrefix}-${index}`;
 
     // Inline code
     if (part.startsWith('`') && part.endsWith('`') && part.length >= 2) {
       return (
         <code
-          key={index}
+          key={itemKey}
           className="px-1.5 py-0.5 mx-0.5 text-xs sm:text-sm font-mono font-medium rounded-md bg-accent-light text-accent-primary border border-accent-primary/20"
         >
           {part.slice(1, -1)}
@@ -35,8 +36,8 @@ function renderInlineText(text: string): React.ReactNode[] {
     // Bold
     if (part.startsWith('**') && part.endsWith('**') && part.length >= 4) {
       return (
-        <strong key={index} className="font-bold text-text-primary">
-          {renderInlineText(part.slice(2, -2))}
+        <strong key={itemKey} className="font-bold text-text-primary">
+          {renderInlineText(part.slice(2, -2), `${itemKey}-b`)}
         </strong>
       );
     }
@@ -44,8 +45,8 @@ function renderInlineText(text: string): React.ReactNode[] {
     // Italic
     if (part.startsWith('*') && part.endsWith('*') && part.length >= 2) {
       return (
-        <em key={index} className="italic text-text-secondary">
-          {renderInlineText(part.slice(1, -1))}
+        <em key={itemKey} className="italic text-text-secondary">
+          {renderInlineText(part.slice(1, -1), `${itemKey}-i`)}
         </em>
       );
     }
@@ -59,7 +60,7 @@ function renderInlineText(text: string): React.ReactNode[] {
 
       return isExternal ? (
         <a
-          key={index}
+          key={itemKey}
           href={href}
           target="_blank"
           rel="noopener noreferrer"
@@ -70,7 +71,7 @@ function renderInlineText(text: string): React.ReactNode[] {
         </a>
       ) : (
         <Link
-          key={index}
+          key={itemKey}
           href={href}
           className="font-medium text-accent-primary underline underline-offset-4 hover:text-accent-secondary transition-colors"
         >
@@ -79,14 +80,14 @@ function renderInlineText(text: string): React.ReactNode[] {
       );
     }
 
-    return <React.Fragment key={index}>{part}</React.Fragment>;
+    return <React.Fragment key={itemKey}>{part}</React.Fragment>;
   });
 }
 
 /**
  * Parses markdown table block into HTML table JSX.
  */
-function renderTable(tableLines: string[], keyIndex: number): React.ReactNode {
+function renderTable(tableLines: string[], keyIndex: string | number): React.ReactNode {
   if (tableLines.length < 2) return null;
 
   const parseRow = (line: string) =>
@@ -107,7 +108,7 @@ function renderTable(tableLines: string[], keyIndex: number): React.ReactNode {
           <tr>
             {headers.map((h, i) => (
               <th key={i} className="px-4 py-3 font-bold text-text-primary">
-                {renderInlineText(h)}
+                {renderInlineText(h, `th-${i}`)}
               </th>
             ))}
           </tr>
@@ -117,7 +118,7 @@ function renderTable(tableLines: string[], keyIndex: number): React.ReactNode {
             <tr key={rIdx} className="hover:bg-bg-tertiary/30 transition-colors">
               {row.map((cell, cIdx) => (
                 <td key={cIdx} className="px-4 py-3">
-                  {renderInlineText(cell)}
+                  {renderInlineText(cell, `td-${rIdx}-${cIdx}`)}
                 </td>
               ))}
             </tr>
@@ -129,8 +130,10 @@ function renderTable(tableLines: string[], keyIndex: number): React.ReactNode {
 }
 
 export function BlogPostContent({ content }: BlogPostContentProps) {
-  // Strip top SEO meta paragraphs (like Suggested URL Slug, Dev.to Tags) if present
-  let cleanContent = content;
+  // Strip top SEO draft notes (Suggested URL Slug, Primary Keyword, Dev.to Tags, etc.) if present
+  let cleanContent = content
+    .replace(/\*\*Suggested URL Slug:\*\*[\s\S]*?---\r?\n+/m, '')
+    .replace(/\*\*Primary Keyword:\*\*[\s\S]*?---\r?\n+/m, '');
 
   // Split lines into structured blocks
   const lines = cleanContent.split('\n');
@@ -149,13 +152,15 @@ export function BlogPostContent({ content }: BlogPostContentProps) {
 
     // Horizontal Rule
     if (trimmed === '---' || trimmed === '***' || trimmed === '___') {
-      elements.push(<hr key={index} className="my-8 border-t border-border-theme" />);
+      const blockKey = `hr-${index}`;
+      elements.push(<hr key={blockKey} className="my-8 border-t border-border-theme" />);
       index++;
       continue;
     }
 
     // Code Block ```lang ... ```
     if (trimmed.startsWith('```')) {
+      const blockKey = `code-${index}`;
       const lang = trimmed.slice(3).trim() || 'javascript';
       const codeLines: string[] = [];
       index++;
@@ -168,7 +173,7 @@ export function BlogPostContent({ content }: BlogPostContentProps) {
 
       const codeString = codeLines.join('\n');
       elements.push(
-        <div key={index} className="my-6">
+        <div key={blockKey} className="my-6">
           <CodeBlock
             code={codeString}
             language={lang}
@@ -183,12 +188,13 @@ export function BlogPostContent({ content }: BlogPostContentProps) {
 
     // Table
     if (trimmed.startsWith('|') && trimmed.endsWith('|')) {
+      const blockKey = `table-${index}`;
       const tableLines: string[] = [];
       while (index < lines.length && lines[index].trim().startsWith('|') && lines[index].trim().endsWith('|')) {
         tableLines.push(lines[index]);
         index++;
       }
-      elements.push(renderTable(tableLines, index));
+      elements.push(renderTable(tableLines, blockKey));
       continue;
     }
 
@@ -196,6 +202,7 @@ export function BlogPostContent({ content }: BlogPostContentProps) {
     if (trimmed.startsWith('#')) {
       const hashMatch = trimmed.match(/^(#{1,6})\s+(.*)$/);
       if (hashMatch) {
+        const blockKey = `heading-${index}`;
         const level = hashMatch[1].length;
         const headingText = hashMatch[2];
         const headingId = headingText
@@ -209,32 +216,32 @@ export function BlogPostContent({ content }: BlogPostContentProps) {
         if (level === 1) {
           // Top title is rendered in page header, but render if repeated
           elements.push(
-            <h1 key={index} id={headingId} className="text-2xl sm:text-3xl font-extrabold text-text-primary mt-8 mb-4 tracking-tight scroll-mt-24">
-              {renderInlineText(headingText)}
+            <h1 key={blockKey} id={headingId} className="text-2xl sm:text-3xl font-extrabold text-text-primary mt-8 mb-4 tracking-tight scroll-mt-24">
+              {renderInlineText(headingText, blockKey)}
             </h1>
           );
         } else if (level === 2) {
           elements.push(
             <h2
-              key={index}
+              key={blockKey}
               id={headingId}
               className="text-xl sm:text-2xl font-bold text-text-primary mt-10 mb-4 pb-2 border-b border-border-theme/60 tracking-tight scroll-mt-24 flex items-center gap-2 group"
             >
               <a href={`#${headingId}`} className="hover:text-accent-primary transition-colors flex items-center gap-2">
-                {renderInlineText(headingText)}
+                {renderInlineText(headingText, blockKey)}
               </a>
             </h2>
           );
         } else if (level === 3) {
           elements.push(
-            <h3 key={index} id={headingId} className="text-lg sm:text-xl font-bold text-text-primary mt-6 mb-3 tracking-tight scroll-mt-24">
-              {renderInlineText(headingText)}
+            <h3 key={blockKey} id={headingId} className="text-lg sm:text-xl font-bold text-text-primary mt-6 mb-3 tracking-tight scroll-mt-24">
+              {renderInlineText(headingText, blockKey)}
             </h3>
           );
         } else {
           elements.push(
-            <h4 key={index} id={headingId} className="text-base font-bold text-text-primary mt-4 mb-2 scroll-mt-24">
-              {renderInlineText(headingText)}
+            <h4 key={blockKey} id={headingId} className="text-base font-bold text-text-primary mt-4 mb-2 scroll-mt-24">
+              {renderInlineText(headingText, blockKey)}
             </h4>
           );
         }
@@ -245,6 +252,7 @@ export function BlogPostContent({ content }: BlogPostContentProps) {
 
     // Blockquote
     if (trimmed.startsWith('>')) {
+      const blockKey = `quote-${index}`;
       const quoteLines: string[] = [];
       while (index < lines.length && lines[index].trim().startsWith('>')) {
         quoteLines.push(lines[index].trim().replace(/^>\s?/, ''));
@@ -252,12 +260,12 @@ export function BlogPostContent({ content }: BlogPostContentProps) {
       }
       elements.push(
         <blockquote
-          key={index}
+          key={blockKey}
           className="my-6 p-4 rounded-xl border-l-4 border-accent-primary bg-accent-light/40 text-text-secondary text-sm sm:text-base leading-relaxed"
         >
           {quoteLines.map((ql, qIdx) => (
-            <p key={qIdx} className={qIdx > 0 ? 'mt-2' : ''}>
-              {renderInlineText(ql)}
+            <p key={`${blockKey}-p-${qIdx}`} className={qIdx > 0 ? 'mt-2' : ''}>
+              {renderInlineText(ql, `${blockKey}-p-${qIdx}`)}
             </p>
           ))}
         </blockquote>
@@ -267,15 +275,16 @@ export function BlogPostContent({ content }: BlogPostContentProps) {
 
     // Unordered List
     if (trimmed.startsWith('- ') || trimmed.startsWith('* ')) {
+      const blockKey = `ul-${index}`;
       const listItems: string[] = [];
       while (index < lines.length && (lines[index].trim().startsWith('- ') || lines[index].trim().startsWith('* '))) {
         listItems.push(lines[index].trim().replace(/^[-*]\s+/, ''));
         index++;
       }
       elements.push(
-        <ul key={index} className="my-4 space-y-2 list-disc list-outside pl-6 text-sm sm:text-base text-text-secondary leading-relaxed">
+        <ul key={blockKey} className="my-4 space-y-2 list-disc list-outside pl-6 text-sm sm:text-base text-text-secondary leading-relaxed">
           {listItems.map((li, lIdx) => (
-            <li key={lIdx}>{renderInlineText(li)}</li>
+            <li key={`${blockKey}-li-${lIdx}`}>{renderInlineText(li, `${blockKey}-li-${lIdx}`)}</li>
           ))}
         </ul>
       );
@@ -284,15 +293,16 @@ export function BlogPostContent({ content }: BlogPostContentProps) {
 
     // Ordered List
     if (/^\d+\.\s+/.test(trimmed)) {
+      const blockKey = `ol-${index}`;
       const listItems: string[] = [];
       while (index < lines.length && /^\d+\.\s+/.test(lines[index].trim())) {
         listItems.push(lines[index].trim().replace(/^\d+\.\s+/, ''));
         index++;
       }
       elements.push(
-        <ol key={index} className="my-4 space-y-2 list-decimal list-outside pl-6 text-sm sm:text-base text-text-secondary leading-relaxed">
+        <ol key={blockKey} className="my-4 space-y-2 list-decimal list-outside pl-6 text-sm sm:text-base text-text-secondary leading-relaxed">
           {listItems.map((li, lIdx) => (
-            <li key={lIdx}>{renderInlineText(li)}</li>
+            <li key={`${blockKey}-li-${lIdx}`}>{renderInlineText(li, `${blockKey}-li-${lIdx}`)}</li>
           ))}
         </ol>
       );
@@ -300,9 +310,10 @@ export function BlogPostContent({ content }: BlogPostContentProps) {
     }
 
     // Regular Paragraph
+    const blockKey = `p-${index}`;
     elements.push(
-      <p key={index} className="my-4 text-sm sm:text-base text-text-secondary leading-relaxed">
-        {renderInlineText(trimmed)}
+      <p key={blockKey} className="my-4 text-sm sm:text-base text-text-secondary leading-relaxed">
+        {renderInlineText(trimmed, blockKey)}
       </p>
     );
     index++;

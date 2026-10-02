@@ -3,9 +3,6 @@
 import React, { useState } from 'react';
 import { Icon } from '@iconify/react';
 import { EndpointDef } from '@/config/api-catalog';
-import { CodeBlock } from '@/components/ui/CodeBlock';
-import { TryItRunner } from './TryItRunner';
-import { CodeGenerators } from './CodeGenerators';
 import config from '@/config/env';
 
 interface EndpointCardProps {
@@ -13,13 +10,34 @@ interface EndpointCardProps {
 }
 
 export function EndpointCard({ endpoint }: EndpointCardProps) {
-  const [activeTab, setActiveTab] = useState<'example' | 'code' | 'runner'>('example');
+  const [activeTab, setActiveTab] = useState<'overview' | 'tester' | 'code'>('overview');
+  const [isLoading, setIsLoading] = useState(false);
+  const [response, setResponse] = useState<any>(endpoint.responseExample);
+  const [statusCode, setStatusCode] = useState<number | null>(null);
+  const [latencyMs, setLatencyMs] = useState<number | null>(null);
   const [copiedUrl, setCopiedUrl] = useState(false);
+  const [copiedResponse, setCopiedResponse] = useState(false);
+  const [customBody, setCustomBody] = useState<string>(
+    endpoint.requestBody ? JSON.stringify(endpoint.requestBody, null, 2) : ''
+  );
 
-  const baseApi = config.publicApiUrl || 'https://playground.nileslabs.com/api/v1';
-  const cleanBase = baseApi.replace(/\/+$/, '');
-  const cleanPath = endpoint.path.startsWith('/') ? endpoint.path : `/${endpoint.path}`;
-  const fullUrl = `${cleanBase}${cleanPath}`;
+  const fullUrl = `${config.apiUrl}${endpoint.path}`;
+
+  const getMethodBadge = (method: string) => {
+    switch (method.toUpperCase()) {
+      case 'GET':
+        return 'bg-emerald-50 text-emerald-700 border-emerald-200';
+      case 'POST':
+        return 'bg-indigo-50 text-indigo-700 border-indigo-200';
+      case 'PUT':
+      case 'PATCH':
+        return 'bg-amber-50 text-amber-700 border-amber-200';
+      case 'DELETE':
+        return 'bg-rose-50 text-rose-700 border-rose-200';
+      default:
+        return 'bg-slate-50 text-slate-700 border-slate-200';
+    }
+  };
 
   const handleCopyUrl = () => {
     navigator.clipboard.writeText(fullUrl);
@@ -27,209 +45,264 @@ export function EndpointCard({ endpoint }: EndpointCardProps) {
     setTimeout(() => setCopiedUrl(false), 2000);
   };
 
-  const getMethodBadgeClass = (method: string) => {
-    switch (method) {
-      case 'GET':
-        return 'text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-500/10 border-emerald-200 dark:border-emerald-500/20';
-      case 'POST':
-        return 'text-blue-700 dark:text-blue-400 bg-blue-50 dark:bg-blue-500/10 border-blue-200 dark:border-blue-500/20';
-      case 'PUT':
-        return 'text-amber-700 dark:text-amber-400 bg-amber-50 dark:bg-amber-500/10 border-amber-200 dark:border-amber-500/20';
-      case 'PATCH':
-        return 'text-purple-700 dark:text-purple-400 bg-purple-50 dark:bg-purple-500/10 border-purple-200 dark:border-purple-500/20';
-      case 'DELETE':
-        return 'text-rose-700 dark:text-rose-400 bg-rose-50 dark:bg-rose-500/10 border-rose-200 dark:border-rose-500/20';
-      default:
-        return 'text-slate-700 dark:text-slate-400 bg-slate-100 dark:bg-slate-500/10 border-slate-200 dark:border-slate-500/20';
+  const handleCopyResponse = () => {
+    navigator.clipboard.writeText(JSON.stringify(response, null, 2));
+    setCopiedResponse(true);
+    setTimeout(() => setCopiedResponse(false), 2000);
+  };
+
+  const handleRunRequest = async () => {
+    setIsLoading(true);
+    const start = performance.now();
+
+    try {
+      // Replace :id with 1 for quick testing
+      const testPath = endpoint.path.replace(/:[a-zA-Z0-9_]+/g, '1');
+      const targetUrl = `${config.apiUrl}${testPath}`;
+
+      const options: RequestInit = {
+        method: endpoint.method,
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+        credentials: 'include',
+      };
+
+      if (['POST', 'PUT', 'PATCH'].includes(endpoint.method) && customBody) {
+        options.body = customBody;
+      }
+
+      const res = await fetch(targetUrl, options);
+      const data = await res.json().catch(() => ({ status: 'error', message: 'Non-JSON response' }));
+      const duration = Math.round(performance.now() - start);
+
+      setResponse(data);
+      setStatusCode(res.status);
+      setLatencyMs(duration);
+    } catch (err: any) {
+      setResponse({ error: err.message || 'Network error occurred' });
+      setStatusCode(500);
+      setLatencyMs(Math.round(performance.now() - start));
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
-    <div id={endpoint.id} data-toc-title={endpoint.title} className="space-y-5 scroll-mt-20 pt-8 border-t border-border-theme first:pt-0 first:border-t-0">
-      {/* 1. Clean Title & Description */}
-      <div className="space-y-1.5">
-        <h2 className="text-xl sm:text-2xl font-bold text-text-primary tracking-tight">
+    <div
+      id={endpoint.id}
+      data-toc-title={endpoint.title}
+      className="rounded-2xl border border-slate-200 bg-white shadow-xs overflow-hidden transition-all hover:shadow-sm scroll-mt-20"
+    >
+      {/* 1. Header Bar with Method, Endpoint Path & Action Tabs */}
+      <div className="border-b border-slate-200 bg-slate-50/70 px-4 sm:px-6 py-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div className="flex items-center gap-2.5 min-w-0">
+          <span className={`px-2 py-0.5 rounded-md font-mono text-xs font-bold border uppercase tracking-wider ${getMethodBadge(endpoint.method)}`}>
+            {endpoint.method}
+          </span>
+          <span className="font-mono text-xs sm:text-sm font-semibold text-slate-800 truncate select-all">
+            {endpoint.path}
+          </span>
+        </div>
+
+        {/* Tab Switcher: Overview vs Try It vs Code */}
+        <div className="flex items-center gap-1.5 self-start sm:self-auto">
+          <button
+            type="button"
+            onClick={() => setActiveTab('overview')}
+            className={`px-3 py-1 rounded-lg text-xs font-medium transition-all ${
+              activeTab === 'overview'
+                ? 'bg-white text-indigo-700 font-semibold border border-slate-200 shadow-2xs'
+                : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200/50'
+            }`}
+          >
+            Specification
+          </button>
+          <button
+            type="button"
+            onClick={() => setActiveTab('tester')}
+            className={`px-3 py-1 rounded-lg text-xs font-medium transition-all flex items-center gap-1.5 ${
+              activeTab === 'tester'
+                ? 'bg-indigo-600 text-white font-semibold shadow-2xs'
+                : 'text-indigo-600 hover:bg-indigo-50 font-semibold'
+            }`}
+          >
+            <Icon icon="ph:play-circle-bold" className="w-3.5 h-3.5" />
+            <span>Try Live</span>
+          </button>
+        </div>
+      </div>
+
+      {/* 2. Endpoint Title & Description */}
+      <div className="px-5 sm:px-6 py-4 border-b border-slate-100 bg-white">
+        <h3 className="text-base sm:text-lg font-bold text-slate-900">
           {endpoint.title}
-        </h2>
-        <p className="text-sm text-text-secondary leading-relaxed">
+        </h3>
+        <p className="text-xs sm:text-sm text-slate-600 mt-1 leading-relaxed">
           {endpoint.description}
         </p>
       </div>
 
-      {/* 2. Request Section (Interactive Terminal Bar) */}
-      <div className="space-y-2">
-        <div className="flex items-center justify-between text-xs text-text-muted font-semibold uppercase tracking-wider">
-          <span>Request Endpoint</span>
-        </div>
-        <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between bg-bg-secondary dark:bg-code-bg border border-border-theme rounded-2xl p-2.5 sm:px-4 sm:py-3 font-mono text-xs sm:text-sm shadow-xs gap-3">
-          <div className="flex items-center gap-2.5 min-w-0 flex-1">
-            <span className={`font-bold px-2.5 py-1 rounded-lg border text-[11px] sm:text-xs shrink-0 ${getMethodBadgeClass(endpoint.method)}`}>
-              {endpoint.method}
-            </span>
-            <span className="text-text-primary select-all truncate font-semibold">{fullUrl}</span>
-          </div>
+      {/* 3. Tab: Overview (Parameters + Response Example) */}
+      {activeTab === 'overview' && (
+        <div className="p-5 sm:p-6 space-y-6">
+          {/* Query Parameters Table if available */}
+          {endpoint.queryParams && endpoint.queryParams.length > 0 && (
+            <div className="space-y-2">
+              <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">
+                Query & Path Parameters
+              </span>
+              <div className="overflow-x-auto rounded-xl border border-slate-200">
+                <table className="w-full text-left text-xs">
+                  <thead className="bg-slate-50 text-slate-600 border-b border-slate-200">
+                    <tr>
+                      <th className="py-2.5 px-3 font-semibold">Parameter</th>
+                      <th className="py-2.5 px-3 font-semibold">Type</th>
+                      <th className="py-2.5 px-3 font-semibold">Description</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-slate-100 text-slate-700">
+                    {endpoint.queryParams.map((param) => (
+                      <tr key={param.name}>
+                        <td className="py-2.5 px-3 font-mono font-bold text-indigo-600">{param.name}</td>
+                        <td className="py-2.5 px-3 font-mono text-slate-500">{param.type}</td>
+                        <td className="py-2.5 px-3">{param.description}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
 
-          <div className="flex items-center gap-2 shrink-0 justify-end">
-            <button
-              onClick={handleCopyUrl}
-              title="Copy URL"
-              className="px-3 py-1.5 rounded-xl bg-bg-tertiary/60 hover:bg-bg-tertiary text-text-secondary hover:text-text-primary transition-all cursor-pointer flex items-center gap-1.5 text-xs font-sans font-semibold border border-border-theme"
-            >
-              <Icon icon={copiedUrl ? 'ph:check-bold' : 'ph:copy-bold'} className={`w-3.5 h-3.5 ${copiedUrl ? 'text-emerald-500' : ''}`} />
-              <span>{copiedUrl ? 'Copied' : 'Copy'}</span>
-            </button>
+          {/* Request Body Example if available */}
+          {endpoint.requestBody && (
+            <div className="space-y-2">
+              <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">
+                Sample Request Payload
+              </span>
+              <div className="rounded-xl border border-slate-200 bg-slate-50 p-4 font-mono text-xs text-slate-800 overflow-x-auto">
+                <pre>{JSON.stringify(endpoint.requestBody, null, 2)}</pre>
+              </div>
+            </div>
+          )}
 
-            {/* HIGH-IMPACT PROMINENT "TRY LIVE" BUTTON */}
-            <button
-              onClick={() => setActiveTab(activeTab === 'runner' ? 'example' : 'runner')}
-              className={`px-3.5 py-1.5 rounded-xl font-sans text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 shadow-sm ${
-                activeTab === 'runner'
-                  ? 'bg-emerald-600 hover:bg-emerald-700 text-white ring-2 ring-emerald-500/30'
-                  : 'bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-700 dark:text-emerald-300 border border-emerald-500/30 hover:border-emerald-500/50'
-              }`}
-            >
-              <Icon icon="ph:lightning-fill" className="w-3.5 h-3.5 text-amber-400" />
-              <span>{activeTab === 'runner' ? 'Close Tester' : 'Try in Sandbox'}</span>
-            </button>
-          </div>
-        </div>
-      </div>
-
-      {/* 3. Query / Path Parameters if available */}
-      {endpoint.queryParams && endpoint.queryParams.length > 0 && (
-        <div className="space-y-2 pt-1">
-          <span className="text-xs text-text-muted font-semibold uppercase tracking-wider">Parameters</span>
-          <div className="overflow-x-auto rounded-xl border border-border-theme bg-bg-secondary">
-            <table className="w-full text-left text-xs font-mono">
-              <thead>
-                <tr className="border-b border-border-theme bg-bg-tertiary/40 text-text-muted font-semibold">
-                  <th className="p-3">Parameter</th>
-                  <th className="p-3">Type</th>
-                  <th className="p-3 font-sans">Description</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-border-theme text-text-secondary">
-                {endpoint.queryParams.map((q) => (
-                  <tr key={q.name}>
-                    <td className="p-3 font-bold text-accent-primary">{q.name}</td>
-                    <td className="p-3 text-text-muted">{q.type}</td>
-                    <td className="p-3 font-sans text-text-secondary">{q.description}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+          {/* Response Schema / Sample */}
+          <div className="space-y-2">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">
+                Sample JSON Response
+              </span>
+              <button
+                type="button"
+                onClick={handleCopyResponse}
+                className="text-xs font-medium text-slate-500 hover:text-indigo-600 flex items-center gap-1 transition-colors"
+              >
+                <Icon icon={copiedResponse ? 'ph:check-bold' : 'ph:copy-bold'} className="w-3.5 h-3.5" />
+                <span>{copiedResponse ? 'Copied' : 'Copy Response'}</span>
+              </button>
+            </div>
+            <div className="rounded-xl border border-slate-200 bg-slate-900 p-4 font-mono text-xs text-emerald-400 overflow-x-auto max-h-72">
+              <pre>{JSON.stringify(endpoint.responseExample, null, 2)}</pre>
+            </div>
           </div>
         </div>
       )}
 
-      {/* 4. Request Body JSON if applicable */}
-      {endpoint.requestBody && (
-        <div className="space-y-2 pt-1">
-          <span className="text-xs text-text-muted font-semibold uppercase tracking-wider">Request Body Example</span>
-          <CodeBlock
-            code={endpoint.requestBody}
-            language="json"
-            maxHeight="max-h-60"
-            showHeader={false}
-          />
+      {/* 4. Tab: Try Live Interactive Tester */}
+      {activeTab === 'tester' && (
+        <div className="p-5 sm:p-6 space-y-5 bg-slate-50/30">
+          {/* URL + Send Bar */}
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5">
+            <div className="flex-1 flex items-center gap-2 px-3.5 py-2.5 bg-white border border-slate-200 rounded-xl font-mono text-xs sm:text-sm text-slate-800 overflow-x-auto shadow-2xs">
+              <span className={`px-1.5 py-0.5 rounded text-[10px] font-bold border uppercase ${getMethodBadge(endpoint.method)}`}>
+                {endpoint.method}
+              </span>
+              <span className="truncate select-all text-slate-700">{fullUrl}</span>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={handleCopyUrl}
+                className="px-3 py-2.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-600 hover:text-slate-900 text-xs font-medium transition-all shadow-2xs flex items-center gap-1.5"
+                title="Copy cURL / URL"
+              >
+                <Icon icon={copiedUrl ? 'ph:check-bold' : 'ph:copy-bold'} className="w-3.5 h-3.5" />
+                <span className="hidden sm:inline">{copiedUrl ? 'Copied' : 'Copy'}</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={handleRunRequest}
+                disabled={isLoading}
+                className="flex-1 sm:flex-initial px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 text-white font-semibold text-xs shadow-xs transition-all flex items-center justify-center gap-2 cursor-pointer"
+              >
+                {isLoading ? (
+                  <>
+                    <Icon icon="ph:spinner-bold" className="w-3.5 h-3.5 animate-spin" />
+                    <span>Executing...</span>
+                  </>
+                ) : (
+                  <>
+                    <Icon icon="ph:paper-plane-tilt-bold" className="w-3.5 h-3.5" />
+                    <span>Send Request</span>
+                  </>
+                )}
+              </button>
+            </div>
+          </div>
+
+          {/* Editable Request Body if applicable */}
+          {['POST', 'PUT', 'PATCH'].includes(endpoint.method) && (
+            <div className="space-y-1.5">
+              <label className="text-xs font-bold text-slate-600">Editable JSON Request Body</label>
+              <textarea
+                value={customBody}
+                onChange={(e) => setCustomBody(e.target.value)}
+                rows={4}
+                className="w-full p-3 rounded-xl border border-slate-200 bg-white font-mono text-xs text-slate-800 focus:outline-hidden focus:ring-2 focus:ring-indigo-500/30"
+              />
+            </div>
+          )}
+
+          {/* Live Response Box */}
+          <div className="space-y-2 pt-2">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <span className="text-xs font-bold text-slate-600">Live Response</span>
+                {statusCode && (
+                  <span className={`px-2 py-0.5 rounded text-[10px] font-mono font-bold ${
+                    statusCode < 300 ? 'bg-emerald-100 text-emerald-700' : 'bg-rose-100 text-rose-700'
+                  }`}>
+                    {statusCode} OK
+                  </span>
+                )}
+                {latencyMs !== null && (
+                  <span className="text-[11px] font-mono text-slate-400">
+                    {latencyMs}ms
+                  </span>
+                )}
+              </div>
+              <button
+                type="button"
+                onClick={handleCopyResponse}
+                className="text-xs font-medium text-slate-500 hover:text-indigo-600 flex items-center gap-1 transition-colors"
+              >
+                <Icon icon={copiedResponse ? 'ph:check-bold' : 'ph:copy-bold'} className="w-3.5 h-3.5" />
+                <span>{copiedResponse ? 'Copied' : 'Copy'}</span>
+              </button>
+            </div>
+
+            <div className="rounded-xl border border-slate-200 bg-slate-900 p-4 font-mono text-xs text-emerald-400 overflow-x-auto max-h-80 shadow-inner">
+              <pre>{JSON.stringify(response, null, 2)}</pre>
+            </div>
+          </div>
         </div>
       )}
-
-      {/* 5. Segmented Tab Controls: Example, Multi-Language Code Snippets & Live Runner */}
-      <div className="space-y-3 pt-2">
-        <div className="border-b border-border-theme pb-2.5 space-y-2">
-          <div className="inline-flex items-center gap-1.5 p-1 rounded-xl bg-bg-secondary border border-border-theme max-w-full overflow-x-auto no-scrollbar">
-            {/* Tab 1: Example Response */}
-            <button
-              onClick={() => setActiveTab('example')}
-              className={`px-3 py-1.5 rounded-lg text-xs font-semibold font-sans transition-all cursor-pointer flex items-center gap-1.5 whitespace-nowrap shrink-0 ${
-                activeTab === 'example'
-                  ? 'bg-bg-primary text-text-primary shadow-xs border border-border-theme font-bold'
-                  : 'text-text-muted hover:text-text-primary'
-              }`}
-            >
-              <Icon icon="ph:file-code-bold" className="w-3.5 h-3.5 shrink-0" />
-              <span>Example Response</span>
-              <span className="px-1.5 py-0.2 rounded text-[10px] bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-mono shrink-0">200</span>
-            </button>
-
-            {/* Tab 2: Multi-Language Code Generators (cURL, JS, Python, Go, etc.) */}
-            <button
-              onClick={() => setActiveTab('code')}
-              className={`px-3 py-1.5 rounded-lg text-xs font-semibold font-sans transition-all cursor-pointer flex items-center gap-1.5 whitespace-nowrap shrink-0 ${
-                activeTab === 'code'
-                  ? 'bg-bg-primary text-text-primary shadow-xs border border-border-theme font-bold'
-                  : 'text-text-muted hover:text-text-primary'
-              }`}
-            >
-              <Icon icon="ph:terminal-window-bold" className="w-3.5 h-3.5 text-blue-500 shrink-0" />
-              <span>Code Snippets</span>
-              <span className="px-1.5 py-0.2 rounded text-[10px] bg-blue-500/10 text-blue-600 dark:text-blue-400 font-mono shrink-0">9 SDKs</span>
-            </button>
-
-            {/* Tab 3: Live Sandbox Runner */}
-            <button
-              onClick={() => setActiveTab('runner')}
-              className={`px-3 py-1.5 rounded-lg text-xs font-semibold font-sans transition-all cursor-pointer flex items-center gap-1.5 whitespace-nowrap shrink-0 ${
-                activeTab === 'runner'
-                  ? 'bg-emerald-600 text-white shadow-xs font-bold'
-                  : 'text-emerald-700 dark:text-emerald-400 hover:bg-emerald-500/10'
-              }`}
-            >
-              <Icon icon="ph:play-circle-bold" className="w-3.5 h-3.5 shrink-0" />
-              <span>Live Sandbox Runner</span>
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shrink-0" />
-            </button>
-          </div>
-
-          <div className="text-xs text-text-muted font-medium px-1 flex items-center gap-1.5">
-            {activeTab === 'runner' && (
-              <>
-                <Icon icon="ph:info-bold" className="w-3.5 h-3.5 text-emerald-500 shrink-0" />
-                <span>Testing with isolated session persistence</span>
-              </>
-            )}
-            {activeTab === 'code' && (
-              <>
-                <Icon icon="ph:code-bold" className="w-3.5 h-3.5 text-blue-500 shrink-0" />
-                <span>cURL, JS, Axios, Python, Go, Swift, Rust</span>
-              </>
-            )}
-            {activeTab === 'example' && (
-              <>
-                <Icon icon="ph:file-text-bold" className="w-3.5 h-3.5 text-text-muted shrink-0" />
-                <span>Static schema preview</span>
-              </>
-            )}
-          </div>
-        </div>
-
-        {/* View 1: Static Example Response */}
-        {activeTab === 'example' && (
-          <div className="space-y-2 animate-in fade-in duration-150">
-            <CodeBlock
-              code={endpoint.responseExample}
-              language={typeof endpoint.responseExample === 'string' && endpoint.responseExample.startsWith('<svg') ? 'svg' : 'json'}
-              maxHeight="max-h-72"
-              showHeader={false}
-            />
-          </div>
-        )}
-
-        {/* View 2: Multi-Language Code Snippets */}
-        {activeTab === 'code' && (
-          <div className="animate-in fade-in duration-150">
-            <CodeGenerators endpoint={endpoint} />
-          </div>
-        )}
-
-        {/* View 3: Full Live Interactive Runner */}
-        {activeTab === 'runner' && (
-          <div className="animate-in fade-in zoom-in-95 duration-150">
-            <TryItRunner endpoint={endpoint} defaultExpanded={true} />
-          </div>
-        )}
-      </div>
     </div>
   );
 }
+
+export default EndpointCard;

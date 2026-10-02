@@ -1,0 +1,242 @@
+'use client';
+
+import React, { useState } from 'react';
+import Link from 'next/link';
+import { Icon } from '@iconify/react';
+import { LogoIcon } from '@/components/ui/LogoIcon';
+import siteConfig from '@/config/site';
+
+interface LandingHeaderProps {
+  onOpenSearch: () => void;
+}
+
+export function LandingHeader({ onOpenSearch }: LandingHeaderProps) {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [navigatingPath, setNavigatingPath] = useState<string | null>(null);
+
+  const handlePageRedirect = (path: string) => {
+    setNavigatingPath(path);
+  };
+
+  const scrollToSection = (e: React.MouseEvent<HTMLAnchorElement>, sectionId: string) => {
+    e.preventDefault();
+    const el = document.getElementById(sectionId);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      window.history.pushState(null, '', `#${sectionId}`);
+    }
+    setMobileMenuOpen(false);
+  };
+
+  return (
+    <header className="sticky top-0 z-40 w-full border-b border-slate-200/80 bg-white/90 backdrop-blur-md transition-colors">
+      <div className="mx-auto flex h-16 items-center justify-between px-3 sm:px-6 lg:px-8 gap-2 sm:gap-4">
+        {/* Brand Logo */}
+        <div className="flex items-center gap-4 lg:gap-6 shrink-0">
+          <Link href="/" className="flex items-center gap-2.5 sm:gap-3 group focus:outline-none">
+            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-indigo-50 border border-indigo-100 group-hover:border-indigo-300 transition-colors shadow-xs shrink-0">
+              <LogoIcon className="h-5 w-5 text-indigo-600" size={22} />
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="font-bold text-base sm:text-lg text-slate-900 tracking-tight">Playground API</span>
+              <span className="hidden xs:inline-flex items-center rounded-full bg-indigo-50 px-2 py-0.5 text-xs font-semibold text-indigo-600 border border-indigo-100/80">
+                v1.0
+              </span>
+            </div>
+          </Link>
+
+          {/* Desktop Anchor Navigation with Smooth Scrolling (Shown on large desktop xl: 1280px+) */}
+          <nav className="hidden xl:flex items-center gap-1">
+            <a
+              href="#try-it"
+              onClick={(e) => scrollToSection(e, 'try-it')}
+              className="px-3.5 py-1.5 text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100/70 rounded-md transition-colors cursor-pointer"
+            >
+              Try Console
+            </a>
+            <a
+              href="#features"
+              onClick={(e) => scrollToSection(e, 'features')}
+              className="px-3.5 py-1.5 text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100/70 rounded-md transition-colors cursor-pointer"
+            >
+              Features
+            </a>
+            <a
+              href="#resources"
+              onClick={(e) => scrollToSection(e, 'resources')}
+              className="px-3.5 py-1.5 text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100/70 rounded-md transition-colors cursor-pointer"
+            >
+              Endpoints
+            </a>
+            <a
+              href="#compare"
+              onClick={(e) => scrollToSection(e, 'compare')}
+              className="px-3.5 py-1.5 text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100/70 rounded-md transition-colors cursor-pointer"
+            >
+              Why Playground
+            </a>
+            <Link
+              href="/blog"
+              prefetch={true}
+              onClick={() => handlePageRedirect('/blog')}
+              className={`px-3.5 py-1.5 text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100/70 rounded-md transition-colors inline-flex items-center gap-1.5 ${
+                navigatingPath === '/blog' ? 'opacity-80 pointer-events-none' : ''
+              }`}
+            >
+              <span>Blog</span>
+              {navigatingPath === '/blog' ? (
+                <Icon icon="ph:spinner-gap-bold" className="w-3.5 h-3.5 text-indigo-600 animate-spin" />
+              ) : (
+                <span className="px-1.5 py-0.2 rounded-full bg-indigo-50 text-[10px] font-bold text-indigo-700 border border-indigo-200/80">
+                  Deep Dives
+                </span>
+              )}
+            </Link>
+            <a
+              href="#downloads"
+              onClick={(e) => scrollToSection(e, 'downloads')}
+              className="px-3.5 py-1.5 text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100/70 rounded-md transition-colors cursor-pointer"
+            >
+              SDK & Specs
+            </a>
+          </nav>
+        </div>
+
+        {/* Right Actions */}
+        <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+          {/* Quick Search Trigger (Desktop & Tablet) */}
+          <button
+            type="button"
+            onClick={onOpenSearch}
+            className="hidden sm:inline-flex items-center gap-2 px-3 py-1.5 text-xs font-medium text-slate-500 hover:text-slate-900 bg-slate-100/80 hover:bg-slate-200/70 rounded-lg border border-slate-200 transition-colors cursor-pointer"
+            title="Search documentation (Cmd+K)"
+          >
+            <Icon icon="ph:magnifying-glass-bold" className="w-3.5 h-3.5 text-slate-400" />
+            <span>Search</span>
+            <kbd className="font-mono text-[10px] font-semibold px-1.5 py-0.5 bg-white rounded border border-slate-200 text-slate-500 shadow-2xs">
+              ⌘ K
+            </kbd>
+          </button>
+
+          {/* GitHub link (Visible on larger screens) */}
+          <Link
+            href={siteConfig.links.github}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hidden xl:inline-flex items-center gap-2 px-3 py-1.5 text-xs font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200/80 rounded-lg border border-slate-200 transition-colors"
+          >
+            <svg className="h-4 w-4 fill-current" viewBox="0 0 24 24">
+              <path fillRule="evenodd" clipRule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" />
+            </svg>
+            <span>GitHub</span>
+          </Link>
+
+          {/* Primary CTA (Visible on tablet portrait/landscape and desktop) */}
+          <Link
+            href="/docs/introduction"
+            prefetch={true}
+            onClick={() => handlePageRedirect('/docs/introduction')}
+            className={`hidden sm:inline-flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-semibold text-white bg-indigo-600 hover:bg-indigo-700 rounded-lg shadow-sm transition-all focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 active:scale-95 ${
+              navigatingPath === '/docs/introduction' ? 'opacity-80 pointer-events-none cursor-wait' : ''
+            }`}
+          >
+            <span>{navigatingPath === '/docs/introduction' ? 'Opening...' : 'Explore Docs'}</span>
+            <Icon
+              icon={navigatingPath === '/docs/introduction' ? 'ph:spinner-gap-bold' : 'ph:arrow-right-bold'}
+              className={`w-3.5 h-3.5 ${navigatingPath === '/docs/introduction' ? 'animate-spin' : ''}`}
+            />
+          </Link>
+
+          {/* Mobile search icon button */}
+          <button
+            type="button"
+            onClick={onOpenSearch}
+            className="sm:hidden p-2 text-slate-600 hover:text-slate-900 rounded-lg hover:bg-slate-100 transition-colors"
+            aria-label="Search"
+          >
+            <Icon icon="ph:magnifying-glass-bold" className="w-5 h-5" />
+          </button>
+
+          {/* Mobile menu hamburger toggle (Visible whenever nav is hidden: < xl) */}
+          <button
+            type="button"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="xl:hidden p-2 text-slate-600 hover:text-slate-900 rounded-lg hover:bg-slate-100 transition-colors"
+            aria-label="Toggle Navigation Menu"
+          >
+            <Icon icon={mobileMenuOpen ? "ph:x-bold" : "ph:list-bold"} className="w-6 h-6" />
+          </button>
+        </div>
+      </div>
+
+      {/* Mobile dropdown */}
+      {mobileMenuOpen && (
+        <div className="xl:hidden border-b border-slate-200 bg-white px-4 pt-3 pb-5 space-y-2 shadow-lg animate-in fade-in slide-in-from-top-2">
+          <a
+            href="#try-it"
+            onClick={(e) => scrollToSection(e, 'try-it')}
+            className="block px-3 py-2 text-base font-medium text-slate-700 hover:bg-slate-50 rounded-lg cursor-pointer"
+          >
+            Try Console
+          </a>
+          <a
+            href="#features"
+            onClick={(e) => scrollToSection(e, 'features')}
+            className="block px-3 py-2 text-base font-medium text-slate-700 hover:bg-slate-50 rounded-lg cursor-pointer"
+          >
+            Features
+          </a>
+          <a
+            href="#resources"
+            onClick={(e) => scrollToSection(e, 'resources')}
+            className="block px-3 py-2 text-base font-medium text-slate-700 hover:bg-slate-50 rounded-lg cursor-pointer"
+          >
+            Endpoints
+          </a>
+          <a
+            href="#compare"
+            onClick={(e) => scrollToSection(e, 'compare')}
+            className="block px-3 py-2 text-base font-medium text-slate-700 hover:bg-slate-50 rounded-lg cursor-pointer"
+          >
+            Why Playground
+          </a>
+          <Link
+            href="/blog"
+            onClick={() => setMobileMenuOpen(false)}
+            className="flex items-center justify-between px-3 py-2 text-base font-medium text-slate-700 hover:bg-slate-50 rounded-lg"
+          >
+            <span>Technical Blog</span>
+            <span className="px-2 py-0.5 rounded-full bg-indigo-50 text-xs font-bold text-indigo-700 border border-indigo-200">
+              Deep Dives
+            </span>
+          </Link>
+          <a
+            href="#downloads"
+            onClick={(e) => scrollToSection(e, 'downloads')}
+            className="block px-3 py-2 text-base font-medium text-slate-700 hover:bg-slate-50 rounded-lg cursor-pointer"
+          >
+            SDK & Specs
+          </a>
+          <div className="pt-2 border-t border-slate-100 flex flex-col gap-2">
+            <Link
+              href="/docs/introduction"
+              prefetch={true}
+              onClick={() => {
+                handlePageRedirect('/docs/introduction');
+                setMobileMenuOpen(false);
+              }}
+              className={`w-full text-center px-4 py-2.5 text-sm font-semibold text-white bg-indigo-600 rounded-lg shadow-sm flex items-center justify-center gap-2 ${
+                navigatingPath === '/docs/introduction' ? 'opacity-80 pointer-events-none' : ''
+              }`}
+            >
+              {navigatingPath === '/docs/introduction' && (
+                <Icon icon="ph:spinner-gap-bold" className="w-4 h-4 animate-spin" />
+              )}
+              <span>{navigatingPath === '/docs/introduction' ? 'Opening Docs...' : 'Explore Documentation'}</span>
+            </Link>
+          </div>
+        </div>
+      )}
+    </header>
+  );
+}

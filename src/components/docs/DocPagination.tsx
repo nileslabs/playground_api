@@ -38,15 +38,15 @@ export function DocPagination() {
       {prevPage ? (
         <Link
           href={prevPage.href}
-          className="p-4 rounded-2xl bg-bg-secondary hover:bg-bg-tertiary border border-border-theme text-xs sm:text-sm font-bold text-text-primary transition-all group flex items-center gap-3"
+          className="p-4 rounded-2xl bg-bg-secondary hover:bg-bg-tertiary border border-border-theme text-xs sm:text-sm font-bold text-text-primary transition-all group flex items-center gap-3 shadow-xs"
         >
           <Icon
             icon="ph:arrow-left-bold"
             className="w-4 h-4 text-accent-primary group-hover:-translate-x-1 transition-transform shrink-0"
           />
           <div className="text-left">
-            <span className="text-[10px] text-text-muted block uppercase font-mono">Previous</span>
-            <span className="truncate">{prevPage.title}</span>
+            <span className="text-[10px] text-text-muted block uppercase font-mono tracking-wider">Previous</span>
+            <span className="truncate max-w-50 block">{prevPage.title}</span>
           </div>
         </Link>
       ) : (
@@ -56,11 +56,11 @@ export function DocPagination() {
       {nextPage && (
         <Link
           href={nextPage.href}
-          className="p-4 rounded-2xl bg-bg-secondary hover:bg-bg-tertiary border border-border-theme text-xs sm:text-sm font-bold text-text-primary transition-all group flex items-center gap-3 text-right ml-auto"
+          className="p-4 rounded-2xl bg-bg-secondary hover:bg-bg-tertiary border border-border-theme text-xs sm:text-sm font-bold text-text-primary transition-all group flex items-center gap-3 text-right ml-auto shadow-xs"
         >
           <div className="text-right">
-            <span className="text-[10px] text-text-muted block uppercase font-mono">Next</span>
-            <span className="truncate">{nextPage.title}</span>
+            <span className="text-[10px] text-text-muted block uppercase font-mono tracking-wider">Next</span>
+            <span className="truncate max-w-50 block">{nextPage.title}</span>
           </div>
           <Icon
             icon="ph:arrow-right-bold"
@@ -71,3 +71,5 @@ export function DocPagination() {
     </div>
   );
 }
+
+export default DocPagination;

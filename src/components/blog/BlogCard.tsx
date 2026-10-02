@@ -28,7 +28,7 @@ export function BlogCard({ post, featured = false }: BlogCardProps) {
             />
             <div className="absolute top-3 left-3 flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-black/60 backdrop-blur-md border border-white/15 text-[11px] font-bold text-white uppercase tracking-wider">
               <Icon icon="ph:star-fill" className="w-3 h-3 text-amber-400" />
-              Featured Post #{post.order}
+              Featured Deep Dive
             </div>
           </div>
 
@@ -37,9 +37,14 @@ export function BlogCard({ post, featured = false }: BlogCardProps) {
             <div className="space-y-3">
               {/* Tags & Meta */}
               <div className="flex flex-wrap items-center gap-2">
-                <span className="px-2.5 py-0.5 text-xs font-semibold rounded-md bg-accent-light text-accent-primary border border-accent-primary/20">
-                  Part {post.order}
-                </span>
+                {post.tags[0] && (
+                  <Link
+                    href={`/blog?tag=${encodeURIComponent(post.tags[0].toLowerCase())}`}
+                    className="px-2.5 py-0.5 text-xs font-semibold rounded-md bg-accent-light text-accent-primary hover:bg-accent-primary hover:text-white border border-accent-primary/20 transition-colors"
+                  >
+                    #{post.tags[0]}
+                  </Link>
+                )}
                 <span className="flex items-center gap-1 text-xs text-text-muted">
                   <Icon icon="ph:clock-bold" className="w-3.5 h-3.5 text-accent-primary" />
                   {post.readingTime}
@@ -99,9 +104,11 @@ export function BlogCard({ post, featured = false }: BlogCardProps) {
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             className="object-cover group-hover:scale-105 transition-transform duration-500"
           />
-          <div className="absolute top-3 left-3 px-2 py-0.5 rounded-full bg-black/60 backdrop-blur-md border border-white/15 text-[10px] font-bold text-white uppercase tracking-wider">
-            Part {post.order}
-          </div>
+          {post.tags[0] && (
+            <div className="absolute top-3 left-3 px-2 py-0.5 rounded-full bg-black/60 backdrop-blur-md border border-white/15 text-[10px] font-bold text-white uppercase tracking-wider">
+              #{post.tags[0]}
+            </div>
+          )}
         </div>
 
         {/* Content */}
@@ -134,12 +141,13 @@ export function BlogCard({ post, featured = false }: BlogCardProps) {
       <div className="px-5 sm:px-6 pb-5 pt-3 border-t border-border-theme/50 flex items-center justify-between gap-2">
         <div className="flex flex-wrap gap-1.5 max-w-[65%]">
           {post.tags.slice(0, 2).map((tag) => (
-            <span
+            <Link
               key={tag}
-              className="text-[11px] px-2 py-0.5 rounded bg-bg-tertiary text-text-muted border border-border-theme/60"
+              href={`/blog?tag=${encodeURIComponent(tag.toLowerCase())}`}
+              className="text-[11px] px-2 py-0.5 rounded bg-bg-tertiary text-text-muted hover:text-accent-primary hover:bg-accent-light/40 border border-border-theme/60 transition-colors"
             >
               #{tag}
-            </span>
+            </Link>
           ))}
         </div>
 

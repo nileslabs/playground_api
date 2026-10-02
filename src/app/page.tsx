@@ -1,20 +1,20 @@
 import type { Metadata } from 'next';
 import React from 'react';
 import { HeroSection } from '@/components/landing/HeroSection';
-import { ProblemSolution } from '@/components/landing/ProblemSolution';
-import { HowItWorksSteps } from '@/components/landing/HowItWorksSteps';
-import { UseCasesSection } from '@/components/landing/UseCasesSection';
-import { FeatureGrid } from '@/components/landing/FeatureGrid';
-import { CompareTable } from '@/components/landing/CompareTable';
-import { QuickstartTabs } from '@/components/landing/QuickstartTabs';
-import { ResourceGrid } from '@/components/landing/ResourceGrid';
-import { FAQAccordion } from '@/components/landing/FAQAccordion';
+import { TryItConsole } from '@/components/landing/TryItConsole';
+import { ComparisonSection } from '@/components/landing/ComparisonSection';
+import { HowItWorksSection } from '@/components/landing/HowItWorksSection';
+import { FeaturesSection } from '@/components/landing/FeaturesSection';
+import { EndpointsSection } from '@/components/landing/EndpointsSection';
+import { DownloadsSection } from '@/components/landing/DownloadsSection';
+import { BlogSection } from '@/components/landing/BlogSection';
+import { FaqSection } from '@/components/landing/FaqSection';
+import { CtaSection } from '@/components/landing/CtaSection';
+import { ScrollProgressBar } from '@/components/landing/ScrollProgressBar';
 import { siteConfig } from '@/config/site';
 import { getBreadcrumbSchema } from '@/lib/json-ld';
 
 export const metadata: Metadata = {
-  // Use `absolute` so the root layout template ("%s | Playground API") is NOT
-  // appended — the home page title already contains the full brand name.
   title: {
     absolute: 'Playground API — Free Stateful Mock REST & GraphQL Service',
   },
@@ -29,47 +29,60 @@ export const metadata: Metadata = {
       'The modern JSONPlaceholder alternative where mutations actually persist in an isolated, zero-login per-visitor sandbox overlay.',
     url: siteConfig.url,
     siteName: 'Playground API',
-    images: [
-      {
-        url: '/og-image.png',
-        width: 1200,
-        height: 630,
-        alt: 'Playground API — Free Stateful Mock REST & GraphQL Service',
-      },
-    ],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Playground API — Free Stateful Mock REST & GraphQL Service',
     description:
       'The modern JSONPlaceholder alternative where mutations actually persist in an isolated, zero-login per-visitor sandbox overlay.',
-    images: ['/og-image.png'],
   },
 };
 
 export default function LandingPage() {
-  // BreadcrumbList for the home page — helps Google display breadcrumb rich results
   const jsonLdBreadcrumbs = getBreadcrumbSchema([
     { name: 'Home', url: siteConfig.url },
   ]);
 
   return (
-    <div className="flex flex-col min-h-screen">
-      {/* BreadcrumbList JSON-LD — FAQPage JSON-LD is injected by FAQAccordion */}
+    <div className="flex flex-col min-h-screen bg-white">
+      {/* Scroll Progress Indicator */}
+      <ScrollProgressBar />
+
+      {/* Structured Breadcrumbs */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdBreadcrumbs) }}
       />
+
+      {/* 1. Hero Section: Headline, quick cURL, and value prop */}
       <HeroSection />
-      <ProblemSolution />
-      <HowItWorksSteps />
-      <UseCasesSection />
-      <FeatureGrid />
-      <CompareTable />
-      <QuickstartTabs />
-      <ResourceGrid />
-      <FAQAccordion />
+
+      {/* 2. Interactive Try-It Live Console */}
+      <TryItConsole />
+
+      {/* 3. Why Playground API: Side-by-side comparison */}
+      <ComparisonSection />
+
+      {/* 4. Architecture: How it works in 3 clear steps */}
+      <HowItWorksSection />
+
+      {/* 5. Capabilities: 8 Visual Feature Cards */}
+      <FeaturesSection />
+
+      {/* 6. Resource Catalog & Endpoints Explorer */}
+      <EndpointsSection />
+
+      {/* 7. Client SDK & Collections Downloads */}
+      <DownloadsSection />
+
+      {/* 8. Technical Blog & Feature Deep Dives */}
+      <BlogSection />
+
+      {/* 9. Frequently Asked Questions */}
+      <FaqSection />
+
+      {/* 9. Bottom Call to Action */}
+      <CtaSection />
     </div>
   );
 }
-
