@@ -28,7 +28,7 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
 
   if (!post) {
     return {
-      title: 'Post Not Found — Playground API Blog',
+      title: 'Post Not Found',
     };
   }
 
@@ -36,11 +36,11 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
   const ogImageUrl = `${siteConfig.url}${post.coverImage}`;
 
   return {
-    title: `${post.title} — Playground API Blog`,
+    title: post.title,
     description: post.description,
     keywords: post.tags,
     alternates: {
-      canonical: post.canonicalUrl || postUrl,
+      canonical: postUrl,
     },
     openGraph: {
       title: post.title,
@@ -65,7 +65,6 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
       title: post.title,
       description: post.description,
       images: [ogImageUrl],
-      creator: '@nileslabs',
     },
   };
 }

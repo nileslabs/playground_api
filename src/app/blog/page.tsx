@@ -5,9 +5,12 @@ import { BlogFeed } from '@/components/blog/BlogFeed';
 import { siteConfig } from '@/config/site';
 
 export const metadata: Metadata = {
-  title: 'Blog & Feature Deep Dives — Playground API',
+  title: 'Blog & Feature Deep Dives',
   description:
     'In-depth technical guides, feature explanations, and architectural deep dives on stateful mock APIs, WebSockets, sandboxes, and modern frontend tooling.',
+  alternates: {
+    canonical: '/blog',
+  },
   openGraph: {
     title: 'Playground API Blog — Feature Deep Dives & Engineering Architecture',
     description:

@@ -26,15 +26,33 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Playground API — Free Stateful Mock REST & GraphQL Service',
     description:
-      'The modern JSONPlaceholder alternative where mutations actually persist in an isolated, zero-login per-visitor sandbox overlay.',
+      'Stateful mock REST and GraphQL API for testing API integrations, featuring persistent per-session sandbox data where CRUD mutations actually persist.',
     url: siteConfig.url,
-    siteName: 'Playground API',
+    siteName: siteConfig.name,
+    type: 'website',
+    locale: 'en_US',
+    images: [
+      {
+        url: `${siteConfig.url}/og-image.png`,
+        secureUrl: `${siteConfig.url}/og-image.png`,
+        width: 1024,
+        height: 1024,
+        alt: 'Playground API — Free Stateful Mock REST & GraphQL Service',
+        type: 'image/png',
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Playground API — Free Stateful Mock REST & GraphQL Service',
     description:
-      'The modern JSONPlaceholder alternative where mutations actually persist in an isolated, zero-login per-visitor sandbox overlay.',
+      'Stateful mock REST and GraphQL API for testing API integrations, featuring persistent per-session sandbox data where CRUD mutations actually persist.',
+    images: [
+      {
+        url: `${siteConfig.url}/og-image.png`,
+        alt: 'Playground API — Free Stateful Mock REST & GraphQL Service',
+      },
+    ],
   },
 };
 

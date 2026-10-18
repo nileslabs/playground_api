@@ -25,8 +25,14 @@ export const viewport: Viewport = {
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
+  applicationName: siteConfig.name,
+  title: {
+    default: 'Playground API — Free Stateful Mock REST & GraphQL Service',
+    template: `%s | Playground API`,
+  },
+  description:
+    'Free, instant, stateful mock REST & GraphQL API sandbox for web & mobile development. Features persistent per-session CRUD mutation overlays, JWT auth loops, custom collections, and network latency simulation.',
   alternates: {
-    canonical: siteConfig.url,
     types: {
       'text/plain': [
         { url: '/llms.txt', title: 'LLM Documentation' },
@@ -37,12 +43,6 @@ export const metadata: Metadata = {
       ],
     },
   },
-  title: {
-    default: 'Playground API — Free Stateful Mock REST & GraphQL Service',
-    template: `%s | Playground API`,
-  },
-  description:
-    'Free, instant, stateful mock REST & GraphQL API sandbox for web & mobile development. Features persistent per-session CRUD mutation overlays, JWT auth loops, custom collections, and network latency simulation.',
   keywords: [
     'mock api',
     'fake api',
@@ -83,14 +83,16 @@ export const metadata: Metadata = {
     url: siteConfig.url,
     title: 'Playground API — Free Stateful Mock REST & GraphQL Service',
     description:
-      'Free, zero-configuration, stateful mock REST & GraphQL API sandbox. Real persistent CRUD mutations, JWT authentication, and network simulation.',
-    siteName: 'Playground API',
+      'Stateful mock REST and GraphQL API for testing API integrations, featuring persistent per-session sandbox data where CRUD mutations actually persist.',
+    siteName: siteConfig.name,
     images: [
       {
-        url: '/og-image.png',
-        width: 1200,
-        height: 630,
-        alt: 'Playground API — Free Stateful Mock REST & GraphQL Sandbox',
+        url: `${siteConfig.url}/og-image.png`,
+        secureUrl: `${siteConfig.url}/og-image.png`,
+        width: 1024,
+        height: 1024,
+        alt: 'Playground API — Free Stateful Mock REST & GraphQL Service',
+        type: 'image/png',
       },
     ],
   },
@@ -98,8 +100,13 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Playground API — Free Stateful Mock REST & GraphQL Service',
     description:
-      'Free, zero-configuration, stateful mock REST & GraphQL API sandbox for prototyping and automated tests.',
-    images: ['/og-image.png'],
+      'Stateful mock REST and GraphQL API for testing API integrations, featuring persistent per-session sandbox data where CRUD mutations actually persist.',
+    images: [
+      {
+        url: `${siteConfig.url}/og-image.png`,
+        alt: 'Playground API — Free Stateful Mock REST & GraphQL Service',
+      },
+    ],
   },
   robots: {
     index: true,
@@ -136,20 +143,12 @@ export default function RootLayout({
   return (
     <html lang="en" data-theme="light" className="scroll-smooth" suppressHydrationWarning>
       <head>
-        <link rel="icon" href="/favicon.ico" sizes="any" />
-        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-        <link rel="icon" type="image/png" sizes="48x48" href="/icon" />
-        <link rel="apple-touch-icon" sizes="180x180" href="/apple-icon" />
-        <link rel="manifest" href="/site.webmanifest" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
           href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,600;1,700&display=swap"
           rel="stylesheet"
         />
-        <link rel="alternate" type="text/plain" href="/llms.txt" title="LLM Documentation" />
-        <link rel="alternate" type="text/plain" href="/llms-full.txt" title="Full LLM Reference Specification" />
-        <link rel="alternate" type="application/json" href="/product.json" title="Product Manifest" />
       </head>
       <body
         suppressHydrationWarning
