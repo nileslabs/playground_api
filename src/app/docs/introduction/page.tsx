@@ -18,6 +18,24 @@ export const metadata: Metadata = {
     description:
       'Zero-config, stateful mock REST & GraphQL sandbox with persistent CRUD mutations, JWT authentication, and chaos simulation.',
     url: `${siteConfig.url}/docs/introduction`,
+    siteName: 'Playground API Documentation',
+    type: 'article',
+    images: [
+      {
+        url: `${siteConfig.url}/og-image.png`,
+        width: 1200,
+        height: 630,
+        alt: 'Introduction to Playground API — Stateful Mock Backend',
+        type: 'image/png',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Introduction to Playground API — Stateful Mock Backend',
+    description:
+      'Zero-config, stateful mock REST & GraphQL sandbox with persistent CRUD mutations, JWT authentication, and chaos simulation.',
+    images: [`${siteConfig.url}/og-image.png`],
   },
 };
 

@@ -16,6 +16,24 @@ export const metadata: Metadata = {
     description:
       'Explore the foundational mock REST collections: Users, Posts, Comments, and Todos with full CRUD and session overlay isolation.',
     url: `${siteConfig.url}/docs/resources`,
+    siteName: 'Playground API Documentation',
+    type: 'article',
+    images: [
+      {
+        url: `${siteConfig.url}/og-image.png`,
+        width: 1200,
+        height: 630,
+        alt: 'Core REST Resources & Data Architecture',
+        type: 'image/png',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Core REST Resources & Data Architecture — Playground API',
+    description:
+      'Explore the foundational mock REST collections: Users, Posts, Comments, and Todos with full CRUD and session overlay isolation.',
+    images: [`${siteConfig.url}/og-image.png`],
   },
 };
 

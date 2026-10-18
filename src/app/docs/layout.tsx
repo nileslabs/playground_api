@@ -17,6 +17,22 @@ export const metadata: Metadata = {
     type: 'website',
     siteName: 'Playground API Documentation',
     url: `${siteConfig.url}/docs`,
+    images: [
+      {
+        url: `${siteConfig.url}/og-image.png`,
+        width: 1200,
+        height: 630,
+        alt: 'Playground API Documentation',
+        type: 'image/png',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Playground API Documentation — Stateful Mock REST & GraphQL Service',
+    description:
+      'Comprehensive documentation, sandbox tools, and architecture guides for Playground API. Test persistent CRUD mutations, JWT auth, Stripe payments, WebSockets, and network latency.',
+    images: [`${siteConfig.url}/og-image.png`],
   },
 };
 

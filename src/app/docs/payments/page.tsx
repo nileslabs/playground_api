@@ -17,6 +17,24 @@ export const metadata: Metadata = {
     description:
       'Complete mock billing ecosystem supporting Stripe-compatible Payment Intents, 3D Secure modal simulation, magic test cards, and receipts.',
     url: `${siteConfig.url}/docs/payments`,
+    siteName: 'Playground API Documentation',
+    type: 'article',
+    images: [
+      {
+        url: `${siteConfig.url}/og-image.png`,
+        width: 1200,
+        height: 630,
+        alt: 'Mock Commerce & Billing Architecture',
+        type: 'image/png',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Mock Commerce & Billing Architecture — Playground API',
+    description:
+      'Complete mock billing ecosystem supporting Stripe-compatible Payment Intents, 3D Secure modal simulation, magic test cards, and receipts.',
+    images: [`${siteConfig.url}/og-image.png`],
   },
 };
 

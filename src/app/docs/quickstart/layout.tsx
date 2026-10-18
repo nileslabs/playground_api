@@ -14,12 +14,24 @@ export const metadata: Metadata = {
     description:
       'Make your first persistent REST and GraphQL requests in under 5 minutes with zero credentials.',
     url: `${siteConfig.url}/docs/quickstart`,
+    siteName: 'Playground API Documentation',
+    type: 'article',
+    images: [
+      {
+        url: `${siteConfig.url}/og-image.png`,
+        width: 1200,
+        height: 630,
+        alt: 'Quickstart Guide — Playground API',
+        type: 'image/png',
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Quickstart Guide — Playground API',
     description:
       'Make your first persistent REST and GraphQL requests in under 5 minutes with zero credentials.',
+    images: [`${siteConfig.url}/og-image.png`],
   },
 };
 

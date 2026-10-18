@@ -46,7 +46,23 @@ export async function generateMetadata({ params }: ResourcePageProps): Promise<M
       title: `${fullTitle} — Playground API`,
       description: `${res.description} Explore persistent mock endpoints with full CRUD simulation.`,
       url,
+      siteName: 'Playground API Documentation',
       type: 'article',
+      images: [
+        {
+          url: `${siteConfig.url}/og-image.png`,
+          width: 1200,
+          height: 630,
+          alt: `${fullTitle} — Playground API`,
+          type: 'image/png',
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `${fullTitle} — Playground API`,
+      description: `${res.description} Explore persistent mock endpoints with full CRUD simulation.`,
+      images: [`${siteConfig.url}/og-image.png`],
     },
   };
 }

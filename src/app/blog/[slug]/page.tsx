@@ -33,7 +33,7 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
   }
 
   const postUrl = `${siteConfig.url}/blog/${post.slug}`;
-  const ogImageUrl = `${siteConfig.url}${post.coverImage}`;
+  const ogImageUrl = post.coverImage ? `${siteConfig.url}${post.coverImage}` : `${siteConfig.url}/og-image.png`;
 
   return {
     title: post.title,
@@ -54,8 +54,8 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
       images: [
         {
           url: ogImageUrl,
-          width: 1000,
-          height: 420,
+          width: 1376,
+          height: 768,
           alt: post.title,
         },
       ],

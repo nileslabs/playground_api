@@ -19,6 +19,24 @@ export const metadata: Metadata = {
     description:
       'JWT login, mock user registration, silent token refresh rotation, RBAC permission matrix, and cryptographic session security.',
     url: `${siteConfig.url}/docs/auth`,
+    siteName: 'Playground API Documentation',
+    type: 'article',
+    images: [
+      {
+        url: `${siteConfig.url}/og-image.png`,
+        width: 1200,
+        height: 630,
+        alt: 'Auth & Security Architecture',
+        type: 'image/png',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Auth & Security Architecture — Playground API',
+    description:
+      'JWT login, mock user registration, silent token refresh rotation, RBAC permission matrix, and cryptographic session security.',
+    images: [`${siteConfig.url}/og-image.png`],
   },
 };
 

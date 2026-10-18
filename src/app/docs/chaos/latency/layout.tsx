@@ -14,12 +14,24 @@ export const metadata: Metadata = {
     description:
       'Inject artificial delay and simulate slow networks to test UI spinners and error boundaries.',
     url: `${siteConfig.url}/docs/chaos/latency`,
+    siteName: 'Playground API Documentation',
+    type: 'article',
+    images: [
+      {
+        url: `${siteConfig.url}/og-image.png`,
+        width: 1200,
+        height: 630,
+        alt: 'Network Latency Simulator — Playground API',
+        type: 'image/png',
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Network Latency Simulator — Playground API',
     description:
       'Inject artificial delay and simulate slow networks to test UI spinners and error boundaries.',
+    images: [`${siteConfig.url}/og-image.png`],
   },
 };
 

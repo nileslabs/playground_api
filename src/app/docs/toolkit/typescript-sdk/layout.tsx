@@ -14,12 +14,24 @@ export const metadata: Metadata = {
     description:
       'Fully typed TypeScript/JavaScript client SDK with automatic session management and query helpers.',
     url: `${siteConfig.url}/docs/toolkit/typescript-sdk`,
+    siteName: 'Playground API Documentation',
+    type: 'article',
+    images: [
+      {
+        url: `${siteConfig.url}/og-image.png`,
+        width: 1200,
+        height: 630,
+        alt: 'Official TypeScript SDK — Playground API',
+        type: 'image/png',
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Official TypeScript SDK — Playground API',
     description:
       'Fully typed TypeScript/JavaScript client SDK with automatic session management and query helpers.',
+    images: [`${siteConfig.url}/og-image.png`],
   },
 };
 

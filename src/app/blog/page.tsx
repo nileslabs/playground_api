@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   description:
     'In-depth technical guides, feature explanations, and architectural deep dives on stateful mock APIs, WebSockets, sandboxes, and modern frontend tooling.',
   alternates: {
-    canonical: '/blog',
+    canonical: `${siteConfig.url}/blog`,
   },
   openGraph: {
     title: 'Playground API Blog — Feature Deep Dives & Engineering Architecture',
@@ -18,6 +18,22 @@ export const metadata: Metadata = {
     url: `${siteConfig.url}/blog`,
     siteName: siteConfig.name,
     type: 'website',
+    images: [
+      {
+        url: `${siteConfig.url}/og-image.png`,
+        width: 1200,
+        height: 630,
+        alt: 'Playground API Blog — Feature Deep Dives & Engineering Architecture',
+        type: 'image/png',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Playground API Blog — Feature Deep Dives & Engineering Architecture',
+    description:
+      'In-depth technical articles explaining Playground API features, stateful session sandboxes, and developer tooling.',
+    images: [`${siteConfig.url}/og-image.png`],
   },
 };
 

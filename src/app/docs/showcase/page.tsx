@@ -26,7 +26,24 @@ export const metadata: Metadata = {
     description:
       'Explore live applications, React demo stores, and architectural recipes built with Playground API.',
     url: `${siteConfig.url}/docs/showcase`,
+    siteName: 'Playground API Documentation',
     type: 'article',
+    images: [
+      {
+        url: `${siteConfig.url}/og-image.png`,
+        width: 1200,
+        height: 630,
+        alt: 'Real-World Project Showcase — Playground API',
+        type: 'image/png',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Real-World Project Showcase — Playground API',
+    description:
+      'Explore live applications, React demo stores, and architectural recipes built with Playground API.',
+    images: [`${siteConfig.url}/og-image.png`],
   },
 };
 

@@ -16,6 +16,24 @@ export const metadata: Metadata = {
     description:
       'Compare stateful cloud sandboxes against static mock endpoints, in-browser interceptors, and local mock daemons.',
     url: `${siteConfig.url}/docs/comparisons`,
+    siteName: 'Playground API Documentation',
+    type: 'article',
+    images: [
+      {
+        url: `${siteConfig.url}/og-image.png`,
+        width: 1200,
+        height: 630,
+        alt: 'Playground API vs Architectural Alternatives',
+        type: 'image/png',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Playground API vs Architectural Alternatives',
+    description:
+      'Compare stateful cloud sandboxes against static mock endpoints, in-browser interceptors, and local mock daemons.',
+    images: [`${siteConfig.url}/og-image.png`],
   },
 };
 
@@ -206,19 +224,19 @@ export default function ComparisonsPage() {
               <thead className="bg-slate-50 text-slate-700 border-b border-slate-200">
                 <tr>
                   <th className="py-4 px-4 font-bold text-sm min-w-55">Capability</th>
-                  <th className="py-4 px-4 font-bold text-sm text-indigo-700 bg-indigo-50/70 min-w-[170px]">
+                  <th className="py-4 px-4 font-bold text-sm text-indigo-700 bg-indigo-50/70 min-w-42.5">
                     Playground API
                   </th>
-                  <th className="py-4 px-4 font-semibold text-sm text-slate-600 min-w-[150px]">
+                  <th className="py-4 px-4 font-semibold text-sm text-slate-600 min-w-37.5">
                     Static Mock APIs
                   </th>
-                  <th className="py-4 px-4 font-semibold text-sm text-slate-600 min-w-[150px]">
+                  <th className="py-4 px-4 font-semibold text-sm text-slate-600 min-w-37.5">
                     Client Interceptors
                   </th>
-                  <th className="py-4 px-4 font-semibold text-sm text-slate-600 min-w-[150px]">
+                  <th className="py-4 px-4 font-semibold text-sm text-slate-600 min-w-37.5">
                     Local Daemons
                   </th>
-                  <th className="py-4 px-4 font-semibold text-sm text-slate-600 min-w-[150px]">
+                  <th className="py-4 px-4 font-semibold text-sm text-slate-600 min-w-37.5">
                     Docker / Staging
                   </th>
                 </tr>
