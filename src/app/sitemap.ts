@@ -12,16 +12,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
     }
   >();
 
-  // 1. Landing & High-Traffic Hub Pages
+  // 1. Landing & Core Indexable Hub Pages
   routeMap.set('', { priority: 1.0, changeFrequency: 'daily' });
-  routeMap.set('/docs', { priority: 0.95, changeFrequency: 'daily' });
   routeMap.set('/blog', { priority: 0.95, changeFrequency: 'weekly' });
-
-  // 2. Machine-Readable & LLM Endpoints
-  routeMap.set('/llms.txt', { priority: 0.95, changeFrequency: 'daily' });
-  routeMap.set('/llms-full.txt', { priority: 0.95, changeFrequency: 'daily' });
-  routeMap.set('/product.json', { priority: 0.9, changeFrequency: 'weekly' });
-  routeMap.set('/.well-known/ai-plugin.json', { priority: 0.85, changeFrequency: 'monthly' });
 
   // 3. Dynamically extract all canonical documentation pages from sidebar configuration
   siteConfig.nestedSidebarGroups.forEach((group) => {

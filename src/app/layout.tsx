@@ -89,8 +89,8 @@ export const metadata: Metadata = {
       {
         url: `${siteConfig.url}/og-image.png`,
         secureUrl: `${siteConfig.url}/og-image.png`,
-        width: 1024,
-        height: 1024,
+        width: 1200,
+        height: 630,
         alt: 'Playground API — Free Stateful Mock REST & GraphQL Service',
         type: 'image/png',
       },
